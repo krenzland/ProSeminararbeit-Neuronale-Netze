@@ -1,26 +1,38 @@
 
-\section{Kapitel}
+\section{Vom linearen Modell zum Perceptron}
 
-blabla
+Sehr simpel; lineares Modell als Input -> Output layer,
+dann lineare Funktion als Hidden Layer -> Lineares Modell \\
+(Vergleich; Bild Logistic Regression vs "Lineares Perceptron" )
 
-\subsection{Unterkapitel}
+\subsection{Lineare Regression als einfaches graphisches Modell}
 
+Modell perceptron. \\Problem: OR geht, XOR nicht -> lineare seperierbarkeit
+
+\subsection{Das Perceptron als einfaches ANNs}
+
+Verallgemeinerung zum ANN. \\
 blabla mit drei Quellenangaben\cite{ietf-ipfix-protocol,snoeren2001hash,belenky2003ip}
 
-\begin{figure}[h]%
- 	\begin{center}%
- 		\includegraphics[scale=0.1]{figure1.png}%
- 		\caption{Baum}\label{fig:baum}%
- 	\end{center}%
-\end{figure}
+\subsection{Motherfucking ANN}
+Theorem: Single Layer kann alle Funktionen annähern.
 
-\begin{table}[h]%
- 	\begin{center}%
-		\caption{Beispieltabelle}\label{tab:example}%
-	 	\begin{tabular}{c|c}%
- 			Spalte1 & Spalte2\\
- 			\hline
- 			0 & 1\\
- 		\end{tabular}%
- 	\end{center}%
-\end{table}
+\section{Training} %TODO: Absplitten
+
+\subsection{Backpropagation}
+Sigmoid Function, Costfunction; Numerical Optim., 
+...
+\subsection{Vermeidung von Overfitting}
+
+Weigth Decay, Anfangwert
+
+\subsection{Anzahl Hidden Layer}
+
+\section{Auswertung der Output Layer}
+
+\subsection{Regression}
+
+\subsection{Classification}
+
+https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/
+https://snippyhollow.github.io/blog/2014/08/09/so-you-wanna-try-deep-learning/
