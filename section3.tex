@@ -1,0 +1,46 @@
+\section{Neuronale Netze in der Praxis}
+Weigth Decay, Anfangwert
+
+\subsection{Problematik von lokalen Minima}
+Cost function hat mehrere Minima.
+\\
+Lösung: Neu starten
+\\ 
+Oft nicht globales minimum erwünscht (siehe Overfitting)
+
+\subsection{Anzahl Hidden Layer}
+
+\subsection{Initialisierung der Gewichte}
+Randomisiert - oft nicht gut
+
+\subsection{Vermeidung von Overfitting}
+Ein Problem, dass in der Praxis auftreten kann, ist das so genannte Overfitting, das ist die übermäßige Anpassung an die Trainingsmenge. Oft ist das Modell zu stark angepasst und daher nicht mehr allgemein effizient.\\
+
+Eine mögliche Lösung ist die L2-Regularisierung. Bei ihr wird an die Lossfunction ein weiterer Term angehängt:\\
+
+\begin{equation}
+\text{Term einbauen + Quelle!}
+\end{equation}.
+
+Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft 
+\\Bayesian View of L2-Reg. (wtf?)\\
+
+Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit der Backpropagation aufhört, wenn ein (lokales) Minimum gefunden wurde, sondern dann, wenn die Performance des Modells bei dem Validierungsset optimal ist. Dabei wird oft die Iteration oft beendet, wenn bei der Fehlerfunktion gar kein Minimum vorliegt. 
+
+\subsection{Regression}
+
+\subsection{Klassifizierung}
+Cross entropy.
+\\
+Soft-Max-F	unction
+\\
+% \subsection{...}
+% https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/
+% https://snippyhollow.github.io/blog/2014/08/09/so-you-wanna-try-deep-learning/
+
+% http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf Efficient Backprop
+% Zitat: Nonlinear activationut/ functions are what give neural networks their nonlinear capabilities. 
+
+% https://stats.stackexchange.com/questions/181/how-to-choose-the-number-of-hidden-layers-and-nodes-in-a-feedforward-neural-netw
+
+% https://stats.stackexchange.com/questions/63152/what-does-the-hidden-layer-in-a-neural-network-compute

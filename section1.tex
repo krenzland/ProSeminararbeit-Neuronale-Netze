@@ -1,5 +1,9 @@
+﻿\section{Vom linearen Modell zum Neuronalen Netz}
+Eines der klassischsten Modelle der Regressionsanalyse sind lineare Regression und die logistic Regression. \\
 
-\section{Vom linearen Modell zum Neuronalen Netz}
+Es sind mathematisch simple Verfahren, die sogar analytisch lösbar sind - aber eben nicht immer ideale Ergebnisse erzielen: es gibt Probleme, die mit den Verfahren nicht lösbar sind. 
+\\
+
 
 Sehr simpel; lineares Modell als Input -> Output layer,
 dann lineare Funktion als Hidden Layer -> Lineares Modell \\
@@ -7,7 +11,9 @@ dann lineare Funktion als Hidden Layer -> Lineares Modell \\
 
 \subsection{Das Perceptron als additatives lineares Modell}
 
-Modell perceptron. \\Problem: OR geht, XOR nicht -> lineare seperierbarkeit
+Modell perceptron. \\
+
+Es gibt viele Probleme, die von einem Perceptron nicht gelöst werden können. Es können nur Funktionen von linearen Modellen approximiert werden, die linear seperierbar sind. Da das Perceptron als Verknüfung von linearen Funktionen auch linear ist, kann auch es diese Klasse von Funktionen nicht lösen.
 
 \subsection{Das Perceptron als einfaches ANN}
 
@@ -18,67 +24,10 @@ blabla mit drei Quellenangaben\cite{ietf-ipfix-protocol,snoeren2001hash,belenky2
 Theorem: Single Layer kann alle Funktionen annähern.
 
 \subsection{Die Lösung: Neuronale Netze}
-Neuronale Netze sind eine verallgemeinerung von Perceptrons. Sie besitzen noch eine weitere Schicht Neuronen, die jedoch nicht nur lineare Transformationen durchführen, sondern zusätzlich noch eine nicht lineare. \\
+Neuronale Netze sind eine verallgemeinerung von Perceptrons. Sie besitzen noch eine (oder mehrere) weitere Schicht(en) Neuronen, die jedoch nicht nur lineare Transformationen durchführen, sondern zusätzlich noch eine nicht lineare. \\
 
-Dadurch ist ein Fit nicht mehr analytisch einfach lösbar; das Training muss numerisch erfolgen.
+Diese nicht-linearität ermöglicht es, auch nicht linear seperierbare Probleme zu lösen.\\
 
-\section{Neuronale Netze} %TODO: Absplitten
+Durch die Nicht-linearität und durch die komplexere Verknüpfung resultiert ein nicht lineares Optimierungsproblem, das meistens nicht mehr analytisch zu lösen ist: es werden numerische Verfahren benutzt.
 
-\subsection{Die Aktivierungsfunktion}
-Nicht linear. \\
-Sigmoide Form. \\
-Besonders effizient: Nicht symmetrische Form. \\
 
-Sigmoid Function; Numerical Optim., 
-...
-
-\subsection{Die Kostenfunktion}
-Mean squared Errors(MSE) (euklidische Norm)
-\begin{equation}
-J(\theta) = \frac{1}{n} \sum_{i=1}^n \left (\hat{Y_i} - Y_i \right)^2
-\end{equation}
-
-oder negative Cross entropy (TODO: Quelle, richtige Formel)
-\begin{equation}
-    -\frac1N\sum_{n=1}^N\ \bigg[y_n  \log \hat y_n + (1 - y_n)  \log (1 - \hat y_n)\bigg]
-\end{equation}
-
-\subsection{Die Minimierung der Kostenfunktion - Backpropagation}
-
-\subsection{Die numerische Methode - Gradient Descent und verwandte}
-
-\section{Neuronale Netze in der Praxis}
-Weigth Decay, Anfangwert
-
-\subsection{Problematik von lokalen Minima}
-Cost function hat mehrere Minima.
-\\
-Lösung: Neu starten
-\\ 
-Oft nicht globales minimum erwünscht (siehe Overfitting)
-
-\subsection{Anzahl Hidden Layer}
-
-\subsection{Initialisierung der Gewichte}
-Randomisiert - oft nicht gut
-
-\subsection{Vermeidung von Overfitting}
-Weigth Decay (entspricht L2-Regularisierung)
-\\Bayesian View of L2-Reg.
-\subsection{Regression}
-
-\subsection{Klassifizierung}
-Cross entropy.
-\\
-Soft-Max-Function
-\\
-\subsection{...}
-https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/
-https://snippyhollow.github.io/blog/2014/08/09/so-you-wanna-try-deep-learning/
-
-http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf Efficient Backprop
-Zitat: Nonlinear activationut/ functions are what give neural networks their nonlinear capabilities. 
-
-https://stats.stackexchange.com/questions/181/how-to-choose-the-number-of-hidden-layers-and-nodes-in-a-feedforward-neural-netw
-
-https://stats.stackexchange.com/questions/63152/what-does-the-hidden-layer-in-a-neural-network-compute

@@ -1,0 +1,61 @@
+\section{Neuronale Netze} %TODO: Absplitten
+
+\subsection{Die Aktivierungsfunktion}
+Die Funktion, die pro Knoten die nicht-lineare Transformation durchführt, heißt Aktivierungsfunktion. \\
+Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das heißt eine Funktion, die die Ergebnisse in ein bestimmtes Interval "zusammenquetscht" (Quelle) und ein an ein "S" erinnerndes Erscheinungsbild hat. 
+\\
+Die einfachste Funktion diesen Typs ist die so genannte logistische Funktion
+
+\begin{equation}
+\sigma_1(x) = \frac{1}{1+e^{-x}}
+\end{equation}
+
+oder der hyperbolische Tangens
+
+\begin{equation}
+\sigma_2(x) = \tanh(x) = \frac{1-e^{-2x}}{1+e^{-2x}}
+\end{equation}.
+
+Der Hyperbolische Tangens hat in der Praxis eine bessere Laufzeit (vlg. LeCunn: Efficient Backprop)
+
+Alternativ ReLu:
+\begin{equation}
+\sigma_3(x) = \max(0,x)
+\end{equation} bis zu 6 mal schneller (TODO: Quelle) \\
+%Evtl.  Xavier Glorot, Antoine Bordes and Yoshua Bengio (2011). Deep sparse rectifier neural networks?
+...
+
+\subsection{Die Kostenfunktion}
+Mean squared Errors(MSE) (euklidische Norm)
+\begin{equation}
+J(\theta) = \frac{1}{n} \sum_{i=1}^n \left (\hat{Y_i} - Y_i \right)^2
+\end{equation}
+
+oder negative Cross entropy (TODO: Quelle, richtige Formel)
+\begin{equation}
+    -\frac1N\sum_{n=1}^N\ \bigg[y_n  \log \hat y_n + (1 - y_n)  \log (1 - \hat y_n)\bigg]
+\end{equation}
+
+Bei Klassifikationsproblem ist Cross entropy fast immer die bessere Wahl.
+
+\subsection{Die Minimierung der Kostenfunktion - Backpropagation}
+Backpropagation ist der bei Neuronalen Netzen benutze Trainingsalgorithmus. \\
+
+Er wird benutzt, um den Gradient der Lossfunction in Bezug auf alle Gewichte zu berechnen. \\
+
+Dieser wird dann mit Hilfe einer geeigneten numerischen Methode benutzt, um die Gewichte zu optimieren. \\
+
+Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte wieder zu updaten.
+
+\subsection{Die numerische Methode - Gradient Descent und verwandte}
+
+Der Gradient wird oft mit der bekannten numerischen Methode Gradient Descent(eingedeutscht: Verfahren des steilen Abstiegs) benutzt.
+
+Er ist relativ simpel:
+
+Formel
+
+Eine andere oft benutze Form ist Stochastic Gradient Descent. Bei diesem Optimierungsalgorithmus ist die Auswahl der zu updatenden Gewichte nicht deterministisch. 
+Dadurch werden in der Praxis oft bessere Ergebnisse erziel.
+
+Gradient Descent with momentum
