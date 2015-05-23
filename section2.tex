@@ -13,7 +13,8 @@ Die einfachste Funktion diesen Typs ist die so genannte logistische Funktion
 oder der hyperbolische Tangens
 
 \begin{equation}
-\sigma_2(x) = \tanh(x) = \frac{1-e^{-2x}}{1+e^{-2x}}
+\sigma_2(x) = \tanh(x) = \frac{1-e^{-2x}}{1+e^{-2x}} = \\
+2 * \sigma_1(2x) -1
 \end{equation}.
 
 Der Hyperbolische Tangens hat in der Praxis eine bessere Laufzeit (vlg. LeCunn: Efficient Backprop)
@@ -26,26 +27,39 @@ Alternativ ReLu:
 ...
 
 \subsection{Die Kostenfunktion}
-Mean squared Errors(MSE) (euklidische Norm)
+Wir benutzen eine Kostenfunktion, die den durchschnittlichen Fehler des ANN-Ergebnis quantifiziert.\\
+
+Bei Regression wird meistens die Summe der quadrierten Terme benutzt(entspricht der euklidischen Norm): 
 \begin{equation}
-J(\theta) = \frac{1}{n} \sum_{i=1}^n \left (\hat{Y_i} - Y_i \right)^2
+J(\theta) = \sum_{k=1}^K \sum_{i=1}^N \left( \hat{Y_i} - Y_i \right)^2
 \end{equation}
 
-oder negative Cross entropy (TODO: Quelle, richtige Formel)
+$\hat{Y_I}$ entspricht dem Ergniss des ANN, $Y$ dem richtigen Ergebniss. \\
+
+Bei Klasssifizierungsproblemen wird üblicherweise die euklidische Norm, oder aber die negative Cross entropy benutzt \cite{Hastie2009}:
+
 \begin{equation}
-    -\frac1N\sum_{n=1}^N\ \bigg[y_n  \log \hat y_n + (1 - y_n)  \log (1 - \hat y_n)\bigg]
+    J(\theta) = -\sum_{k=1}^K \sum_{i=1}^N y_{i_k} *
+    \log f_k(x_i)
 \end{equation}
 
-Bei Klassifikationsproblem ist Cross entropy fast immer die bessere Wahl.
+Bei Klassifikationsproblem ist Cross entropy fast immer die bessere Wahl. \todo{Warum ist Cross entropy besser?}
+
+
 
 \subsection{Die Minimierung der Kostenfunktion - Backpropagation}
+
+Die gewählte Kostenfunktion gilt es nun zu minimieren. \\
+
 Backpropagation ist der bei Neuronalen Netzen benutze Trainingsalgorithmus. \\
 
-Er wird benutzt, um den Gradient der Lossfunction in Bezug auf alle Gewichte zu berechnen. \\
+Er wird benutzt, um den Gradient der Kostenfunktion in Bezug auf alle Gewichte zu berechnen. \\
 
 Dieser wird dann mit Hilfe einer geeigneten numerischen Methode benutzt, um die Gewichte zu optimieren. \\
 
-Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte wieder zu updaten.
+Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren.
+
+\todo{Backpropagation}
 
 \subsection{Die numerische Methode - Gradient Descent und verwandte}
 
@@ -53,9 +67,16 @@ Der Gradient wird oft mit der bekannten numerischen Methode Gradient Descent(ein
 
 Er ist relativ simpel:
 
-Formel
+\todo{Gradient Descent (primär Formel)}
 
-Eine andere oft benutze Form ist Stochastic Gradient Descent. Bei diesem Optimierungsalgorithmus ist die Auswahl der zu updatenden Gewichte nicht deterministisch. 
-Dadurch werden in der Praxis oft bessere Ergebnisse erziel.
+Man unterscheidet beim Training von ANNs zwischen Batch und Stochastic Gradient Descent.\\
 
-Gradient Descent with momentum
+Bei der Batch Methode werden alle Gewichte auf einmal aktualisiert, bei Stochastic GD nur einzelne, zufällig ausgewählte Gewichte.\\
+
+Das Gradientenverfahren hat das Problem, dass es oft in lokalen Minima steckenbleibt - das ist vor allem bei ANNs problematisch, weil die gewählte Kostenfunktion in den meisten Fällen mehrere lokale Minima besitzt. Auch wenn es nicht unbedingt notwendig, oder sogar erwünscht ist, einen globalen Extremwert zu finden (vgl. Overfitting), existieren bessere numerische Verfahren. \\
+
+Eine Verbesserung zum gewöhnlichen Gradientenverfahren ist es, einen so genannten Momentumparameter zu benutzen, der auch vorherige Ergebnisse einbezieht, und somit das oft beobachtete oszillierende Verhalten des Gradientenverfahrens behebt.
+
+\begin{equation}
+ \mathbf{b} = \mathbf{a}-\gamma\nabla F(\mathbf{a}) + \text{Momentum}
+\end{equation}
