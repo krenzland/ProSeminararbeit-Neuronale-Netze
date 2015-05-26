@@ -2,29 +2,33 @@
 Weigth Decay, Anfangwert
 
 \subsection{Problematik von lokalen Minima}
-Cost function hat mehrere Minima.
-\\
-Lösung: Neu starten
-\\ 
-Oft nicht globales minimum erwünscht (siehe Overfitting)
+Die Kostenfunktion hat oft mehrere lokale Minima - das Gradientenverfahren kann dann in einem solchen steckenbleiben, das heißt, es konvergiert unter Umständen nicht zum gesuchten globalen Minimum. Auch wenn das globale Minimum nicht immer erwünscht ist (vlg. early stopping), ist es unter Umständen doch besser, es zu finden.\\
+Die einfachste Lösung wäre natürlich, ein anderes numerisches Verfahren zu benutzen. Doch andere Verfahren sind meistens komplizierter zu implementieren, und unter Umständen sogar langsamer als SGD. Wenn man beim SGD in einem Minimum stecken bleibt, bietet es sich an, einfach mit neu initialisierten Gewichtsparametern neuzustarten.
 
 \subsection{Anzahl Hidden Layer}
 
 \subsection{Initialisierung der Gewichte}
-Randomisiert - oft nicht gut
+Üblicherweise werden die Gewichte bei Start mit kleinen Werten nahe bei $0$ initialisiert - ein Startwert von $0$ würde bedeuten, dass keine Daten durch die Verbindung fließen. Es gibt aber oft gute Heuristiken für Initialisierungen, die sich in der Praxis bewährt haben. So haben zum Beispiel \ldots beobachten, dass bei der logistischen Funktion besonders gut $\pi$ geeignet ist, bei der $\tanh$ oft $6 \times \pi$.
+ 
 
 \subsection{Vermeidung von Overfitting}
 Ein Problem, dass in der Praxis auftreten kann, ist das so genannte Overfitting, das ist die übermäßige Anpassung an die Trainingsmenge. Oft ist das Modell zu stark angepasst und daher nicht mehr allgemein effizient.\\
 
-Eine mögliche Lösung ist die L2-Regularisierung. Bei ihr wird an die Lossfunction ein weiterer Term angehängt:\\
+Eine mögliche Lösung ist die L1/L2-Regularisierung. Bei ihr wird an die Kostenfunktion ein weiterer Term angehängt:\\
 
 \begin{equation}
-\text{Term einbauen + Quelle!}
-\end{equation}.
+	J_{\text{L1}} = J + \lambda \sum_i \theta_i 
+\end{equation}
+
+\begin{equation}
+	J_{\text{L2}} = J + \lambda \sum_i \theta_i^2
+\end{equation}
+
 
 Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft 
 \\Bayesian View of L2-Reg. (wtf?)\\
 
+Aus der Bayesianischen Perspektive betrachtet, ist eine L2-Regulierung gleichbedeutend damit, dass wir eine prior-Distribution annehmen. \\
 Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit der Backpropagation aufhört, wenn ein (lokales) Minimum gefunden wurde, sondern dann, wenn die Performance des Modells bei dem Validierungsset optimal ist. Dabei wird oft die Iteration oft beendet, wenn bei der Fehlerfunktion gar kein Minimum vorliegt. 
 
 \subsection{Regression}

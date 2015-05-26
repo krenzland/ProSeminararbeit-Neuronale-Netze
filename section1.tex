@@ -1,29 +1,43 @@
 ﻿\section{Vom linearen Modell zum Neuronalen Netz}
+
+\subsection{Das Perceptron als additatives lineares Modell}
 Eines der klassischsten Modelle der Regressionsanalyse sind lineare Regression und die logistic Regression. \\
 
 Es sind mathematisch simple Verfahren, die sogar analytisch lösbar sind - aber eben nicht immer ideale Ergebnisse erzielen: es gibt Probleme, die mit den Verfahren nicht lösbar sind. 
 \\
 
+Eine Weiterentwicklung ist das so genannte Perceptron.
+Es besteht aus einem Eingabe-Vektor $x$, einem Gewichtsvektor $w$ und einem Bias-Wert $b$. Es ist ein binärer Klassifizierer, der das Ergebniss mit Hilfe der folgenden Formel berechnet:
 
-Sehr simpel; lineares Modell als Input -> Output layer,
-dann lineare Funktion als Hidden Layer -> Lineares Modell \\
-(Vergleich; Bild Logistic Regression vs "Lineares Perceptron" )
+\begin{equation}
+    y = \begin{cases}
+               1               & w * x + b > 0\\
+               0               & \text{ansonsten}
+           \end{cases}
+\end{equation}
 
-\subsection{Das Perceptron als additatives lineares Modell}
-
-Modell perceptron. \\
-
-Es gibt viele Probleme, die von einem Perceptron nicht gelöst werden können. Es können nur Funktionen von linearen Modellen approximiert werden, die linear seperierbar sind. Da das Perceptron als Verknüfung von linearen Funktionen auch linear ist, kann auch es diese Klasse von Funktionen nicht lösen.
+\todo{Quelle: Perceptron}
 
 \subsection{Das Perceptron als einfaches ANN}
 
-Verallgemeinerung zum ANN. \\
+Wie wir später sehen werden, ist das Perceptron eine einfache Variante eines Feed-Forward-Neuronalen-Netzes mit der so genannten Heaviside-Funktion
+
+\begin{equation}
+    \sigma = \begin{cases}
+               1               & n \geq 0\\
+               0               & n \leq 0
+           \end{cases}
+\end{equation}
+
+als Aktivierungsfunktion.\\
+
+Auf den benutzen Trainingsalgorithmus werden wir nicht eingehen; der später betrachtete Backpropagation-Algorithmus für allgemeine ANNs ist auf Perceptrons übertragbar.
 
 \subsection{Das XOR-Problem: nicht linear separierbare Probleme}
-Theorem: Single Layer kann alle Funktionen annähern.
+Es gibt viele Probleme, die von einem Perceptron nicht gelöst werden können. Es können nur Funktionen von linearen Modellen approximiert werden, die linear seperierbar sind. Da das Perceptron als Verknüfung von linearen Funktionen auch linear ist, kann auch es diese Klasse von Funktionen nicht lösen
 
 \subsection{Die Lösung: Neuronale Netze}
-Neuronale Netze sind eine verallgemeinerung von Perceptrons. Sie besitzen noch eine (oder mehrere) weitere Schicht(en) Neuronen, die jedoch nicht nur lineare Transformationen durchführen, sondern zusätzlich noch eine nicht lineare. \\
+Neuronale Netze sind eine Verallgemeinerung von Perceptrons. Sie besitzen noch eine (oder mehrere) weitere Schicht(en) Neuronen, die jedoch nicht nur lineare Transformationen durchführen, sondern zusätzlich noch eine nicht lineare. \\
 
 Diese nicht-linearität ermöglicht es, auch nicht linear seperierbare Probleme zu lösen.\\
 

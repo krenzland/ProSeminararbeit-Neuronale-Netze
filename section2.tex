@@ -1,5 +1,35 @@
 \section{Neuronale Netze} %TODO: Absplitten
 
+\subsection{Aufbau und Namenskonvetionen}
+\begin{figure}[ht!]
+  \centering
+    \input{section4}
+  \caption{Ein 2-schichtiges MLP.}
+\end{figure}
+
+
+Ein Neuronales Netz besteht aus mehreren Schichten Neuronen. Einem Input Layer, einen (oder mehreren) Hidden Layer, und einem Output Layer. 
+Wenn man von einem k-schichtigen ANN spricht, bezeichnet k die Anzahl der Schichten, ohne Input-Layer.
+
+Sowohl Input, als auch Hidden-Layer besten aus Neuronen mit einer Aktivierungsfunktion, die die Eingangsdaten transformiert.
+
+Jeder Layer ist mit den anderen Elementweise verbunden. Jede Verbindung hat ein so genanntes Gewicht. Daten fließen nur von links nach rechts. 
+
+Wir benutzen folgende Namenskonvention: $m$ ist die Anzahl der Parameter, $x \in \mathbb{R}^{m \times 1}$ ist der Input-Vektor, 
+$w_i\in \mathbb{R}^{\text{Anzahl Neuronen} \times \text{Anzahl Neuronen Layer davor}}$ der Gewichtsvektor, der die $i$-te Schicht mit der $i+1$ Schicht verbindet; $b \in \mathbb{R}^{\text{Anzahl Neuronen} \times 1}$ der Bias-Vektor; $\hat{y}$ ist der Output des Netzwerkes, $y$ der Referenzwert (Ergebniss im Trainingsset).  
+
+\subsection{Feedforward}
+
+\begin{equation}
+\text{net}_j = \sum_{i=1}^d x_i w_{j,i} + w_{j,0} = \sum_{i=0} x_i w_{j,i} = 
+w_j^t x
+\end{equation}
+
+\begin{equation}
+y_j = \sigma (\text{net}_j)
+\end{equation}
+
+\cite{duda2012pattern}
 \subsection{Die Aktivierungsfunktion}
 Die Funktion, die pro Knoten die nicht-lineare Transformation durchführt, heißt Aktivierungsfunktion. \\
 Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das heißt eine Funktion, die die Ergebnisse in ein bestimmtes Interval "zusammenquetscht" (Quelle) und ein an ein "S" erinnerndes Erscheinungsbild hat. 
@@ -17,14 +47,16 @@ oder der hyperbolische Tangens
 2 * \sigma_1(2x) -1
 \end{equation}.
 
-Der Hyperbolische Tangens hat in der Praxis eine bessere Laufzeit (vlg. LeCunn: Efficient Backprop)
+Die logistische Funktion ist nicht 0-zentriert. Das hat den Effekt, dass, falls alle Eingangswerte des Neurons, der Gradient entweder komplett positiv, oder negativ ist. Das führt unter Umständen zu unerwünschten Oszillationen bei der Optimierung. Der hyperbolische Tangens ist 0-zentriert, hat aber einen Nachteil mit der logistischen Funtkion gemeinsam: sehr kleine oder sehr große Werte haben einen sehr kleinen Gradienten zur Folge; dies führt zum "Absterben" des Neurons. 
 
-Alternativ ReLu:
+Eine alternative Aktivierungsfunktion ist die Rectifier-Funktion 
+
 \begin{equation}
-\sigma_3(x) = \max(0,x)
-\end{equation} bis zu 6 mal schneller (TODO: Quelle) \\
-%Evtl.  Xavier Glorot, Antoine Bordes and Yoshua Bengio (2011). Deep sparse rectifier neural networks?
-...
+\sigma_3(x) = \max(0,x).
+\end{equation} 
+
+Glorot et al argumentieren, dass die logistische Funktion zwar biologisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biologischer Neuronen ist. Was für uns relevanter ist: sie ist effizienter zu berechnen; also in der Praxis oft eine bessere Wahl. \cite{glorot2011deep}
+
 
 \subsection{Die Kostenfunktion}
 Wir benutzen eine Kostenfunktion, die den durchschnittlichen Fehler des ANN-Ergebnis quantifiziert.\\
@@ -57,9 +89,29 @@ Er wird benutzt, um den Gradient der Kostenfunktion in Bezug auf alle Gewichte z
 
 Dieser wird dann mit Hilfe einer geeigneten numerischen Methode benutzt, um die Gewichte zu optimieren. \\
 
-Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren.
+Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren. \cite{rumelhart1988learning}
 
+Alle relevanten Fehlerfunktionen haben die Form 
+
+\begin{equation}
+J = \sum_n J_n
+\end{equation},
+
+das heißt, der Gesamtfehler ist die Summe aller Einzelfehler.
+Wir nehmen weiterhin an, dass der Fehler als ableitbare Funktion der Output-Werte darstellbar ist.
+
+\begin{equation}
+J_n = J_n(y_1, \ldots, y_c)
+\end{equation}
+
+Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropagation-Formel:
+
+\begin{equation}
+\theta_j = \sigma ' (a_j) \sum_k w_{k,j} \sigma_k
+\end{equation} 
 \todo{Backpropagation}
+
+\cite{bishop1995neural}
 
 \subsection{Die numerische Methode - Gradient Descent und verwandte}
 
@@ -68,6 +120,22 @@ Der Gradient wird oft mit der bekannten numerischen Methode Gradient Descent(ein
 Er ist relativ simpel:
 
 \todo{Gradient Descent (primär Formel)}
+
+\begin{equation}
+x_{n+1}=x_n-\gamma_n \nabla F(x_n)
+\end{equation}
+
+Auf ANNs angewant, sehen die Formeln dann folgendermaßen aus:
+
+\begin{equation}
+\Delta w_{j,i} = - \eta  \delta_j  x_i 
+\end{equation}
+
+\begin{equation}
+\Delta w_{j,i} = - \eta  \sum_n \delta_j^n  x_i^n 
+\end{equation}
+
+\cite{bishop1995neural} 
 
 Man unterscheidet beim Training von ANNs zwischen Batch und Stochastic Gradient Descent.\\
 
