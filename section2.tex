@@ -18,18 +18,6 @@ Jeder Layer ist mit den anderen Elementweise verbunden. Jede Verbindung hat ein 
 Wir benutzen folgende Namenskonvention: $m$ ist die Anzahl der Parameter, $x \in \mathbb{R}^{m \times 1}$ ist der Input-Vektor, 
 $w_i\in \mathbb{R}^{\text{Anzahl Neuronen} \times \text{Anzahl Neuronen Layer davor}}$ der Gewichtsvektor, der die $i$-te Schicht mit der $i+1$ Schicht verbindet; $b \in \mathbb{R}^{\text{Anzahl Neuronen} \times 1}$ der Bias-Vektor; $\hat{y}$ ist der Output des Netzwerkes, $y$ der Referenzwert (Ergebniss im Trainingsset).  
 
-\subsection{Feedforward}
-
-\begin{equation}
-\text{net}_j = \sum_{i=1}^d x_i w_{j,i} + w_{j,0} = \sum_{i=0} x_i w_{j,i} = 
-w_j^t x
-\end{equation}
-
-\begin{equation}
-y_j = \sigma (\text{net}_j)
-\end{equation}
-
-\cite{duda2012pattern}
 \subsection{Die Aktivierungsfunktion}
 Die Funktion, die pro Knoten die nicht-lineare Transformation durchführt, heißt Aktivierungsfunktion. \\
 Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das heißt eine Funktion, die die Ergebnisse in ein bestimmtes Interval "zusammenquetscht" (Quelle) und ein an ein "S" erinnerndes Erscheinungsbild hat. 
@@ -43,8 +31,8 @@ Die einfachste Funktion diesen Typs ist die so genannte logistische Funktion
 oder der hyperbolische Tangens
 
 \begin{equation}
-\sigma_2(x) = \tanh(x) = \frac{1-e^{-2x}}{1+e^{-2x}} = \\
-2 * \sigma_1(2x) -1
+\sigma_2(x) = \tanh(x) = \frac{1-e^{-2x}}{1+e^{-2x}} = 
+\sigma_1(2x) -1
 \end{equation}.
 
 Die logistische Funktion ist nicht 0-zentriert. Das hat den Effekt, dass, falls alle Eingangswerte des Neurons, der Gradient entweder komplett positiv, oder negativ ist. Das führt unter Umständen zu unerwünschten Oszillationen bei der Optimierung. Der hyperbolische Tangens ist 0-zentriert, hat aber einen Nachteil mit der logistischen Funtkion gemeinsam: sehr kleine oder sehr große Werte haben einen sehr kleinen Gradienten zur Folge; dies führt zum "Absterben" des Neurons. 
@@ -61,7 +49,25 @@ Glorot et al argumentieren, dass die logistische Funktion zwar biologisch plausi
 \subsection{Die Kostenfunktion}
 Wir benutzen eine Kostenfunktion, die den durchschnittlichen Fehler des ANN-Ergebnis quantifiziert.\\
 
-Bei Regression wird meistens die Summe der quadrierten Terme benutzt(entspricht der euklidischen Norm): 
+Da neuronale Netze als Modellierung der Wahrscheinlichkeit der Vorhersage, dass ein Output Vektor $t$ für neue Eingabewerte $x$ angesehen werden, kann man den Fehler bezüglich der bedingten Wahrscheinlichkeit $p(t|x)$ darstellen. 
+Um eine Fehlerfunktion zu bilden benutzt man nun die Maximum-Likehood-Funktion, die Parameter einer Wahrscheinlichkeitsverteilung schätzt. 
+
+\begin{equation}
+L = \prod_n p(x^n t^n) = \prod_n p(t^n|x^n) (x^n) 
+\end{equation}
+
+Anstatt die Maximum-Likehood-Funktion zu maximieren, minimieren wir die negative, logarithmische Maximum-Likehood-Funktion. Das funktioniert, weil $\log$ eine monotone Funktion ist, es erleichtert uns außerdem mit großen Werten zu rechnen.
+
+\begin{IEEEeqnarray}{rCl}
+J & = & -\log L 
+\nonumber \\
+& = & - \sum_n \log p(t^n|x^n) - \sum_n \log p(x^n)
+\nonumber \\
+& = & - \sum_n \log p(x^n)
+\end{IEEEeqnarray}
+
+Aus dieser allgemeinen Fehlerfunktionen lassen sich spezielle Fehlerfunktionen ableiten, die in der Praxis benutzt werden \cite{bishop1995neural}:
+
 \begin{equation}
 J(\theta) = \sum_{k=1}^K \sum_{i=1}^N \left( \hat{Y_i} - Y_i \right)^2
 \end{equation}
@@ -71,26 +77,46 @@ $\hat{Y_I}$ entspricht dem Ergniss des ANN, $Y$ dem richtigen Ergebniss. \\
 Bei Klasssifizierungsproblemen wird üblicherweise die euklidische Norm, oder aber die negative Cross entropy benutzt \cite{Hastie2009}:
 
 \begin{equation}
-    J(\theta) = -\sum_{k=1}^K \sum_{i=1}^N y_{i_k} *
-    \log f_k(x_i)
+    J(\theta) = -\sum_{k=1}^K \sum_{i=1}^N y_{i_k} \log f_k(x_i)
 \end{equation}
 
 Bei Klassifikationsproblem ist Cross entropy fast immer die bessere Wahl. \todo{Warum ist Cross entropy besser?}
 
 
+\subsection{Feedforward}
+
+\begin{equation}
+\text{net}_j = \sum_{i=1}^d x_i w_{j,i} + w_{j,0} = \sum_{i=0} x_i w_{j,i} = 
+w_j^t x
+\end{equation}
+
+\begin{equation}
+y_j = \sigma (\text{net}_j)
+\end{equation}
+
+\cite{duda2012pattern}
 
 \subsection{Die Minimierung der Kostenfunktion - Backpropagation}
 
-Die gewählte Kostenfunktion gilt es nun zu minimieren. \\
+Die gewählte Kostenfunktion gilt es nun zu minimieren. 
 
-Backpropagation ist der bei Neuronalen Netzen benutze Trainingsalgorithmus. \\
+Backpropagation ist der bei Neuronalen Netzen benutze Trainingsalgorithmus. 
 
-Er wird benutzt, um den Gradient der Kostenfunktion in Bezug auf alle Gewichte zu berechnen. \\
+Er wird benutzt, um den Gradient der Kostenfunktion in Bezug auf alle Gewichte zu berechnen. 
 
-Dieser wird dann mit Hilfe einer geeigneten numerischen Methode benutzt, um die Gewichte zu optimieren. \\
+Dieser wird dann mit Hilfe einer geeigneten numerischen Methode benutzt, um die Gewichte zu optimieren. 
 
 Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren. \cite{rumelhart1988learning}
 
+Man unterscheidet zwischen:
+\begin{LaTeXdescription}
+	\item[Stochastic Backpropagation]
+	Bei diesem Verfahren wird immer nur ein zufälliger Eingabevektor evaluiert, und dann werden sofort die Gewichte aktualisiert. \\
+	\item[Batch Backpropagation] 
+	Bei der zweiten Methode werden alle Eingabevektoren des Trainingssets präsentiert und die Gewichtsänderungen summiert. Erst dann werden alle Gewichte aktualisiert. 
+\end{LaTeXdescription}\cite{duda2012pattern}
+
+Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz nicht nur von der Große des Trainingsset, sondern vielmehr von der Anzahl der Iterationen und der Verteilung der Trainingsdaten - für große Sets ist ein Benutzen der Batch Methode nicht mehr sinnvoll. \cite{bengio2012practical}  \\
 Alle relevanten Fehlerfunktionen haben die Form 
 
 \begin{equation}
@@ -104,26 +130,34 @@ Wir nehmen weiterhin an, dass der Fehler als ableitbare Funktion der Output-Wert
 J_n = J_n(y_1, \ldots, y_c)
 \end{equation}
 
+Wir suchen jetzt die partielle Ableitung der Fehlerfunktion unter Berücksichtigung eines bestimmten Gewichts:
+
+\begin{equation}
+\frac{\partial J}{\partial w_{i,j}} = \frac{\partial J^n}{\partial a_j}  \frac{\partial a_j }{\partial w_{i,j}}
+\end{equation}
 Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropagation-Formel:
 
 \begin{equation}
-\theta_j = \sigma ' (a_j) \sum_k w_{k,j} \sigma_k
+\theta_j =  \begin{cases}
+               \sigma ' (net_j) (y_j - \hat{y_j})           & \text{wenn j Ausgabeneuron ist}\\
+               \sigma ' (net_j) \sum_k w_{k,j} \theta_k     & \text{j hidden Layer}
+           \end{cases} 
 \end{equation} 
-\todo{Backpropagation}
 
-\cite{bishop1995neural}
+Dadurch können wir den Gradienten einfach rekursiv berechnen. \cite{bishop1995neural}
 
 \subsection{Die numerische Methode - Gradient Descent und verwandte}
 
-Der Gradient wird oft mit der bekannten numerischen Methode Gradient Descent(eingedeutscht: Verfahren des steilen Abstiegs) benutzt.
+Der Gradient wird oft mit dem Gradientenverfahren, einer Methode um Funktionen zu minimieren, benutzt.
 
 Er ist relativ simpel:
-
-\todo{Gradient Descent (primär Formel)}
 
 \begin{equation}
 x_{n+1}=x_n-\gamma_n \nabla F(x_n)
 \end{equation}
+
+Das Verfahren funktioniert, weil der negative Gradient in die Richtung zeigt, in der die Funktion am schnellsten kleiner wird. Daher kommt auch die Bezeichnung Verfahren des steilsten Abstiegs.
+Die Konstante $\nabla$ heißt Lernrate. Je höher Sie ist, desto schneller konvergiert das Verfahren - bei einer zu hoch gewählten sind aber oft Oszillationen zu beobachten. 
 
 Auf ANNs angewant, sehen die Formeln dann folgendermaßen aus:
 
