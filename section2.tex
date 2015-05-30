@@ -22,7 +22,7 @@ $w_i\in \mathbb{R}^{\text{Anzahl Neuronen} \times \text{Anzahl Neuronen Layer da
 Die Funktion, die pro Knoten die nicht-lineare Transformation durchführt, heißt Aktivierungsfunktion. \\
 Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das heißt eine Funktion, die die Ergebnisse in ein bestimmtes Interval "zusammenquetscht" (Quelle) und ein an ein "S" erinnerndes Erscheinungsbild hat. 
 \\
-Die einfachste Funktion diesen Typs ist die so genannte logistische Funktion
+Die einfachste Funktion diesen Typs ist die so genannte lnistische Funktion
 
 \begin{equation}
 \sigma_1(x) = \frac{1}{1+e^{-x}}
@@ -35,7 +35,7 @@ oder der hyperbolische Tangens
 \sigma_1(2x) -1
 \end{equation}.
 
-Die logistische Funktion ist nicht 0-zentriert. Das hat den Effekt, dass, falls alle Eingangswerte des Neurons, der Gradient entweder komplett positiv, oder negativ ist. Das führt unter Umständen zu unerwünschten Oszillationen bei der Optimierung. Der hyperbolische Tangens ist 0-zentriert, hat aber einen Nachteil mit der logistischen Funtkion gemeinsam: sehr kleine oder sehr große Werte haben einen sehr kleinen Gradienten zur Folge; dies führt zum "Absterben" des Neurons. 
+Die lnistische Funktion ist nicht 0-zentriert. Das hat den Effekt, dass, falls alle Eingangswerte des Neurons, der Gradient entweder komplett positiv, oder negativ ist. Das führt unter Umständen zu unerwünschten Oszillationen bei der Optimierung. Der hyperbolische Tangens ist 0-zentriert, hat aber einen Nachteil mit der lnistischen Funtkion gemeinsam: sehr kleine oder sehr große Werte haben einen sehr kleinen Gradienten zur Folge; dies führt zum "Absterben" des Neurons. 
 
 Eine alternative Aktivierungsfunktion ist die Rectifier-Funktion 
 
@@ -43,7 +43,7 @@ Eine alternative Aktivierungsfunktion ist die Rectifier-Funktion
 \sigma_3(x) = \max(0,x).
 \end{equation} 
 
-Glorot et al argumentieren, dass die logistische Funktion zwar biologisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biologischer Neuronen ist. Was für uns relevanter ist: sie ist effizienter zu berechnen; also in der Praxis oft eine bessere Wahl. \cite{glorot2011deep}
+Glorot et al argumentieren, dass die lnistische Funktion zwar biolnisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biolnischer Neuronen ist. Was für uns relevanter ist: sie ist effizienter zu berechnen; also in der Praxis oft eine bessere Wahl. \cite{glorot2011deep}
 
 
 \subsection{Die Kostenfunktion}
@@ -56,17 +56,39 @@ Um eine Fehlerfunktion zu bilden benutzt man nun die Maximum-Likehood-Funktion, 
 L = \prod_n p(x^n t^n) = \prod_n p(t^n|x^n) (x^n) 
 \end{equation}
 
-Anstatt die Maximum-Likehood-Funktion zu maximieren, minimieren wir die negative, logarithmische Maximum-Likehood-Funktion. Das funktioniert, weil $\log$ eine monotone Funktion ist, es erleichtert uns außerdem mit großen Werten zu rechnen.
+Anstatt die Maximum-Likehood-Funktion zu maximieren, minimieren wir die negative, logarithmische Maximum-Likehood-Funktion. Das funktioniert, weil $\ln$ eine monotone Funktion ist, es erleichtert uns außerdem mit großen Werten zu rechnen.
 
 \begin{IEEEeqnarray}{rCl}
-J & = & -\log L 
+J & = & -\ln L 
 \nonumber \\
-& = & - \sum_n \log p(t^n|x^n) - \sum_n \log p(x^n)
+& = & - \sum_n \ln p(t^n|x^n) - \sum_n \ln p(x^n)
 \nonumber \\
-& = & - \sum_n \log p(x^n)
+& = & - \sum_n \ln p(t^n|x^n)
 \end{IEEEeqnarray}
 
 Aus dieser allgemeinen Fehlerfunktionen lassen sich spezielle Fehlerfunktionen ableiten, die in der Praxis benutzt werden \cite{bishop1995neural}:
+
+Wir wollen jetzt wieder den Fehler für $p(t|k)$ darstellen. Wir nehmen an, dass die Variable $t_k$ aus einer deterministischen Funktion, und normalverteiltem Rauschen (mit dem arithmetischen Mittel $0$ und Varianz $\sigma$ gebildet wird.  
+Deswegen gilt: 
+
+\begin{equation}
+  p(t_k|x) = \frac{1}{(2 \pi \sigma^2)^{0.5}} \exp (-\frac{ \{ y_k(x; w) - t_k \}^2 }{2 \sigma^2})
+\end{equation}.
+
+Den Fehlerterm können wir jetzt einfach als Summe über alle Fehlerwahrscheinlichkeiten darstellen:
+
+\begin{equation}
+  E = \frac{1}{2 \sigma^2} \sum_{n=1}^{N} \sum_{k=1}^{c} \{ y_k(x^n; w) - t_k^n \}^2 + Nc \ln \sigma + \frac{N_c}{2} \ln (2 \pi)
+\end{equation}
+
+Ignorieren wir nun alle Faktoren, die nicht von den Parametern des Netztes abhängen, erhalten wir 
+
+\begin{equation}
+J(\theta) = \sum_{k=1}^K \sum_{i=1}^N \left( \hat{Y_i} - Y_i \right)^2,
+\end{equation}
+
+was der Sum-of-squared-errors Fehlerfunktion entspricht.\cite{bishop1995neural}
+
 
 \begin{equation}
 J(\theta) = \sum_{k=1}^K \sum_{i=1}^N \left( \hat{Y_i} - Y_i \right)^2
@@ -77,7 +99,7 @@ $\hat{Y_I}$ entspricht dem Ergniss des ANN, $Y$ dem richtigen Ergebniss. \\
 Bei Klasssifizierungsproblemen wird üblicherweise die euklidische Norm, oder aber die negative Cross entropy benutzt \cite{Hastie2009}:
 
 \begin{equation}
-    J(\theta) = -\sum_{k=1}^K \sum_{i=1}^N y_{i_k} \log f_k(x_i)
+    J(\theta) = -\sum_{k=1}^K \sum_{i=1}^N y_{i_k} \ln f_k(x_i)
 \end{equation}
 
 Bei Klassifikationsproblem ist Cross entropy fast immer die bessere Wahl. \todo{Warum ist Cross entropy besser?}

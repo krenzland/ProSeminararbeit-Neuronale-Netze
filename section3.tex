@@ -28,7 +28,14 @@ Eine mögliche Lösung ist die L1/L2-Regularisierung. Bei ihr wird an die Kosten
 
 
 Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft 
-\\Bayesian View of L2-Reg. (wtf?)\\
+\\
+
+\todo{ Ja, genau. Die L2 ist halt direkt als Gaussian-prior interpretierbar. 
+Zusammen mit der per NLL-Fehlerfunktion als Likelihood entspricht 
+das dann eben einem Maximum A Posteriori-Ansatz. 
+Das macht das ganze dann zB auch mit Gaussian Processes vergleichbar 
+und bettet das halt einfach in ein solides stochastisches Framework ein. }
+Bayesian View of L2-Reg. (wtf?)\\
 
 Aus der Bayesianischen Perspektive betrachtet, ist eine L2-Regulierung gleichbedeutend damit, dass wir eine prior-Distribution annehmen. \\
 Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit der Backpropagation aufhört, wenn ein (lokales) Minimum gefunden wurde, sondern dann, wenn die Performance des Modells bei dem Validierungsset optimal ist. Dabei wird oft die Iteration oft beendet, wenn bei der Fehlerfunktion gar kein Minimum vorliegt. 
