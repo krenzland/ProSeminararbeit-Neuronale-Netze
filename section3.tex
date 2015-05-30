@@ -10,8 +10,22 @@ Die einfachste Lösung wäre natürlich, ein anderes numerisches Verfahren zu be
 \subsection{Anzahl Hidden Layer}
 
 \subsection{Initialisierung der Gewichte}
-Üblicherweise werden die Gewichte bei Start mit kleinen Werten nahe bei $0$ initialisiert - ein Startwert von $0$ würde bedeuten, dass keine Daten durch die Verbindung fließen. Es gibt aber oft gute Heuristiken für Initialisierungen, die sich in der Praxis bewährt haben. So haben zum Beispiel \ldots beobachten, dass bei der logistischen Funktion besonders gut $\pi$ geeignet ist, bei der $\tanh$ oft $6 \times \pi$.
- 
+Die Initialisierung der Gewichte ist ein schwieriges Problem. Eine oft benutzte Heuristik ist 
+
+\begin{equation}
+	W_{ij} \sim U [ -\frac{1}{\sqrt{N}} , \frac{1}{\sqrt{N}} ],
+\end{equation}
+
+wobei $U[-a, a]$ gleichverteilten Werten zwischen $-a$ und $a$ entspricht, und $n$ der Anzahl der Neuronen in der vorherigen Schicht. 
+
+Ein Vorschlag, um dieses Problem zu umgehen ist die normalisierte Initialisierung
+
+\begin{equation}
+	W \sim U [ - \frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}} 
+	, 			 \frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}} ]. 
+\end{equation}
+
+In der Praxis ergeben sich durch sie bessere Ergebnisse. \cite{glorot2010understanding}
 
 \subsection{Vermeidung von Overfitting}
 Ein Problem, dass in der Praxis auftreten kann, ist das so genannte Overfitting, das ist die übermäßige Anpassung an die Trainingsmenge. Oft ist das Modell zu stark angepasst und daher nicht mehr allgemein effizient.\\
@@ -27,7 +41,7 @@ Eine mögliche Lösung ist die L1/L2-Regularisierung. Bei ihr wird an die Kosten
 \end{equation}
 
 
-Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft 
+Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft. Der Name Weigth-Decay kommt daher, dass die Gewichte gegen 0 gehen. \cite{Hastie2009} % muss schöner gehen!
 \\
 
 \todo{ Ja, genau. Die L2 ist halt direkt als Gaussian-prior interpretierbar. 
@@ -35,10 +49,17 @@ Zusammen mit der per NLL-Fehlerfunktion als Likelihood entspricht
 das dann eben einem Maximum A Posteriori-Ansatz. 
 Das macht das ganze dann zB auch mit Gaussian Processes vergleichbar 
 und bettet das halt einfach in ein solides stochastisches Framework ein. }
-Bayesian View of L2-Reg. (wtf?)\\
 
-Aus der Bayesianischen Perspektive betrachtet, ist eine L2-Regulierung gleichbedeutend damit, dass wir eine prior-Distribution annehmen. \\
-Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit der Backpropagation aufhört, wenn ein (lokales) Minimum gefunden wurde, sondern dann, wenn die Performance des Modells bei dem Validierungsset optimal ist. Dabei wird oft die Iteration oft beendet, wenn bei der Fehlerfunktion gar kein Minimum vorliegt. 
+Aus der Bayesianischen Perspektive betrachtet, ist eine L2-Regulierung gleichbedeutend damit, dass wir eine A-priori-Verteilung bezüglich der Parameter annehmen. Die Fehlerfunktion entspricht dann:
+
+\begin{equation}
+	J(z, \theta) = - \ln P (z | \theta).
+\end{equation}
+
+\cite{bengio2012practical} \\
+Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit der Backpropagation aufhört, wenn ein (lokales) Minimum gefunden wurde, sondern dann, wenn die Performance des Modells bei dem Validierungsset optimal ist. Dabei wird oft die Iteration oft beendet, wenn bei der Fehlerfunktion gar kein Minimum vorliegt.  \todo{Quelle early stopping!}
+
+Dabei entspricht die L2-Regularisierung early stopping, es sollten also nicht beide Methoden gleichzeitig genutzt werden; L1-Regularisierung kann jedoch mit beiden Regularisierungsarten kombiniert werden. \cite{bengio2012practical}
 
 \subsection{Regression}
 
