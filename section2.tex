@@ -106,57 +106,51 @@ Bei Klassifikationsproblem ist Cross entropy fast immer die bessere Wahl. \todo{
 
 
 \subsection{Feedforward}
+Um ein ANN zur Vorhersage neuer Input-Vektoren zu benutzen, wird es im sogenannten Feedforward Modus betrieben. In diesem wird der Input Vektor zuerst den Neuronen des Input-Layers präsentiert. Alle anderen Neuronen des nächsten Layers bilden dann eine lineare Kombination aus den Neuronen ihrer Vorgängerschicht: 
 
 \begin{equation}
 \text{net}_j = \sum_{i=1}^d x_i w_{j,i} + w_{j,0} = \sum_{i=0} x_i w_{j,i} = 
-w_j^t x
+w_j^t x.
 \end{equation}
 
+Nachdem diese lineare Transformation abgeschlossen ist, wird bei allen Neuronen (außer bei denen im Output-Layer) die Aktivierungsfunktion benutzt, die eine nicht-lineare Transformation durchführt: 
+
 \begin{equation}
-y_j = \sigma (\text{net}_j)
+y_j = \sigma (\text{net}_j).
 \end{equation}
+
+Dieser Prozess wird so lange durchgeführt, bis die Daten das komplette Netz durchlaufen haben, und im Output-Layer ankommen.
 
 \cite{duda2012pattern}
 
 \subsection{Die Minimierung der Kostenfunktion - Backpropagation}
 
-Die gewählte Kostenfunktion gilt es nun zu minimieren. 
+Natürlich reicht es für maschinelles Lernen nicht aus, nur Vorhersagen zu treffen - das Modell muss sich auch anpassen können. Bei Neuronalen Netzen heißt der benutzte Trainingsalgorithmus Backpropagation.
 
-Backpropagation ist der bei Neuronalen Netzen benutze Trainingsalgorithmus. 
+Es ist eine Möglichkeit, Fehler, die bei den Ausgabeneuronen auftreten auch für die Neuronen der Schichten davor zu berücksichtigen - der Fehler wird zurückgesendet.
 
-Er wird benutzt, um den Gradient der Kostenfunktion in Bezug auf alle Gewichte zu berechnen. 
+Dazu wird als erster Schritt für einen Trainingsvektor ein Forward-Pass durchgeführt - damit wird die Vorhersage des Netzwerkes berechnet, und anschließend mit der vorgegeben, korrekten Lösung des Trainingssets verglichen.
 
-Dieser wird dann mit Hilfe einer geeigneten numerischen Methode benutzt, um die Gewichte zu optimieren. 
+Diese Werte werden dann benutzt, um den Fehler zu berechnen, und dann die Parameter(also die Gewichte) anzupassen.
+
 
 Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren. \cite{rumelhart1988learning}
 
-Man unterscheidet zwischen:
-\begin{LaTeXdescription}
-	\item[Stochastic Backpropagation]
-	Bei diesem Verfahren wird immer nur ein zufälliger Eingabevektor evaluiert, und dann werden sofort die Gewichte aktualisiert. \\
-	\item[Batch Backpropagation] 
-	Bei der zweiten Methode werden alle Eingabevektoren des Trainingssets präsentiert und die Gewichtsänderungen summiert. Erst dann werden alle Gewichte aktualisiert. 
-\end{LaTeXdescription}\cite{duda2012pattern}
-
-Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz nicht nur von der Große des Trainingsset, sondern vielmehr von der Anzahl der Iterationen und der Verteilung der Trainingsdaten - für große Sets ist ein Benutzen der Batch Methode nicht mehr sinnvoll. \cite{bengio2012practical}  \\
 Alle relevanten Fehlerfunktionen haben die Form 
 
 \begin{equation}
-J = \sum_n J_n
+J = \sum_n J_n(y_1, \ldots, y_c),
 \end{equation},
 
 das heißt, der Gesamtfehler ist die Summe aller Einzelfehler.
 Wir nehmen weiterhin an, dass der Fehler als ableitbare Funktion der Output-Werte darstellbar ist.
-
-\begin{equation}
-J_n = J_n(y_1, \ldots, y_c)
-\end{equation}
 
 Wir suchen jetzt die partielle Ableitung der Fehlerfunktion unter Berücksichtigung eines bestimmten Gewichts:
 
 \begin{equation}
 \frac{\partial J}{\partial w_{i,j}} = \frac{\partial J^n}{\partial a_j}  \frac{\partial a_j }{\partial w_{i,j}}
 \end{equation}
+
 Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropagation-Formel:
 
 \begin{equation}
@@ -166,7 +160,19 @@ Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropa
            \end{cases} 
 \end{equation} 
 
-Dadurch können wir den Gradienten einfach rekursiv berechnen. \cite{bishop1995neural}
+Dadurch können wir den Gradienten einfach rekursiv berechnen. \cite{bishop1995neural} \\
+
+Wichtig ist noch die Unterscheidung zwischen:
+
+\begin{LaTeXdescription}
+	\item[Stochastic Backpropagation]
+	Bei diesem Verfahren wird immer nur ein zufälliger Eingabevektor evaluiert, und dann werden sofort die Gewichte aktualisiert. 
+	\item[Batch Backpropagation] 
+	Bei der zweiten Methode werden alle Eingabevektoren des Trainingssets präsentiert und die Gewichtsänderungen summiert. Erst dann werden alle Gewichte aktualisiert. 
+\end{LaTeXdescription}\cite{duda2012pattern}
+
+Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz nicht nur von der Große des Trainingsset, sondern vielmehr von der Anzahl der Iterationen und der Verteilung der Trainingsdaten - für große Sets ist ein Benutzen der Batch Methode nicht mehr sinnvoll. \cite{bengio2012practical}  
+
 
 \subsection{Die numerische Methode - Gradient Descent und verwandte}
 
