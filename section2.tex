@@ -96,7 +96,7 @@ J(\theta) = \sum_{k=1}^K \sum_{i=1}^N \left( \hat{Y_i} - Y_i \right)^2
 
 $\hat{Y_I}$ entspricht dem Ergniss des ANN, $Y$ dem richtigen Ergebniss. \\
 
-Bei Klasssifizierungsproblemen wird üblicherweise die euklidische Norm, oder aber die negative Cross entropy benutzt \cite{Hastie2009}:
+Bei Klasssifizierungsproblemen wird üblicherweise die Sum-of-squared-errors Fehlerfunktion, oder aber die negative Kreuzentropie benutzt \cite{Hastie2009}:
 
 \begin{equation}
     J(\theta) = -\sum_{k=1}^K \sum_{i=1}^N y_{i_k} \ln f_k(x_i)

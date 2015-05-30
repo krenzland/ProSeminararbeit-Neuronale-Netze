@@ -61,13 +61,26 @@ Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit d
 
 Dabei entspricht die L2-Regularisierung early stopping, es sollten also nicht beide Methoden gleichzeitig genutzt werden; L1-Regularisierung kann jedoch mit beiden Regularisierungsarten kombiniert werden. \cite{bengio2012practical}
 
-\subsection{Regression}
+\subsection{Interpretation des Output-Layers}
+Bei der Regression gibt es üblicherweise nur einen Knoten im letzten Layer, ohne Aktivierungsfunktion (bzw. mit $\sigma(x) = x$). Der Wert dieses Neurons ist das Ergebniss der Regression. \\
 
-\subsection{Klassifizierung}
-Cross entropy.
-\\
-Soft-Max-F	unction
-\\
+Bei der Klassifikation gibt es für jede mögliche Klasse einen Austrittsknoten, und es muss folgendes gelten:
+
+\begin{equation}
+ 	\forall	k: y_k \in [0,1]
+ \end{equation} 
+ und 
+ \begin{equation}
+ 	\sum_k^n y_k = 1.
+ \end{equation}
+
+Das heißt, sie sind direkt als Wahrscheinlichkeiten interpretierbar. Eine mögliche Wahl für die Aktivierungsfunktion ist die SoftMax-Funktion, eine Verallgemeinerung der logistischen Funktion:
+
+\begin{equation}
+	\sigma_c = \frac{\exp (a_k)}{\sum_{k'} \exp (a_{k'})}.
+\end{equation}
+
+Sie hat für die Wahrscheinlichste Klasse den Wert $1$, für alle anderen den Wert $0$. \cite{bishop1995neural}
 % \subsection{...}
 % https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/
 % https://snippyhollow.github.io/blog/2014/08/09/so-you-wanna-try-deep-learning/
