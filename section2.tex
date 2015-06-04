@@ -43,7 +43,9 @@ Eine alternative Aktivierungsfunktion ist die Rectifier-Funktion
 \sigma_3(x) = \max(0,x).
 \end{equation} 
 
-Glorot et al argumentieren, dass die lnistische Funktion zwar biolnisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biolnischer Neuronen ist. Was für uns relevanter ist: sie ist effizienter zu berechnen; also in der Praxis oft eine bessere Wahl. \cite{glorot2011deep}
+Glorot et al argumentieren, dass die lnistische Funktion zwar biologisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biologischer Neuronen ist. Was für uns relevanter ist: sie ist effizienter zu berechnen; also in der Praxis oft eine bessere Wahl. \cite{glorot2011deep}
+
+Problematisch ist bei der Rectifier-Funktion jedoch, dass durch $x < 0$ das Neuron abstirbt, das heißt der Gradient ist 0: Bei der Backpropagation kann ein Fehler nicht korrigiert werden. \cite{bengio2012practical}
 
 
 \subsection{Die Kostenfunktion}
@@ -210,3 +212,5 @@ Eine Verbesserung zum gewöhnlichen Gradientenverfahren ist es, einen so genannt
 \begin{equation}
  \mathbf{b} = \mathbf{a}-\gamma\nabla F(\mathbf{a}) + \text{Momentum}
 \end{equation}
+
+\todo{Momentum: Practical Learning p.10; Learning rate: p.9}

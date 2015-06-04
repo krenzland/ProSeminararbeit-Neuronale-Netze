@@ -1,5 +1,4 @@
 \section{Neuronale Netze in der Praxis}
-Weigth Decay, Anfangwert
 
 \subsection{Das Gradientenverfahren in der Praxis}
 Beim Gradientenverfahren ist es wichtig eine sinnvolle Schrittweite zu verwenden. Ist sie kleiner, als die optimale, ist die benötigte Rechenzeit höher. Ist sie größer, kann das Verfahren divergieren. Eine gute Heuristik für die Wahl des Parameters ist, mit einem großen Wert zu starten, und bei Divergenz es mit einer dreimal kleineren Schrittweite erneut zu probieren.
@@ -7,7 +6,8 @@ Eine andere gute Optimierung ist, weder Batch noch Stochastic Backpropagation zu
 Die Kostenfunktion hat oft mehrere lokale Minima - das Gradientenverfahren kann dann in einem solchen steckenbleiben, das heißt, es konvergiert unter Umständen nicht zum gesuchten globalen Minimum. Auch wenn das globale Minimum nicht immer erwünscht ist (vlg. early stopping), ist es unter Umständen doch besser, es zu finden.\\
 Die einfachste Lösung wäre natürlich, ein anderes numerisches Verfahren zu benutzen. Doch andere Verfahren sind meistens komplizierter zu implementieren, und unter Umständen sogar langsamer als SGD. Wenn man beim SGD in einem Minimum stecken bleibt, bietet es sich an, einfach mit neu initialisierten Gewichtsparametern neuzustarten.
 
-\subsection{Anzahl Hidden Layer}
+\subsection{Anzahl Neuronen}
+Die Anzahl der Neuronen ist schwer zu bestimmen, ein Netzwerk mit mehr Neuronen ist aber jedoch immer mächtiger, als eins mit weniger. \todo{Quelle Mächtigkeit}. Bengio \cite{bengio2012practical} empfiehlt, dass die erste verdeckte Schicht größer als die Eingabeschicht sein sollte und dass alle Layer die gleiche Anzahl Neuronen haben sollte.
 
 \subsection{Initialisierung der Gewichte}
 Die Initialisierung der Gewichte ist ein schwieriges Problem. Eine oft benutzte Heuristik ist 
