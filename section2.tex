@@ -15,6 +15,7 @@ Sowohl Input, als auch Hidden-Layer besten aus Neuronen mit einer Aktivierungsfu
 
 Jeder Layer ist mit den anderen Elementweise verbunden. Jede Verbindung hat ein so genanntes Gewicht. Daten fließen nur von links nach rechts. 
 
+\todo{Unbeding folgenden Abschnitt bearbeiten, unleserlich, nicht aktuell und komplett sinnlos! (Aufbau Neuronaler Netze und Namenskonvetionen)}
 Wir benutzen folgende Namenskonvention: $m$ ist die Anzahl der Parameter, $x \in \mathbb{R}^{m \times 1}$ ist der Input-Vektor, 
 $w_i\in \mathbb{R}^{\text{Anzahl Neuronen} \times \text{Anzahl Neuronen Layer davor}}$ der Gewichtsvektor, der die $i$-te Schicht mit der $i+1$ Schicht verbindet; $b \in \mathbb{R}^{\text{Anzahl Neuronen} \times 1}$ der Bias-Vektor; $\hat{y}$ ist der Output des Netzwerkes, $y$ der Referenzwert (Ergebniss im Trainingsset).  
 
@@ -22,20 +23,21 @@ $w_i\in \mathbb{R}^{\text{Anzahl Neuronen} \times \text{Anzahl Neuronen Layer da
 Die Funktion, die pro Knoten die nicht-lineare Transformation durchführt, heißt Aktivierungsfunktion. \\
 Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das heißt eine Funktion, die die Ergebnisse in ein bestimmtes Interval "zusammenquetscht" (Quelle) und ein an ein "S" erinnerndes Erscheinungsbild hat. 
 \\
-Die einfachste Funktion diesen Typs ist die so genannte lnistische Funktion
+Beispiele für Funktion diesen Typs sind die so genannte logistische Funktion
 
 \begin{equation}
-\sigma_1(x) = \frac{1}{1+e^{-x}}
+\sigma_1(x) = \frac{1}{1+e^{-x}}.
 \end{equation}
 
-oder der hyperbolische Tangens
+und der hyperbolische Tangens
 
 \begin{equation}
 \sigma_2(x) = \tanh(x) = \frac{1-e^{-2x}}{1+e^{-2x}} = 
 \sigma_1(2x) -1
 \end{equation}.
 
-Die lnistische Funktion ist nicht 0-zentriert. Das hat den Effekt, dass, falls alle Eingangswerte des Neurons, der Gradient entweder komplett positiv, oder negativ ist. Das führt unter Umständen zu unerwünschten Oszillationen bei der Optimierung. Der hyperbolische Tangens ist 0-zentriert, hat aber einen Nachteil mit der lnistischen Funtkion gemeinsam: sehr kleine oder sehr große Werte haben einen sehr kleinen Gradienten zur Folge; dies führt zum "Absterben" des Neurons. 
+Die logistische Funktion ist nicht 0-zentriert. Das hat den Effekt, dass, falls alle Eingangswerte des Neurons, der Gradient entweder komplett positiv, oder negativ ist. Das führt unter Umständen zu unerwünschten Oszillationen bei der Optimierung. Der hyperbolische Tangens ist 0-zentriert, hat aber einen Nachteil mit der logistischen Funtkion gemeinsam: sehr kleine oder sehr große Werte haben einen sehr kleinen Gradienten zur Folge; dies führt zum "Absterben" des Neurons. 
+In \cite{lecunefficient} wird $1.7159 \tanh(\frac{2}{3})$ empfohlen, wenn eine Normalisierung vorgenommen wird. 
 
 Eine alternative Aktivierungsfunktion ist die Rectifier-Funktion 
 
@@ -43,7 +45,7 @@ Eine alternative Aktivierungsfunktion ist die Rectifier-Funktion
 \sigma_3(x) = \max(0,x).
 \end{equation} 
 
-Glorot et al argumentieren, dass die lnistische Funktion zwar biologisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biologischer Neuronen ist. Was für uns relevanter ist: sie ist effizienter zu berechnen; also in der Praxis oft eine bessere Wahl. \cite{glorot2011deep}
+Glorot et al argumentieren, dass die logistische Funktion zwar biologisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biologischer Neuronen ist. Was für uns relevanter ist: sie ist effizienter zu berechnen; also in der Praxis oft eine bessere Wahl. \cite{glorot2011deep}
 
 Problematisch ist bei der Rectifier-Funktion jedoch, dass durch $x < 0$ das Neuron abstirbt, das heißt der Gradient ist 0: Bei der Backpropagation kann ein Fehler nicht korrigiert werden. \cite{bengio2012practical}
 
@@ -92,19 +94,11 @@ J(\theta) = \sum_{k=1}^K \sum_{i=1}^N \left( \hat{Y_i} - Y_i \right)^2,
 was der Sum-of-squared-errors Fehlerfunktion entspricht.\cite{bishop1995neural}
 
 
-\begin{equation}
-J(\theta) = \sum_{k=1}^K \sum_{i=1}^N \left( \hat{Y_i} - Y_i \right)^2
-\end{equation}
-
-$\hat{Y_I}$ entspricht dem Ergniss des ANN, $Y$ dem richtigen Ergebniss. \\
-
-Bei Klasssifizierungsproblemen wird üblicherweise die Sum-of-squared-errors Fehlerfunktion, oder aber die negative Kreuzentropie benutzt \cite{Hastie2009}:
+Eine für Klassifizierungsprobleme oft benutze Fehlerfunktion ist die negative Kreuzentropie:
 
 \begin{equation}
-    J(\theta) = -\sum_{k=1}^K \sum_{i=1}^N y_{i_k} \ln f_k(x_i)
+    J(\theta) = -\sum_{k=1}^K \sum_{i=1}^N y_{i_k} \ln f_k(x_i).
 \end{equation}
-
-Bei Klassifikationsproblem ist Cross entropy fast immer die bessere Wahl. \todo{Warum ist Cross entropy besser?}
 
 
 \subsection{Feedforward}
@@ -150,49 +144,69 @@ Wir nehmen weiterhin an, dass der Fehler als ableitbare Funktion der Output-Wert
 Wir suchen jetzt die partielle Ableitung der Fehlerfunktion unter Berücksichtigung eines bestimmten Gewichts:
 
 \begin{equation}
-\frac{\partial J}{\partial w_{i,j}} = \frac{\partial J^n}{\partial a_j}  \frac{\partial a_j }{\partial w_{i,j}}
+\frac{\partial J^n}{\partial w_{i,j}} = \frac{\partial J^n}{\partial net_j}  \frac{\partial net_j }{\partial w_{ji}}
 \end{equation}
+
+Wir definieren jetzt folgende Hilfsvarabeln:
+
+\begin{IEEEeqnarray}{rCl}
+\frac{\partial net_j }{\partial w_{ji}} & = & z_i 
+\\
+\frac{\partial J^n}{\partial net_j} & = & \delta_j  
+\end{IEEEeqnarray}
 
 Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropagation-Formel:
 
 \begin{equation}
-\theta_j =  \begin{cases}
+\delta_j =  \begin{cases}
                \sigma ' (net_j) (y_j - \hat{y_j})           & \text{wenn j Ausgabeneuron ist}\\
-               \sigma ' (net_j) \sum_k w_{k,j} \theta_k     & \text{j hidden Layer}
+               \sigma ' (net_j) \sum_k w_{kj} \delta_k     & \text{wenn j verdecktes Neuron ist}
            \end{cases} 
 \end{equation} 
 
 Dadurch können wir den Gradienten einfach rekursiv berechnen. \cite{bishop1995neural} \\
+\todo{Backprop fertig schreiben!}
 
 Wichtig ist noch die Unterscheidung zwischen:
 
 \begin{LaTeXdescription}
 	\item[Stochastic Backpropagation]
-	Bei diesem Verfahren wird immer nur ein zufälliger Eingabevektor evaluiert, und dann werden sofort die Gewichte aktualisiert. 
+	Bei diesem Verfahren wird immer nur ein zufälliger Eingabevektor pro Iteration evaluiert, und dann sofort die Gewichte aktualisiert. 
 	\item[Batch Backpropagation] 
 	Bei der zweiten Methode werden alle Eingabevektoren des Trainingssets präsentiert und die Gewichtsänderungen summiert. Erst dann werden alle Gewichte aktualisiert. 
 \end{LaTeXdescription}\cite{duda2012pattern}
 
-Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz nicht nur von der Große des Trainingsset, sondern vielmehr von der Anzahl der Iterationen und der Verteilung der Trainingsdaten - für große Sets ist ein Benutzen der Batch Methode nicht mehr sinnvoll. \cite{bengio2012practical}  
+Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz nicht nur von der Große des Trainingsset, sondern vielmehr von der Anzahl der Iterationen und der Verteilung der Trainingsdaten - für große Sets ist ein Benutzen der Batch Methode nicht mehr sinnvoll. \cite{bengio2012practical}
+Ein weiter Vorteil ist, dass sie redundante Trainingsdaten (die bei einem Training für Mustererkennung zwangsläufig auftreten) ausnutzt. Außerdem konveriert sie eventuell zu einem besseren Minimum als die Batch Methode. \cite{lecunefficient}
+Wir werden hier primär die stochastische Methode betrachten, da sie in der Praxis die bessere ist. \cite{lecunefficient, bengio2012practical}
 
 
 \subsection{Die numerische Methode - Gradient Descent und verwandte}
 
 Der Gradient wird oft mit dem Gradientenverfahren, einer Methode um Funktionen zu minimieren, benutzt.
 
-Er ist relativ simpel:
+Das Gradientenverfahren lässt sich als Iterationsvorschrift darstellen:
 
 \begin{equation}
-x_{n+1}=x_n-\gamma_n \nabla F(x_n)
+x_{n+1}=x_n- \eta  \nabla F(x_n), 
 \end{equation}
 
-Das Verfahren funktioniert, weil der negative Gradient in die Richtung zeigt, in der die Funktion am schnellsten kleiner wird. Daher kommt auch die Bezeichnung Verfahren des steilsten Abstiegs.
-Die Konstante $\nabla$ heißt Lernrate. Je höher Sie ist, desto schneller konvergiert das Verfahren - bei einer zu hoch gewählten sind aber oft Oszillationen zu beobachten. 
+wobei $\nabla$ der Gradient ist; $\nabla_w$ ist der Gradient im Bezug auf die Gewichte. 
+Die Konstante $\eta$ heißt Lernrate. Je höher sie ist, desto schneller konvergiert das Verfahren - bei einer zu hoch gewählten sind aber oft Oszillationen zu beobachten. 
 
-Auf ANNs angewant, sehen die Formeln dann folgendermaßen aus:
+Das Verfahren funktioniert, weil der negative Gradient in die Richtung zeigt, in der die Funktion am schnellsten kleiner wird. Daher kommt auch die Bezeichnung Verfahren des steilsten Abstiegs.\\
+
+
+Auf ANNs angewant, sieht die Formel dann für jeden Zeitschritt $t$ folgendermaßen aus:
 
 \begin{equation}
-\Delta w_{j,i} = - \eta  \delta_j  x_i 
+  \Delta_w^t = - \eta  \nabla_w J(w),
+\end{equation}
+
+beziehungsweise in Kombination mit der Backpropagationformel
+
+\begin{equation}
+\Delta w_x = - \eta  \delta_j  x_i.
 \end{equation}
 
 \begin{equation}
@@ -207,10 +221,10 @@ Bei der Batch Methode werden alle Gewichte auf einmal aktualisiert, bei Stochast
 
 Das Gradientenverfahren hat das Problem, dass es oft in lokalen Minima steckenbleibt - das ist vor allem bei ANNs problematisch, weil die gewählte Kostenfunktion in den meisten Fällen mehrere lokale Minima besitzt. Auch wenn es nicht unbedingt notwendig, oder sogar erwünscht ist, einen globalen Extremwert zu finden (vgl. Overfitting), existieren bessere numerische Verfahren. \\
 
-Eine Verbesserung zum gewöhnlichen Gradientenverfahren ist es, einen so genannten Momentumparameter zu benutzen, der auch vorherige Ergebnisse einbezieht, und somit das oft beobachtete oszillierende Verhalten des Gradientenverfahrens behebt.
+Eine Verbesserung zum gewöhnlichen Gradientenverfahren ist es, einen so genannten Momentumparameter zu benutzen, der auch vorherige Ergebnisse einbezieht, und somit das oft beobachtete oszillierende Verhalten des Gradientenverfahrens behebt:
 
 \begin{equation}
- \mathbf{b} = \mathbf{a}-\gamma\nabla F(\mathbf{a}) + \text{Momentum}
+ \Delta_w^t = - \eta  \nabla_w J(w) + \gamma \Delta_w^{t-1}.
 \end{equation}
 
-\todo{Momentum: Practical Learning p.10; Learning rate: p.9}
+Bei einigen Problen kann das Verfahren Vorteile bringen, oft ist aber SGD mit einer guten Wahl der Lernrate bereits optimal \cite{bengio2012practical}.
