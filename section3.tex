@@ -1,13 +1,14 @@
 \section{Neuronale Netze in der Praxis}
+Während die Theorie von MLPs relativ simpel ist, ist die Praxis umso komplizierter. Es gibt sehr viele Parameter, an denen geschraubt werden kann, um gute Ergebnisse zu erzielen. Wir werden hier die wichtigsten besprechen, für weiterführende Ausführung sei auf die verwendeten Quellen verwiesen. 
 
 \subsection{Vorbereitung der Daten}
 In \cite{lecunefficient} wird empfohlen, die Eingaben zu normalisieren.
 Dabei sollte der Durchschnitt aller Eingaben des Trainingsset nahe $0$ sein, außerdem sollen sie alle die gleiche Kovarianz haben.
-Um SGD zu verbessern wird außerdem empfohlen, bei einer Datenmenge, bei der es keine Sonderfälle (bzw. statistische Ausreißer) gibt, häufiger ein Trainingsdatum zu präsentieren, dass den höchsten Fehler liefert. Druch unerwartete Daten, also zum Beispiel Daten verschiedener Kategorieren, lernt das Netzwerk schneller.
+Um SGD zu verbessern wird außerdem empfohlen, bei einer Datenmenge, bei der es keine Sonderfälle (bzw. statistische Ausreißer) gibt, häufiger ein Trainingsdatum zu präsentieren, dass den höchsten Fehler liefert. Durch unerwartete Daten, also zum Beispiel Daten verschiedener Kategorieren, lernt das Netzwerk schneller.
 
 \subsection{Das Gradientenverfahren in der Praxis}
-Das Gradientenverfahren weißt in der Praxis einige Fallstricke auf. In \cite{bengio2012practical} werden Optimierungen für das Verfahren in der Praxis vorgestellt. 
-Beim Gradientenverfahren ist es wichtig eine sinnvolle Schrittweite zu verwenden. Ist sie kleiner, als die optimale, ist die benötigte Rechenzeit höher. Ist sie größer, kann das Verfahren divergieren. Eine gute Heuristik für die Wahl des Parameters ist, mit einem großen Wert zu starten, und bei Divergenz es mit einer dreimal kleineren Schrittweite erneut zu probieren.
+Das Gradientenverfahren weist in der Praxis einige Fallstricke auf. In \cite{bengio2012practical} werden Optimierungen für das Verfahren in der Praxis vorgestellt. 
+Beim Gradientenverfahren ist es wichtig, eine sinnvolle Schrittweite zu verwenden. Ist sie kleiner, als die optimale, ist die benötigte Rechenzeit höher. Ist sie größer, kann das Verfahren stagnieren oder sogar divergieren. Eine gute Heuristik für die Wahl des Parameters ist, mit einem großen Wert zu starten, und bei Divergenz es mit einer dreimal kleineren Schrittweite erneut zu probieren.
 In dem Paper wird als Anfangsschrittweite $\epsilon_0 = 0.01$ empfohlen, als Wert, der für die meisten - aber nicht alle - Netzwerke funktioniert.
 Des weiteren sollte eine nicht konstante Lernrate 
 
@@ -19,11 +20,10 @@ benutzt werden. Dabei ist $c$ eine Konstante, und $t$ die Iterationsanzahl. Die 
 
 
 Eine andere gute Optimierung ist, weder Batch noch Stochastic Backpropagation zu nutzen, sondern eine Mini-batch-Variante, bei der mehrere, aber nicht alle Eingabevektoren evaluiert werden vor jedem Gewichtsupdate. \\
-Die Kostenfunktion hat oft mehrere lokale Minima - das Gradientenverfahren kann dann in einem solchen steckenbleiben, das heißt, es konvergiert unter Umständen nicht zum gesuchten globalen Minimum. Auch wenn das globale Minimum nicht immer erwünscht ist (vlg. early stopping), ist es unter Umständen doch besser, es zu finden.\\
-Die einfachste Lösung wäre natürlich, ein anderes numerisches Verfahren zu benutzen. Doch andere Verfahren sind meistens komplizierter zu implementieren, und unter Umständen sogar langsamer als SGD. Wenn man beim SGD in einem Minimum stecken bleibt, bietet es sich an, einfach mit neu initialisierten Gewichtsparametern neuzustarten. \\\
-Eine Alternative zum Gradientenverfahren ist Konjugierte Gradienten. Dieses Verfahren funktioniert jedoch nur bei Batch Backpropagation, ist also SGD bei großen Trainingssets unterlegen. Es ist aber eine durchaus sinnvolle Optimierungsmethode, für Probleme, die genaue realwertige Ausgabewerte benötigen. \cite{lecunefficient}
+Die Kostenfunktion hat oft mehrere lokale Minima - das Gradientenverfahren kann dann in einem solchen steckenbleiben, das heißt, es konvergiert unter Umständen nicht zum gesuchten globalen Minimum. Auch wenn das globale Minimum nicht immer erwünscht ist (vlg. \ref{sec:overfitting}), ist es unter Umständen doch besser, es zu finden.\\
+Wenn man beim SGD in einem Minimum stecken bleibt, bietet es sich an, einfach mit neu initialisierten Gewichtsparametern neuzustarten. \\\
+Alternativen zu SGD sind meistens langsamer und schwerer zu implementieren. Eine Alternative zum Gradientenverfahren ist Konjugierte Gradienten. Dieses Verfahren funktioniert jedoch nur bei Batch Backpropagation, ist also SGD bei großen Trainingssets unterlegen. Es ist aber eine durchaus sinnvolle Optimierungsmethode, für Probleme, die genaue realwertige Ausgabewerte benötigen\cite{lecunefficient}.
 Verschiedene Optimierungsmethoden, primär im Bezug auf Deep Learning werden in \cite{ngiam2011optimization} diskutiert.
-\todo{Alternativen: Kurze Erwähnung von Second Order Verfahren, adaptive Lernrate}
 
 \subsection{Anzahl Neuronen}
 Die Anzahl der Neuronen ist schwer zu bestimmen, ein Netzwerk mit mehr Neuronen ist aber jedoch logischerweise mächtiger, als eins mit weniger. In \cite{bengio2012practical} wird empfohlen, dass die erste verdeckte Schicht größer als die Eingabeschicht sein sollte und dass alle Layer die gleiche Anzahl Neuronen haben sollte.
@@ -37,69 +37,52 @@ Die Initialisierung der Gewichte ist ein schwieriges Problem. Eine oft benutzte 
 
 wobei $U[-a, a]$ gleichverteilten Werten zwischen $-a$ und $a$ entspricht, und $n$ der Anzahl der Neuronen in der vorherigen Schicht. 
 
-Ein Vorschlag, um dieses Problem zu umgehen ist die normalisierte Initialisierung
+In \cite{glorot2010understanding} wird, um dieses Problem zu umgehen, vorgeschlagen, die normalisierte Initialisierung
 
 \begin{equation}
 	W \sim U [ - \frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}} 
-	, 			 \frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}} ]. 
+	, 			 \frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}} ]
 \end{equation}
 
-In der Praxis ergeben sich durch sie bessere Ergebnisse. \cite{glorot2010understanding}
+zu verwenden. 
+In der Praxis ergeben sich durch sie bessere Ergebnisse. 
 
 \subsection{Vermeidung von Overfitting}
+\label{sec:overfitting}
 Ein Problem, dass in der Praxis auftreten kann, ist das so genannte Overfitting, das ist die übermäßige Anpassung an die Trainingsmenge. Oft ist das Modell zu stark angepasst und daher nicht mehr allgemein effizient.\\
 
 Eine mögliche Lösung ist die L1/L2-Regularisierung. Bei ihr wird an die Kostenfunktion ein weiterer Term angehängt:\\
 
-\begin{equation}
-	J_{\text{L1}} = J + \lambda \sum_i \theta_i 
-\end{equation}
+\begin{IEEEeqnarray}{rCl}
+E_{\text{L1}} & = & E + \lambda \sum_i w_i 
+\\
+E_{\text{L2}} & = & E + \lambda \sum_i w_i^2
+\end{IEEEeqnarray}
 
-\begin{equation}
-	J_{\text{L2}} = J + \lambda \sum_i \theta_i^2
-\end{equation}
-
-
-Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft. Der Name Weigth-Decay kommt daher, dass die Gewichte gegen 0 gehen. \cite{Hastie2009}
+Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft. Der Name Weigth-Decay kommt daher, dass die Gewichte gegen 0 gehen\cite{bishop1995neural}.
 
 Aus der Bayesianischen Perspektive betrachtet, ist eine L2-Regulierung gleichbedeutend damit, dass wir eine A-priori-Verteilung bezüglich der Parameter annehmen. Die Fehlerfunktion entspricht dann:
 
 \begin{equation}
-	J(z, \theta) = - \ln P (z | \theta).
+	J(z, \theta) = - \ln P (z | \theta),
 \end{equation}
 
-\cite{bengio2012practical} \\
-Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit der Backpropagation aufhört, wenn ein (lokales) Minimum gefunden wurde, sondern dann, wenn die Performance des Modells bei dem Validierungsset optimal ist. Dabei wird oft die Iteration oft beendet, wenn bei der Fehlerfunktion gar kein Minimum vorliegt.  \cite{bishop1995neural}
+wobei $\theta$ den Parametern des Netzwerks entspricht\cite{bengio2012practical}. \\
 
-Dabei entspricht die L2-Regularisierung early stopping, es sollten also nicht beide Methoden gleichzeitig genutzt werden; L1-Regularisierung kann jedoch mit beiden Regularisierungsarten kombiniert werden. \cite{bengio2012practical}
+Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit der Backpropagation aufhört, wenn ein (lokales) Minimum gefunden wurde, sondern dann, wenn die Performance des Modells bei dem Validierungsset optimal ist. Dabei wird oft die Iteration oft beendet, wenn bei der Fehlerfunktion gar kein Minimum vorliegt\cite{bishop1995neural}.  
+
+Dabei entspricht die L2-Regularisierung early stopping, es sollten also nicht beide Methoden gleichzeitig genutzt werden; L1-Regularisierung kann jedoch mit beiden Regularisierungsarten kombiniert werden\cite{bengio2012practical}. 
 
 \subsection{Interpretation des Output-Layers}
 Bei der Regression gibt es üblicherweise nur einen Knoten im letzten Layer, ohne Aktivierungsfunktion (bzw. mit $\sigma(x) = x$). Der Wert dieses Neurons ist das Ergebniss der Regression. \\
 
 Bei der Klassifikation gibt es für jede mögliche Klasse einen Austrittsknoten, und es muss folgendes gelten:
-
-\begin{equation}
- 	\forall	k: y_k \in [0,1]
- \end{equation} 
- und 
- \begin{equation}
- 	\sum_k^n y_k = 1.
- \end{equation}
-
+Alle Ausgabewerte liegen zwischen $0$ und $1$ und summieren sich insgesamt auf 1.
 Das heißt, sie sind direkt als Wahrscheinlichkeiten interpretierbar. Eine mögliche Wahl für die Aktivierungsfunktion ist die SoftMax-Funktion, eine Verallgemeinerung der logistischen Funktion:
 
 \begin{equation}
-	\sigma_c = \frac{\exp (a_k)}{\sum_{k'} \exp (a_{k'})}.
+\label{eq:softmax}
+	\sigma_s = \frac{\exp (y_k)}{\sum_{k'} \exp (y_{k'})}.
 \end{equation}
 
-Sie hat für die Wahrscheinlichste Klasse den Wert $1$, für alle anderen den Wert $0$. \cite{bishop1995neural}
-% \subsection{...}
-% https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/
-% https://snippyhollow.github.io/blog/2014/08/09/so-you-wanna-try-deep-learning/
-
-% http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf Efficient Backprop
-% Zitat: Nonlinear activationut/ functions are what give neural networks their nonlinear capabilities. 
-
-% https://stats.stackexchange.com/questions/181/how-to-choose-the-number-of-hidden-layers-and-nodes-in-a-feedforward-neural-netw
-
-% https://stats.stackexchange.com/questions/63152/what-does-the-hidden-layer-in-a-neural-network-compute
+Sie hat für die Wahrscheinlichste Klasse den Wert $1$, für alle anderen den Wert $0$. Diese Ausgabeaktivierungsfunktion wird nur in Kombination mit der Kreuzentropie (\ref{eq:crossEntropy}) benutzt\cite{bishop1995neural}. 
