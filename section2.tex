@@ -20,6 +20,7 @@ In Abbildung \ref{fig:MLP} sieht man ein typisches MLP. In dieser Abbildung fehl
  
 
 \subsection{Die Aktivierungsfunktion}
+
 Die Funktion, die pro Knoten die nicht-lineare Transformation durchführt, heißt Aktivierungsfunktion. \\
 Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das heißt eine Funktion, die die Ergebnisse in ein bestimmtes Interval komprimiert und ein an ein S erinnerndes Erscheinungsbild hat. 
 \\
@@ -38,7 +39,7 @@ und der hyperbolische Tangens
 
 hat aber einen Nachteil mit der logistischen Funtkion gemeinsam: sehr kleine oder sehr große Werte haben eine sehr kleine Ableitung zur Folge; das kann ein Absterben des Neurons beim Training des Netzwerks zur Folge haben. 
 
-In \cite{lecunefficient} wird $1.7159 \tanh(\frac{2}{3})$ empfohlen, wenn eine Normalisierung vorgenommen wird. \\
+In \cite{lecunefficient} wird $1.7159 \tanh(\frac{2}{3} x)$ empfohlen, wenn eine Normalisierung vorgenommen wird. \\
 
 Eine alternative Aktivierungsfunktion ist die Rectifier-Funktion 
 
@@ -77,13 +78,13 @@ Wir wollen jetzt wieder den Fehler für $p(t|k)$ darstellen. Wir nehmen an, dass
 Deswegen gilt: 
 
 \begin{equation}
-  p(t_k|x) = \frac{1}{(2 \pi \sigma^2)^{0.5}} \exp (-\frac{ \{ y_k(x; w) - t_k \}^2 }{2 \sigma^2})
+  p(t_k|x) = \frac{1}{(2 \pi \sigma^2)^{0.5}} \exp \left( -\frac{ \left[  y_k(x; w) - t_k \right]^2 }{2 \sigma^2} \right).
 \end{equation}.
 
 Den Fehlerterm können wir jetzt einfach als Summe über alle Fehlerwahrscheinlichkeiten darstellen:
 
 \begin{equation}
-  E = \frac{1}{2 \sigma^2} \sum_{n=1}^{N} \sum_{k=1}^{c} \{ y_k(x^n; w) - t_k^n \}^2 + Nc \ln \sigma + \frac{N_c}{2} \ln (2 \pi)
+  E = \frac{1}{2 \sigma^2} \sum_{n=1}^{N} \sum_{k=1}^{c} \left[ y_k(x^n; w) - t_k^n \right]^2 + Nc \ln \sigma + \frac{N_c}{2} \ln (2 \pi)
 \end{equation}
 
 Ignorieren wir nun alle Faktoren, die nicht von den Parametern des Netztes abhängen, erhalten wir 
@@ -141,8 +142,8 @@ Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte zu a
 Alle relevanten Fehlerfunktionen haben die Form 
 
 \begin{equation}
-J = \sum_n J_n(y_1, \ldots, y_c),
-\end{equation},
+E = \sum_n E_n(y_1, \ldots, y_c),
+\end{equation}
 
 das heißt, der Gesamtfehler ist die Summe aller Einzelfehler.
 Wir nehmen weiterhin an, dass der Fehler als ableitbare Funktion der Output-Werte darstellbar ist.
@@ -150,7 +151,7 @@ Wir nehmen weiterhin an, dass der Fehler als ableitbare Funktion der Output-Wert
 Wir suchen jetzt die partielle Ableitung der Fehlerfunktion unter Berücksichtigung eines bestimmten Gewichts:
 
 \begin{equation}
-\frac{\partial J^n}{\partial w_{i,j}} = \frac{\partial J^n}{\partial net_j}  \frac{\partial net_j }{\partial w_{ji}}
+\frac{\partial E^n}{\partial w_{i,j}} = \frac{\partial E^n}{\partial net_j}  \frac{\partial net_j }{\partial w_{ji}}
 \end{equation}
 
 Wir definieren jetzt die Hilfsvarabeln:
@@ -158,14 +159,14 @@ Wir definieren jetzt die Hilfsvarabeln:
 \begin{IEEEeqnarray}{rCl}
 \frac{\partial net_j }{\partial w_{ji}} & = & y_i \quad \text{und}
 \\
-\frac{\partial J^n}{\partial net_j} & = & \delta_j,
+\frac{\partial E^n}{\partial net_j} & = & \delta_j,
 \end{IEEEeqnarray}
 wobei $z_i$ durch den Feedforward-Pass (also mit \ref{eq:feedforward1} und \ref{eq:feedforward2}) berechnet wird. 
 
 Mit diesen Variablen können wir die Zerlegung schön beschreiben als
 \begin{equation}
 \label{eq:evaluate}
-  \frac{\partial J^n}{\partial w_{i,j}} = z_i * \delta_j.
+  \frac{\partial E^n}{\partial w_{ij}} = z_i * \delta_j.
 \end{equation}
 
 Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropagation-Formel:

@@ -1,0 +1,122 @@
+%!TEX program = xelatex
+\documentclass[10pt, compress, xetex]{beamer}
+
+\usepackage{polyglossia}
+\setmainlanguage[spelling=new,babelshorthands=true]{german}
+
+\usetheme[usetitleprogressbar]{m}
+
+\frenchspacing
+\usepackage{hyperref}
+\urlstyle{same}
+
+
+\usepackage{mathtools}
+\newtheorem{theo}{Theorem}
+\usepackage{multicol}
+
+\logo{\includegraphics[scale=0.3]{tumlogo.pdf}} 
+
+\beamertemplatenavigationsymbolsempty
+
+\usepackage{listings}
+\lstset{language=Java} 
+
+\title{ProSeminar: Data Mining}
+\subtitle{Neuronale Netze: Grundlagen}
+
+
+\author{Lukas Krenz}
+\date{12. Juni 2015}
+\institute{Technische Universität München}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\begin{frame}{Was sind Neuronale Netze?}
+	blablablablabla
+\end{frame}
+
+\begin{frame}{Topologie}
+\begin{figure}[ht!]
+\label{fig:MLP}
+  \centering
+    \input{graph_neural_network}
+  \caption{Ein 2-schichtiges MLP.}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Aktivierungsfunktionen}
+\begin{align}
+	\sigma_1(x) & =  \frac{1}{1+e^{-x}} \\
+	\sigma_2(x) & =  \tanh(x) = \frac{1-e^{-2x}}{1+e^{-2x}} \\
+	\sigma_3(x) & =  \max(0,x)
+\end{align}
+\end{frame}
+
+\begin{frame}{Feedforward}
+\begin{figure}[ht!]
+\label{fig:MLP}
+  \centering
+    \input{graph_neural_network} %TODO: Create smaller version of graphic without annotations.
+\end{figure}
+
+\begin{align}
+	\text{net}_j & = \sum_{i} w_{ji} y_i = w_j^t x \\
+	y_j & = \sigma (\text{net}_j)
+\end{align} 
+\end{frame}
+
+\begin{frame}{Backprop}
+\begin{align}
+	E &= \sum_{k=1}^K \sum_{i=1}^N \left( y_i^k - t_i^k \right)^2 \\
+	& =  \sum_n E_n(y_1, \ldots, y_c)
+\end{align}
+
+\begin{equation}
+\frac{\partial E^n}{\partial w_{ij}} = \frac{\partial E^n}{\partial net_j}  \frac{\partial net_j }{\partial w_{ji}}
+\end{equation}
+
+\end{frame}
+
+\begin{frame}{Backprop (ctd.)}
+
+
+\begin{align}
+\frac{\partial net_j }{\partial w_{ji}} & =  y_i \quad \text{und}
+\\
+\frac{\partial E^n}{\partial net_j} & =  \delta_j,
+\end{align}
+
+\begin{equation}
+\label{eq:evaluate}
+  \frac{\partial E^n}{\partial w_{i,j}} = z_i * \delta_j.
+\end{equation}
+
+\begin{equation}
+\label{eq:backpropagation}
+\delta_j =  \begin{cases}
+               \sigma ' (net_j) (y_j - \hat{y_j})           & \text{wenn j Ausgabeneuron ist}\\
+               \sigma ' (net_j) \sum_k w_{kj} \delta_k     & \text{wenn j verdecktes Neuron ist}
+           \end{cases} 
+\end{equation} 
+\end{frame}
+\begin{frame}{Optimierung}
+
+\begin{equation}
+x_{n+1}=x_n- \eta  \nabla F(x_n), 
+\end{equation}
+\begin{equation}
+  \Delta_w^t = - \eta  \nabla_w E(w),
+\end{equation}
+
+\end{frame}
+
+\begin{frame}{Ausblick}
+	blablablablabla
+\end{frame}
+\end{document}
