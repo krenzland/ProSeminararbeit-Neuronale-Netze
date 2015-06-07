@@ -11,6 +11,7 @@ Eine gängige Definitition ist die, die auch in \cite{bishop1995neural} verwende
 Ein Perceptron besteht aus einem Eingabe-Vektor $x$, einem Gewichtsvektor $w$ und einem Bias-Wert $b$. Es ist ein binärer Klassifizierer, der das Ergebniss mit Hilfe der folgenden Formel berechnet:
 
 \begin{equation}
+\label{eq:perceptron}
     y = \begin{cases}
                1               & w x + b > 0\\
                0               & \text{ansonsten}
@@ -20,6 +21,13 @@ Ein Perceptron besteht aus einem Eingabe-Vektor $x$, einem Gewichtsvektor $w$ un
 In dieser Formel entspricht $wx$ dem Skalarprodukt.
 
 \subsection{Das Perceptron als einfaches ANN}
+
+\begin{figure}[ht!]
+\label{fig:SLP}
+  \centering
+    \input{graph_perceptron.tex}
+  \caption{Ein 1-schichtiges Perceptron, dargestellt als graphisches Modell.}
+\end{figure}
 
 Wie wir später sehen werden, kann das Perceptron auch als eine einfache Variante eines Feed-Forward-Neuronalen-Netzes mit nur einem Ausgangsneuronen, mit der Heaviside-Funktion
 
@@ -32,6 +40,7 @@ Wie wir später sehen werden, kann das Perceptron auch als eine einfache Variant
 
 als Aktivierungsfunktion interpretiert werden.\\
 
+Als graphisches Modell sieht es dann aus wie \ref{fig:SLP}. Alle Inputs gehen in den gleichen Knoten, der dann die Ausgabe mit der Formel \ref{eq:perceptron} bestimmt. 
 Auf den benutzen Trainingsalgorithmus werden wir nicht eingehen; der später betrachtete Backpropagation-Algorithmus für allgemeine ANNs ist auf Perceptrons übertragbar.
 
 \subsection{Das XOR-Problem: nicht linear separierbare Probleme}

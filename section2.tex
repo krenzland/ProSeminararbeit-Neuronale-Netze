@@ -9,12 +9,14 @@
 \end{figure}
 
 
-Ein Neuronales Netz (zur Abgrenzungen zu biologischen Netzen in der Fachliteratur als Artificial Neural Network(ANN) bezeichnet) besteht aus mehreren Schichten Neuronen: einem Input Layer, einen (oder mehreren) Hidden Layer, und einem Output Layer. 
+Ein Neuronales Netz (zur Abgrenzungen zu biologischen Netzen in der Fachliteratur als Artificial Neural Network (ANN) bezeichnet) besteht aus mehreren Schichten Neuronen: einem Input Layer, einen (oder mehreren) Hidden Layer, und einem Output Layer. 
 Wenn man von einem k-schichtigen ANN spricht, bezeichnet k die Anzahl der Schichten, ohne Input-Layer.
 
 Sowohl Input, als auch Hidden-Layer besten aus Neuronen mit einer nicht linearen Aktivierungsfunktion, die die Eingangsdaten transformiert.
 
-Jeder Layer ist mit den anderen elementweise verbunden. Jede Verbindung hat ein so genanntes Gewicht. Daten fließen nur von links nach rechts. 
+Jeder Layer ist mit den anderen elementweise verbunden. Jede Verbindung hat ein so genanntes Gewicht. Daten fließen nur von links nach rechts. Netzwerke dieser Art heißen Multilayer-Perceptrons (MLP). \\
+
+In Abbildung \ref{fig:MLP} sieht man ein typisches MLP. In dieser Abbildung fehlt aber noch ein paar wichtige Gewichte: der Bias. Er dient dazu, die Eingabewerte jedes Neurons noch um einen linearen Wert zu ergänzen; das erleichtert das Training und stärkt die Mächtigkeit des Modells. In der Praxis wird er wie ein spezielles Neuron behandelt, dass eine Verbindung (inklusive Gewicht) zu jedem Neuron, dass nicht im Input Layer ist, besitzt. Es wird dann quasi als nulltes Neuron jeder Schicht im Gewichtsvektor behandelt - das erleichtert uns Berechnungen.
  
 
 \subsection{Die Aktivierungsfunktion}
