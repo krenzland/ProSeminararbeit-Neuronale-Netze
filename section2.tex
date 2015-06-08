@@ -100,8 +100,7 @@ Eine für Klassifizierungsprobleme oft benutze Fehlerfunktion ist die negative K
 
 \begin{equation}
 \label{eq:crossEntropy}
-    E = -\sum_{n} \sum_{k=1}^c t_k^n \ln 
-    \left( \frac{y_k^n}{t_k^n} \right),
+    E = -\sum_{n} \sum_{k=1}^c t_k^n \ln y_k^n ,
 \end{equation}
 
 wobei $t_k^n \in (0,1)$ die Wahrscheinlichkeit, dass die Eingabe $x^n$ in der Klasse $c$ ist. Die Fehlerfunktion ist genau dann $0$, wenn $y_k^n = t_k^n$ ist. 
