@@ -54,7 +54,7 @@ Ein Problem, dass in der Praxis auftreten kann, ist das so genannte Overfitting,
 Eine mögliche Lösung ist die L1/L2-Regularisierung. Bei ihr wird an die Kostenfunktion ein weiterer Term angehängt:\\
 
 \begin{IEEEeqnarray}{rCl}
-E_{\text{L1}} & = & E + \lambda \sum_i w_i 
+E_{\text{L1}} & = & E + \lambda \sum_i \left| w_i \right| 
 \\
 E_{\text{L2}} & = & E + \lambda \sum_i w_i^2
 \end{IEEEeqnarray}
