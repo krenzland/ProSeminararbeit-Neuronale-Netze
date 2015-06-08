@@ -61,13 +61,7 @@ E_{\text{L2}} & = & E + \lambda \sum_i w_i^2
 
 Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft. Der Name Weigth-Decay kommt daher, dass die Gewichte gegen 0 gehen\cite{bishop1995neural}.
 
-Aus der Bayesianischen Perspektive betrachtet, ist eine L2-Regulierung gleichbedeutend damit, dass wir eine A-priori-Verteilung bezüglich der Parameter annehmen. Die Fehlerfunktion entspricht dann:
-
-\begin{equation}
-	J(z, \theta) = - \ln P (z | \theta),
-\end{equation}
-
-wobei $\theta$ den Parametern des Netzwerks entspricht\cite{bengio2012practical}. \\
+Aus der Bayesianischen Perspektive betrachtet, ist eine L2-Regulierung gleichbedeutend damit, dass wir eine A-priori-Normalverteilung auf die Gewichte annehmen mit Erwartungswert $0$ und Varianz $\sigma^2 = (2 \lambda) ^{-1}$\cite{bengio2012practical}.
 
 Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit der Backpropagation aufhört, wenn ein (lokales) Minimum gefunden wurde, sondern dann, wenn die Performance des Modells bei dem Validierungsset optimal ist. Dabei wird oft die Iteration oft beendet, wenn bei der Fehlerfunktion gar kein Minimum vorliegt\cite{bishop1995neural}.  
 
