@@ -74,7 +74,7 @@ Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit d
 Dabei entspricht die L2-Regularisierung early stopping, es sollten also nicht beide Methoden gleichzeitig genutzt werden; L1-Regularisierung kann jedoch mit beiden Regularisierungsarten kombiniert werden\cite{bengio2012practical}. 
 
 \subsection{Interpretation des Output-Layers}
-Bei der Regression gibt es üblicherweise nur einen Knoten im letzten Layer, ohne Aktivierungsfunktion (bzw. mit $\sigma(x) = x$). Der Wert dieses Neurons ist das Ergebniss der Regression. \\
+Bei der Regression gibt es üblicherweise einen Knoten im letzten Layer pro Element des Output-Vektors, ohne Aktivierungsfunktion (bzw. mit $\sigma(x) = x$). Der Wert dieser Neuronen ist das Ergebniss der Regression. \\
 
 Bei der Klassifikation gibt es für jede mögliche Klasse einen Austrittsknoten, und es muss folgendes gelten:
 Alle Ausgabewerte liegen zwischen $0$ und $1$ und summieren sich insgesamt auf 1.
