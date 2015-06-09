@@ -106,7 +106,7 @@ Eine für Klassifizierungsprobleme oft benutze Fehlerfunktion ist die negative K
 \end{equation}
 
 wobei $t_k^n \in (0,1)$ die Wahrscheinlichkeit, dass die Eingabe $x^n$ in der Klasse $c$ ist. Die Fehlerfunktion ist genau dann $0$, wenn $y_k^n = t_k^n$ ist. 
-Sie ist für diese Problemklasse stochastisch schöner zu interpretieren und wird normalerweise mit der Softmax-Aktivierungsfunktiom \ref{eq:softmax} benutzt. \cite{bishop1995neural}
+Sie ist für diese Problemklasse stochastisch schöner zu interpretieren und wird normalerweise mit der Softmax-Aktivierungsfunktiom \ref{eq:softmax} benutzt\cite{bishop1995neural}.
 
 \subsection{Feedforward}
 Um ein ANN zur Vorhersage neuer Input-Vektoren zu benutzen, wird es im sogenannten Feedforward Modus betrieben. In diesem wird der Input Vektor zuerst den Neuronen des Input-Layers präsentiert. Alle anderen Neuronen des nächsten Layers bilden dann eine lineare Kombination aus den Neuronen ihrer Vorgängerschicht: 
@@ -115,8 +115,9 @@ Um ein ANN zur Vorhersage neuer Input-Vektoren zu benutzen, wird es im sogenannt
 \text{net}_j = \sum_{i} w_{ji} y_i = w_j^t x.
 \end{equation}
 
-Bei dieser Formel ist $w_j^t x$ das Skalarprodukt, und $w$ die Matrix, in der alle Gewichte des Netzwerks gespeichert sind.  
-Nachdem diese lineare Transformation abgeschlossen ist, wird bei allen Neuronen (außer bei denen im Output-Layer) die Aktivierungsfunktion benutzt, die eine nicht-lineare Transformation durchführt: 
+Bei dieser Formel ist $w_{ji}$ das Gewicht vom Neuron $j$ zum Neuron $i$, die ganze lineare Kombination kann man auch als Matrix-Vektorprodukt $w_j^t x$ darstellen, wobei die Spalten von $w$ den Gewichten jedes Layers entsprechen. %TODO: Formulierung!
+
+Nachdem diese lineare Transformation abgeschlossen ist, wird bei allen Neuronen (außer bei denen im Output-Layer) die Aktivierungsfunktion benutzt, die dann eine nicht-lineare Transformation durchführt: 
 \begin{equation}
 \label{eq:feedforward2}
 y_j = \sigma (\text{net}_j).
@@ -129,14 +130,13 @@ Dieser Prozess wird so lange durchgeführt, bis die Daten das komplette Netz dur
 
 Natürlich reicht es für maschinelles Lernen nicht aus, nur Vorhersagen zu treffen - das Modell muss sich auch anpassen können. Bei Neuronalen Netzen heißt der benutzte Trainingsalgorithmus Backpropagation.
 
-Es ist eine Möglichkeit, Fehler, die bei den Ausgabeneuronen auftreten auch für die Neuronen der Schichten davor zu berücksichtigen - der Fehler wird zurückgesendet.
+Es ist eine Möglichkeit den Fehler, der bei den Ausgabeneuronen auftritt, auch für die Neuronen der Schichten davor zu berücksichtigen - der Fehler wird zurückgesendet.
 
 Dazu wird als erster Schritt für einen Trainingsvektor ein Forward-Pass durchgeführt - damit wird die Vorhersage des Netzwerkes berechnet, und anschließend mit der vorgegeben, korrekten Lösung des Trainingssets verglichen.
 
 Diese Werte werden dann benutzt, um den Fehler zu berechnen, und dann die Parameter(also die Gewichte) anzupassen.
 
-
-Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren. Dieser Algorithmus wurde zuerst in \cite{rumelhart1988learning} erfunden, wir benutzen aber eine etwas modernere Formulierung, wie sie etwa in \cite{bishop1995neural, duda2012pattern} vorzufinden ist. 
+Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren. Dieser Algorithmus wurde zuerst in \cite{rumelhart1988learning} erfunden, wir benutzen aber eine etwas modernere Formulierung, inspiriert von \cite{bishop1995neural, duda2012pattern}. 
 
 Alle relevanten Fehlerfunktionen haben die Form 
 \begin{equation}
@@ -159,12 +159,12 @@ Wir definieren jetzt die Hilfsvarabeln:
 \frac{\partial E^n}{\partial net_j} & = & \delta_j,
 \end{IEEEeqnarray}
 
-wobei $z_i$ durch den Feedforward-Pass (also mit \ref{eq:feedforward1} und \ref{eq:feedforward2}) berechnet wird. 
+wobei $y_i$ durch den Feedforward-Pass (also mit \ref{eq:feedforward1} und \ref{eq:feedforward2}) berechnet wird. 
 
 Mit diesen Variablen können wir die Zerlegung schön beschreiben als
 \begin{equation}
 \label{eq:evaluate}
-  \frac{\partial E^n}{\partial w_{ij}} = z_i * \delta_j.
+  \frac{\partial E^n}{\partial w_{ij}} = y_i \delta_j.
 \end{equation}
 
 Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropagation-Formel:
@@ -175,7 +175,6 @@ Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropa
                \sigma ' (net_j) \sum_k w_{kj} \delta_k     & \text{wenn j verdecktes Neuron ist}
            \end{cases} 
 \end{equation} 
-
 
 Um den Gradienten zu berechnen müssen wir nun nur noch $\delta_j$ rekursiv bei den Ausgabeneuronen beginnend mit \ref{eq:backpropagation} berechnen, und dann mit \ref{eq:evaluate} auswerten \cite{bishop1995neural}. 
 
@@ -235,4 +234,4 @@ Eine Verbesserung zum gewöhnlichen Gradientenverfahren ist es, einen so genannt
  \Delta_w^t = - \eta  \nabla_w J(w) + \gamma \Delta_w^{t-1}.
 \end{equation}
 
-Bei einigen Problen kann das Verfahren Vorteile bringen (primär bei Batch Backprop \cite{lecunefficient}), oft ist aber SGD mit einer guten Wahl der Lernrate bereits optimal \cite{bengio2012practical}.
+Bei einigen Problemen kann das Verfahren Vorteile bringen (primär bei Batch Backprop \cite{lecunefficient}), oft ist aber SGD mit einer guten Wahl der Lernrate bereits optimal\cite{bengio2012practical}.
