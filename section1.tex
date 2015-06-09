@@ -8,7 +8,6 @@ Es sind mathematisch simple Verfahren, die sogar analytisch lösbar sind - aber 
 Eine Weiterentwicklung ist das so genannte Perceptron.
 Eine gängige Definitition ist die, die auch in \cite{bishop1995neural} verwendet wird: 
 Ein Perceptron besteht aus einem Eingabe-Vektor $x$, einem Gewichtsvektor $w$ und einem Bias-Wert $b$. Es ist ein binärer Klassifizierer, der das Ergebniss mit Hilfe der folgenden Formel berechnet:
-
 \begin{equation}
 \label{eq:perceptron}
     y = \begin{cases}
@@ -20,7 +19,6 @@ Ein Perceptron besteht aus einem Eingabe-Vektor $x$, einem Gewichtsvektor $w$ un
 In dieser Formel entspricht $wx$ dem Skalarprodukt.
 
 \subsection{Das Perceptron als einfaches ANN}
-
 \begin{figure}[ht!]
 \label{fig:SLP}
   \centering
@@ -29,7 +27,6 @@ In dieser Formel entspricht $wx$ dem Skalarprodukt.
 \end{figure}
 
 Wie wir später sehen werden, kann das Perceptron auch als eine einfache Variante eines Feed-Forward-Neuronalen-Netzes mit nur einem Ausgangsneuronen, mit der Heaviside-Funktion
-
 \begin{equation}
     \sigma = \begin{cases}
                1               & n \geq 0\\

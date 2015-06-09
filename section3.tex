@@ -11,7 +11,6 @@ Das Gradientenverfahren weist in der Praxis einige Fallstricke auf. In \cite{ben
 Beim Gradientenverfahren ist es wichtig, eine sinnvolle Schrittweite zu verwenden. Ist sie kleiner, als die optimale, ist die benötigte Rechenzeit höher. Ist sie größer, kann das Verfahren stagnieren oder sogar divergieren. Eine gute Heuristik für die Wahl des Parameters ist, mit einem großen Wert zu starten, und bei Divergenz es mit einer dreimal kleineren Schrittweite erneut zu probieren.
 In dem Paper wird als Anfangsschrittweite $\epsilon_0 = 0.01$ empfohlen, als Wert, der für die meisten - aber nicht alle - Netzwerke funktioniert.
 Des weiteren sollte eine nicht konstante Lernrate 
-
 \begin{equation}
 	\epsilon_t = \frac{\epsilon_0 c}{\max(t, c)}
 \end{equation}
@@ -33,7 +32,6 @@ Die Anzahl der Neuronen ist schwer zu bestimmen, ein Netzwerk mit mehr Neuronen 
 
 \subsection{Initialisierung der Gewichte}
 Die Initialisierung der Gewichte ist ein schwieriges Problem. Eine oft benutzte Heuristik ist 
-
 \begin{equation}
 	W_{ij} \sim U [ -\frac{1}{\sqrt{N}} , \frac{1}{\sqrt{N}} ],
 \end{equation}
@@ -41,7 +39,6 @@ Die Initialisierung der Gewichte ist ein schwieriges Problem. Eine oft benutzte 
 wobei $U[-a, a]$ gleichverteilten Werten zwischen $-a$ und $a$ entspricht, und $n$ der Anzahl der Neuronen in der vorherigen Schicht. 
 
 In \cite{glorot2010understanding} wird, um dieses Problem zu umgehen, vorgeschlagen, die normalisierte Initialisierung
-
 \begin{equation}
 	W \sim U [ - \frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}} 
 	, 			 \frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}} ]
@@ -55,7 +52,6 @@ In der Praxis ergeben sich durch sie bessere Ergebnisse.
 Ein Problem, dass in der Praxis auftreten kann, ist das so genannte Overfitting, das ist die übermäßige Anpassung an die Trainingsmenge. Oft ist das Modell zu stark angepasst und daher nicht mehr allgemein effizient.
 
 Eine mögliche Lösung ist die L1/L2-Regularisierung. Bei ihr wird an die Kostenfunktion ein weiterer Term angehängt:
-
 \begin{IEEEeqnarray}{rCl}
 E_{\text{L1}} & = & E + \lambda \sum_i \left| w_i \right| 
 \\
@@ -76,7 +72,6 @@ Bei der Regression gibt es üblicherweise einen Knoten im letzten Layer pro Elem
 Bei der Klassifikation gibt es für jede mögliche Klasse einen Austrittsknoten, und es muss folgendes gelten:
 Alle Ausgabewerte liegen zwischen $0$ und $1$ und summieren sich insgesamt auf 1.
 Das heißt, sie sind direkt als Wahrscheinlichkeiten interpretierbar. Eine mögliche Wahl für die Aktivierungsfunktion ist die SoftMax-Funktion, eine Verallgemeinerung der logistischen Funktion:
-
 \begin{equation}
 \label{eq:softmax}
 	\sigma_s = \frac{\exp (y_k)}{\sum_{k'} \exp (y_{k'})}.
