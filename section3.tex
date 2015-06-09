@@ -19,9 +19,12 @@ Des weiteren sollte eine nicht konstante Lernrate
 benutzt werden. Dabei ist $c$ eine Konstante, und $t$ die Iterationsanzahl. Die Schrittweite bleibt also bei den ersten $c$ Schritten konstant, und wird dann erst verringert. Eine einfache Wahl für $c$ ist es, $\epsilon_t$ konstant zu lassen, bis das Trainingskriterium aufhört, bei der Iteration sich signifikant zu verändern.
 
 
-Eine andere gute Optimierung ist, weder Batch noch Stochastic Backpropagation zu nutzen, sondern eine Mini-batch-Variante, bei der mehrere, aber nicht alle Eingabevektoren evaluiert werden vor jedem Gewichtsupdate. \\
-Die Kostenfunktion hat oft mehrere lokale Minima - das Gradientenverfahren kann dann in einem solchen steckenbleiben, das heißt, es konvergiert unter Umständen nicht zum gesuchten globalen Minimum. Auch wenn das globale Minimum nicht immer erwünscht ist (vlg. \ref{sec:overfitting}), ist es unter Umständen doch besser, es zu finden.\\
-Wenn man beim SGD in einem Minimum stecken bleibt, bietet es sich an, einfach mit neu initialisierten Gewichtsparametern neuzustarten. \\\
+Eine andere gute Optimierung ist, weder Batch noch Stochastic Backpropagation zu nutzen, sondern eine Mini-batch-Variante, bei der mehrere, aber nicht alle Eingabevektoren evaluiert werden vor jedem Gewichtsupdate. 
+
+Die Kostenfunktion hat oft mehrere lokale Minima - das Gradientenverfahren kann dann in einem solchen steckenbleiben, das heißt, es konvergiert unter Umständen nicht zum gesuchten globalen Minimum. Auch wenn das globale Minimum nicht immer erwünscht ist (vlg. \ref{sec:overfitting}), ist es unter Umständen doch besser, es zu finden.
+
+Wenn man beim SGD in einem Minimum stecken bleibt, bietet es sich an, einfach mit neu initialisierten Gewichtsparametern neuzustarten. 
+
 Alternativen zu SGD sind meistens langsamer und schwerer zu implementieren. Eine Alternative zum Gradientenverfahren ist Konjugierte Gradienten. Dieses Verfahren funktioniert jedoch nur bei Batch Backpropagation, ist also SGD bei großen Trainingssets unterlegen. Es ist aber eine durchaus sinnvolle Optimierungsmethode, für Probleme, die genaue realwertige Ausgabewerte benötigen\cite{lecunefficient}.
 Verschiedene Optimierungsmethoden, primär im Bezug auf Deep Learning werden in \cite{ngiam2011optimization} diskutiert.
 
@@ -49,9 +52,9 @@ In der Praxis ergeben sich durch sie bessere Ergebnisse.
 
 \subsection{Vermeidung von Overfitting}
 \label{sec:overfitting}
-Ein Problem, dass in der Praxis auftreten kann, ist das so genannte Overfitting, das ist die übermäßige Anpassung an die Trainingsmenge. Oft ist das Modell zu stark angepasst und daher nicht mehr allgemein effizient.\\
+Ein Problem, dass in der Praxis auftreten kann, ist das so genannte Overfitting, das ist die übermäßige Anpassung an die Trainingsmenge. Oft ist das Modell zu stark angepasst und daher nicht mehr allgemein effizient.
 
-Eine mögliche Lösung ist die L1/L2-Regularisierung. Bei ihr wird an die Kostenfunktion ein weiterer Term angehängt:\\
+Eine mögliche Lösung ist die L1/L2-Regularisierung. Bei ihr wird an die Kostenfunktion ein weiterer Term angehängt:
 
 \begin{IEEEeqnarray}{rCl}
 E_{\text{L1}} & = & E + \lambda \sum_i \left| w_i \right| 
@@ -68,7 +71,7 @@ Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit d
 Dabei entspricht die L2-Regularisierung early stopping, es sollten also nicht beide Methoden gleichzeitig genutzt werden; L1-Regularisierung kann jedoch mit beiden Regularisierungsarten kombiniert werden\cite{bengio2012practical}. 
 
 \subsection{Interpretation des Output-Layers}
-Bei der Regression gibt es üblicherweise einen Knoten im letzten Layer pro Element des Output-Vektors, ohne Aktivierungsfunktion (bzw. mit $\sigma(x) = x$). Der Wert dieser Neuronen ist das Ergebniss der Regression. \\
+Bei der Regression gibt es üblicherweise einen Knoten im letzten Layer pro Element des Output-Vektors, ohne Aktivierungsfunktion (bzw. mit $\sigma(x) = x$). Der Wert dieser Neuronen ist das Ergebniss der Regression. 
 
 Bei der Klassifikation gibt es für jede mögliche Klasse einen Austrittsknoten, und es muss folgendes gelten:
 Alle Ausgabewerte liegen zwischen $0$ und $1$ und summieren sich insgesamt auf 1.
