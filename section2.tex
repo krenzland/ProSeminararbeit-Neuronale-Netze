@@ -91,11 +91,12 @@ Den Fehlerterm können wir jetzt einfach als Summe über alle Fehlerwahrscheinli
 Ignorieren wir nun alle Faktoren, die nicht von den Parametern des Netztes abhängen, erhalten wir 
 
 \begin{equation}
+\label{eq:MSE}
 E = \sum_{k=1}^K \sum_{i=1}^N \left( y_i^k - t_i^k \right)^2,
 \end{equation}
 
 wobei $y^k$ dem Ausgabevektors des Netzwerks für den Fall $k$ und $t_k$ der gewollten Ausgabe entspricht.
-Diese Fehlerfunktion heißt Sum-of-squares-errors \cite{bishop1995neural}.
+Diese Fehlerfunktion heißt  Mean-square-error(MSE)\cite{bishop1995neural}.
 
 Eine für Klassifizierungsprobleme oft benutze Fehlerfunktion ist die negative Kreuzentropie:
 
@@ -147,6 +148,7 @@ E = \sum_n E_n(y_1, \ldots, y_c),
 
 das heißt, der Gesamtfehler ist die Summe aller Einzelfehler.
 Wir nehmen weiterhin an, dass der Fehler als ableitbare Funktion der Output-Werte darstellbar ist.
+Für die folgende Herleitung benutzen wir die MSE-Kostenfunktion(\ref{eq:MSE}), für andere Fehlerfunktionen ist die Vorgehensweise analog.
 
 Wir suchen jetzt die partielle Ableitung der Fehlerfunktion unter Berücksichtigung eines bestimmten Gewichts:
 
@@ -161,6 +163,7 @@ Wir definieren jetzt die Hilfsvarabeln:
 \\
 \frac{\partial E^n}{\partial net_j} & = & \delta_j,
 \end{IEEEeqnarray}
+
 wobei $z_i$ durch den Feedforward-Pass (also mit \ref{eq:feedforward1} und \ref{eq:feedforward2}) berechnet wird. 
 
 Mit diesen Variablen können wir die Zerlegung schön beschreiben als
@@ -174,7 +177,7 @@ Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropa
 \begin{equation}
 \label{eq:backpropagation}
 \delta_j =  \begin{cases}
-               \sigma ' (net_j) (y_j - \hat{y_j})           & \text{wenn j Ausgabeneuron ist}\\
+               \sigma ' (net_j) (y_j - \hat{y_j})          & \text{wenn j Ausgabeneuron ist}\\
                \sigma ' (net_j) \sum_k w_{kj} \delta_k     & \text{wenn j verdecktes Neuron ist}
            \end{cases} 
 \end{equation} 
