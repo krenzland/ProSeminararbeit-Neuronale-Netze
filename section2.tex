@@ -56,22 +56,28 @@ Problematisch ist bei der Rectifier-Funktion jedoch, dass durch $x < 0$ das Neur
 \subsection{Die Kostenfunktion}
 Wir benutzen eine Kostenfunktion, die den durchschnittlichen Fehler des ANN-Ergebnis quantifiziert.
 
-Da neuronale Netze als Modellierung der Wahrscheinlichkeit der Vorhersage, dass ein Output Vektor $t$ für neue Eingabewerte $x$ angesehen werden, kann man den Fehler bezüglich der bedingten Wahrscheinlichkeit $p(t|x)$ darstellen. 
-Um eine Fehlerfunktion zu bilden benutzt man nun die Maximum-Likehood-Funktion, die Parameter einer Wahrscheinlichkeitsverteilung schätzt. 
+
+Die Maximum-Likelihood-Methode wird benutzt, um die Parameter einer Wahrscheinlichkeitsverteilung zu schätzen. Diese können wir auch als Basis für eine Kostenfunktion für Neuronale Netze benutzen.
+
+Dafür wird die Likelihood-Funktion $\mathcal{L}$ maximiert.
+
+Wir nehmen jetzt an, dass die Parameter $x_1, \ldots x_n$ voneinander unabhängig sind. Dann sieht die Funktion folgendermaßen aus:
 
 \begin{equation}
-L = \prod_n p(x^n, t^n) = \prod_n p(t^n|x^n) p(x^n) 
+  \mathcal{L} (\theta; x_1, \ldots, x_n) =
+  f(x_1, x_2, \ldots, x_n | \theta) =
+  \prod_{i = 1}^n f(x_i|\theta) .
 \end{equation}
+
+Sie beschreibt die Likelihood, das ist die Funktion eines Parameters, für ein gegebenes Resultat. %Meh.
 
 Anstatt die Maximum-Likehood-Funktion zu maximieren, minimieren wir die negative, logarithmische Maximum-Likehood-Funktion. Das funktioniert, weil $\ln$ eine monotone Funktion ist, es erleichtert uns außerdem mit großen Werten zu rechnen. Die resultierende Funktion sieht folgendermaßen aus:
 
-\begin{IEEEeqnarray}{rCl}
-E & = & -\ln L 
-\nonumber \\
-& = & - \sum_n \ln p(t^n|x^n) - \sum_n \ln p(x^n)
-\nonumber \\
-& = & - \sum_n \ln p(t^n|x^n) .
-\end{IEEEeqnarray}
+\begin{align}
+ E  & = - \ln \mathcal{L} \\
+  %& = -  \ln \left( \prod_{i = 1}^n f(x_i|\theta) \right) \\
+  & = - \sum_{i=1}^n \ln f(x_i|\theta) 
+\end{align}
 
 Aus dieser allgemeinen Fehlerfunktionen lassen sich spezielle Fehlerfunktionen ableiten, die in der Praxis benutzt werden \cite{bishop1995neural}:
 
