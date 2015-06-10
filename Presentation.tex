@@ -58,33 +58,32 @@ Modell für maschinelles Lernen.
 
 \begin{frame}{Aktivierungsfunktionen}
 \begin{columns}[c]
-  \begin{column}[c]{.5\textwidth}
+  \begin{column}[c]{.6\textwidth}
   \begin{figure}[ht!]
-\centering
-  \caption{Die logistische Funktion}
+  \centering
+  \caption{Die logistische Funktion $\sigma_1$}
+    \begin{tikzpicture}[scale=0.80]
 
-\begin{tikzpicture}[scale=0.80]
-
-    \begin{axis}%
-    [
-        grid=major,     
-        xmin=-6,
-        xmax=6,
-        axis x line=bottom,
-        ytick={0,.5,1},
-        ymax=1,
-        axis y line=middle,
-    ]
-        \addplot%
+        \begin{axis}%
         [
-            blue,%
-            mark=none,
-            samples=100,
-            domain=-6:6,
+            grid=major,     
+            xmin=-6,
+            xmax=6,
+            axis x line=bottom,
+            ytick={0,.5,1},
+            ymax=1,
+            axis y line=middle,
         ]
-        (x,{1/(1+exp(-x))});
-    \end{axis}
-\end{tikzpicture}
+            \addplot%
+            [
+                blue,%
+                mark=none,
+                samples=100,
+                domain=-6:6,
+            ]
+            (x,{1/(1+exp(-x))});    
+            \end{axis}
+    \end{tikzpicture}
 \end{figure}
   \end{column}  
   \begin{column}[c]{.5\textwidth}
