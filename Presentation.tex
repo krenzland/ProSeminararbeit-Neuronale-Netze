@@ -139,7 +139,7 @@ Modell für maschinelles Lernen.
 \begin{equation}
 \label{eq:backpropagation}
 \delta_j =  \begin{cases}
-               \sigma ' (net_j) (y_j - \hat{y_j})           & \text{wenn j Ausgabeneuron ist}\\
+               \sigma ' (net_j) (y_j - t_j)           & \text{wenn j Ausgabeneuron ist}\\
                \sigma ' (net_j) \sum_k w_{kj} \delta_k     & \text{wenn j verdecktes Neuron ist}
            \end{cases} 
 \end{equation} 

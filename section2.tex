@@ -38,7 +38,7 @@ und der hyperbolische Tangens
 \sigma_1(2x) -1.
 \end{equation}
 
-hat aber einen Nachteil mit der logistischen Funtkion gemeinsam: sehr kleine oder sehr große Werte haben eine sehr kleine Ableitung zur Folge; das kann ein Absterben des Neurons beim Training des Netzwerks zur Folge haben. 
+Er hat aber einen Nachteil mit der logistischen Funtkion gemeinsam: sehr kleine oder sehr große Werte haben eine sehr kleine Ableitung zur Folge; das kann ein Absterben des Neurons beim Training des Netzwerks zur Folge haben. 
 
 In \cite{lecunefficient} wird $1.7159 \tanh(\frac{2}{3} x)$ empfohlen, wenn eine Normalisierung vorgenommen wird. 
 
@@ -48,14 +48,12 @@ Eine alternative Aktivierungsfunktion ist die Rectifier-Funktion
 \sigma_3(x) = \max(0,x).
 \end{equation} 
 
-In \cite{glorot2011deep} wird argumentiert, dass die logistische Funktion zwar biologisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biologischer Neuronen ist. Was für uns relevanter ist: sie ist effizienter zu berechnen; also in der Praxis oft eine bessere Wahl. 
+In \cite{glorot2011deep} wird argumentiert, dass die logistische Funktion zwar biologisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biologischer Neuronen ist. Was für uns relevanter ist: sie ist effizienter zu berechnen. Sie ist also in der Praxis oft eine bessere Wahl. 
 
-Problematisch ist bei der Rectifier-Funktion jedoch, dass durch $x < 0$ das Neuron abstirbt, weil die Ableitung gleich 0 ist: Bei der Backpropagation kann ein Fehler nicht korrigiert werden\cite{bengio2012practical}.
-
+Problematisch ist bei der Rectifier-Funktion jedoch, dass durch $x < 0$ das Neuron abstirbt, weil die Ableitung gleich 0 ist: Beim Training des Modells kann ein Fehler nicht korrigiert werden\cite{bengio2012practical}.
 
 \subsection{Die Kostenfunktion}
 Wir benutzen eine Kostenfunktion, die den durchschnittlichen Fehler des ANN-Ergebnis quantifiziert.
-
 
 Die Maximum-Likelihood-Methode wird benutzt, um die Parameter einer Wahrscheinlichkeitsverteilung zu schätzen. Diese können wir auch als Basis für eine Kostenfunktion für Neuronale Netze benutzen.
 
@@ -80,7 +78,7 @@ Anstatt die Maximum-Likehood-Funktion zu maximieren, minimieren wir die negative
 Aus dieser allgemeinen Fehlerfunktionen lassen sich spezielle Fehlerfunktionen ableiten, die in der Praxis benutzt werden\cite{bishop1995neural}:
 
 Wir wollen jetzt wieder den Fehler für $p(t|k)$ darstellen. Wir nehmen an, dass die Variable $t_k$ aus einer deterministischen Funktion, und normalverteiltem Rauschen (mit dem arithmetischen Mittel $0$ und Varianz $\sigma$ gebildet wird.  
-Deswegen gilt: 
+Deswegen gilt: %Umformulieren? p(t|k)? Was bedeutet das?
 \begin{equation}
   p(t_k|x) = \frac{1}{(2 \pi \sigma^2)^{0.5}} \exp \left( -\frac{ \left[  y_k(x; w) - t_k \right]^2 }{2 \sigma^2} \right).
 \end{equation}.
@@ -115,7 +113,7 @@ Um ein ANN zur Vorhersage neuer Input-Vektoren zu benutzen, wird es im sogenannt
 \text{net}_j = \sum_{i} w_{ji} y_i = w_j^t x.
 \end{equation}
 
-Bei dieser Formel ist $w_{ji}$ das Gewicht vom Neuron $j$ zum Neuron $i$, die ganze lineare Kombination kann man auch als Matrix-Vektorprodukt $w_j^t x$ darstellen, wobei die Spalten von $w$ den Gewichten jedes Layers entsprechen. %TODO: Formulierung!
+Bei dieser Formel ist $w_{ji}$ das Gewicht vom Neuron $j$ zum Neuron $i$. Die Summe lässt sich auch schln kann man auch als Matrix-Vektorprodukt $w_j^t x$ darstellen, wobei die Spalten von $w$ den Gewichten jedes Layers entsprechen. %TODO: Formulierung!
 
 Nachdem diese lineare Transformation abgeschlossen ist, wird bei allen Neuronen (außer bei denen im Output-Layer) die Aktivierungsfunktion benutzt, die dann eine nicht-lineare Transformation durchführt: 
 \begin{equation}
@@ -144,7 +142,7 @@ E = \sum_n E_n(y_1, \ldots, y_c),
 \end{equation}
 
 das heißt, der Gesamtfehler ist die Summe aller Einzelfehler.
-Wir nehmen weiterhin an, dass der Fehler als ableitbare Funktion der Output-Werte darstellbar ist.
+Wir nehmen weiterhin an, dass der Fehler als ableitbare Funktion der Ausgabe-Werte darstellbar ist.
 Für die folgende Herleitung benutzen wir die MSE-Kostenfunktion(\ref{eq:MSE}), für andere Fehlerfunktionen ist die Vorgehensweise analog.
 
 Wir suchen jetzt die partielle Ableitung der Fehlerfunktion unter Berücksichtigung eines bestimmten Gewichts:
@@ -171,7 +169,7 @@ Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropa
 \begin{equation}
 \label{eq:backpropagation}
 \delta_j =  \begin{cases}
-               \sigma ' (net_j) (y_j - \hat{y_j})          & \text{wenn j Ausgabeneuron ist}\\
+               \sigma ' (net_j) (y_j - t_j)          & \text{wenn j Ausgabeneuron ist}\\
                \sigma ' (net_j) \sum_k w_{kj} \delta_k     & \text{wenn j verdecktes Neuron ist}
            \end{cases} 
 \end{equation} 
@@ -187,15 +185,14 @@ Wichtig ist noch die Unterscheidung zwischen:
 	Bei der zweiten Methode werden alle Eingabevektoren des Trainingssets präsentiert und die Gewichtsänderungen summiert. Erst dann werden alle Gewichte aktualisiert.\cite{duda2012pattern}
 \end{LaTeXdescription}
 
-Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz nicht nur von der Größe des Trainingsset, sondern vielmehr von der Anzahl der Iterationen und der Verteilung der Trainingsdaten - für große Sets ist ein Benutzen der Batch Methode nicht mehr sinnvoll \cite{bengio2012practical}.
+Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz nicht von der Größe des Trainingsset, sondern viel mehr von der Anzahl der Iterationen und der Verteilung der Trainingsdaten abhängt - für große Sets ist ein Benutzen der Batch Methode nicht mehr sinnvoll \cite{bengio2012practical}.
 Ein weiter Vorteil ist, dass sie redundante Trainingsdaten (die bei einem Training für Mustererkennung zwangsläufig auftreten) ausnutzt. Außerdem konveriert sie eventuell zu einem besseren Minimum als die Batch Methode \cite{lecunefficient}.
 Wir werden hier primär die stochastische Methode betrachten, da sie in der Praxis die bessere ist \cite{lecunefficient, bengio2012practical}.
 
 
 \subsection{Die numerische Methode - Gradient Descent und verwandte}
 
-Der Gradient wird oft mit dem Gradientenverfahren, einer Methode um Funktionen zu minimieren, benutzt \cite{bishop1995neural,bengio2012practical} 
-.
+Der Gradient wird oft mit dem Gradientenverfahren, einer Methode um Funktionen zu minimieren, benutzt \cite{bishop1995neural,bengio2012practical}.
 
 Das Gradientenverfahren lässt sich als Iterationsvorschrift darstellen:
 \begin{equation}
@@ -221,7 +218,6 @@ Auf ANNs angewant, sieht die Formel dann für jeden Zeitschritt $t$ folgenderma�
 % \begin{equation}
 % \Delta w_{j,i} = - \eta  \sum_n \delta_j^n  x_i^n 
 % \end{equation}
-
 
 Man unterscheidet beim Training von ANNs zwischen Batch und Stochastic Gradient Descent (SGD).
 
