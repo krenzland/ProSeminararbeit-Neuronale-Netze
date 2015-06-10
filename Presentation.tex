@@ -4,7 +4,7 @@
 \usepackage{polyglossia}
 \setmainlanguage[spelling=new,babelshorthands=true]{german}
 
-\usetheme[usetitleprogressbar]{m}
+\usetheme{m}
 
 \frenchspacing
 \usepackage{hyperref}
@@ -19,10 +19,7 @@
 
 \beamertemplatenavigationsymbolsempty
 
-\usepackage{listings}
-\lstset{language=Java} 
-
-\title{ProSeminar: Data Mining}
+\title{Proseminar: Data Mining}
 \subtitle{Neuronale Netze: Grundlagen}
 
 
@@ -37,7 +34,13 @@
 
 
 \begin{frame}{Was sind Neuronale Netze?}
-	blablablablabla
+Neuronale Netze sind ein:
+\begin{itemize}
+\item graphisches
+\item nicht-lineares
+\item flexibles
+\end{itemize}
+Modell für maschinelles Lernen.
 \end{frame}
 
 \begin{frame}{Topologie}
@@ -74,7 +77,7 @@
 \begin{frame}{Backprop}
 \begin{align}
 	E &= \sum_{k=1}^K \sum_{i=1}^N \left( y_i^k - t_i^k \right)^2 \\
-	& =  \sum_n E_n(y_1, \ldots, y_c)
+	  &=  \sum_n E_n(y_1, \ldots, y_c)
 \end{align}
 
 \begin{equation}
@@ -87,14 +90,14 @@
 
 
 \begin{align}
-\frac{\partial net_j }{\partial w_{ji}} & =  y_i \quad \text{und}
-\\
-\frac{\partial E^n}{\partial net_j} & =  \delta_j,
+  \frac{\partial net_j }{\partial w_{ji}} & =  y_i
+  \\
+  \frac{\partial E^n}{\partial net_j} & =  \delta_j
 \end{align}
 
 \begin{equation}
 \label{eq:evaluate}
-  \frac{\partial E^n}{\partial w_{i,j}} = z_i * \delta_j.
+  \frac{\partial E^n}{\partial w_{i,j}} = y_i  \delta_j.
 \end{equation}
 
 \begin{equation}
@@ -107,16 +110,30 @@
 \end{frame}
 \begin{frame}{Optimierung}
 
-\begin{equation}
-x_{n+1}=x_n- \eta  \nabla F(x_n), 
-\end{equation}
-\begin{equation}
-  \Delta_w^t = - \eta  \nabla_w E(w),
-\end{equation}
+\begin{align}
+x_{n+1} &=x_n- \eta  \nabla F(x_n) \\
+\Delta_w^t &= - \eta  \nabla_w E(w)
+\end{align}
 
 \end{frame}
 
-\begin{frame}{Ausblick}
-	blablablablabla
+\begin{frame}{Diskussion und Ausblick}
+\begin{columns}[T]
+  \begin{column}[T]{.5\textwidth}
+        Vorteile:
+        \begin{itemize}
+          \item mächtig
+          \item flexibel
+        \end{itemize}
+  \end{column}  
+  \begin{column}[T]{.5\textwidth}
+        Nachteile
+        \begin{itemize}
+          \item viele Parameter, kompliziert anzupassen
+          \item langsam
+        \end{itemize}
+    \end{column}
+\end{columns} 
+In der \alert{aktuellen} Forschung relevant: Netze anderer Topologien 
 \end{frame}
 \end{document}
