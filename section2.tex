@@ -14,9 +14,9 @@ Wenn man von einem k-schichtigen ANN spricht, bezeichnet k die Anzahl der Schich
 
 Sowohl Input, als auch Hidden-Layer besten aus Neuronen mit einer nicht linearen Aktivierungsfunktion, die die Eingangsdaten transformiert.
 
-Jeder Layer ist mit den anderen elementweise verbunden. Jede Verbindung hat ein so genanntes Gewicht. Daten fließen nur von links nach rechts. Netzwerke dieser Art heißen Multilayer-Perceptrons (MLP). 
+Jeder Layer ist mit den anderen elementweise verbunden. Jede Verbindung hat ein so genanntes Gewicht $w_{ij} \in \mathbb{R}$. Daten fließen nur von links nach rechts. Netzwerke dieser Art heißen Multilayer-Perceptrons (MLP). 
 
-In Abbildung \ref{fig:MLP} sieht man ein typisches MLP. In dieser Abbildung fehlt aber noch ein paar wichtige Gewichte: der Bias. Er dient dazu, die Eingabewerte jedes Neurons noch um einen linearen Wert zu ergänzen; das erleichtert das Training und stärkt die Mächtigkeit des Modells. In der Praxis wird er wie ein spezielles Neuron behandelt, dass eine Verbindung (inklusive Gewicht) zu jedem Neuron, dass nicht im Input Layer ist, besitzt. Es wird dann quasi als nulltes Neuron jeder Schicht im Gewichtsvektor behandelt - das erleichtert uns Berechnungen.
+In Abbildung \ref{fig:MLP} sieht man ein typisches MLP. In dieser Abbildung fehlt aber noch ein wichtiges, spezielles Neuron mit den dazu gehörigen Gewichten: der Bias. Er dient dazu, die Eingabewerte jedes Neurons noch um einen linearen Wert zu ergänzen. Dadurch wird das Training erleichtert und die Mächtigkeit des Modells wird gestärkt. In der Praxis wird er wie ein spezielles Neuron mit Konstanter Aktivierung $+1$ behandelt, dass eine Verbindung (inklusive Gewicht) zu jedem Neuron, dass nicht im Input Layer ist, besitzt. Es wird dann quasi als nulltes Neuron jeder Schicht im Gewichtsvektor angesehen - das erleichtert uns dann Berechnungen.
  
 
 \subsection{Die Aktivierungsfunktion}
