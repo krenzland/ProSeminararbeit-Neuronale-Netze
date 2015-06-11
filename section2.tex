@@ -12,7 +12,8 @@
 Ein Neuronales Netz (zur Abgrenzungen zu biologischen Netzen in der Fachliteratur als Artificial Neural Network (ANN) bezeichnet) besteht aus mehreren Schichten Neuronen: einem Input Layer, einen (oder mehreren) Hidden Layer, und einem Output Layer. 
 Wenn man von einem k-schichtigen ANN spricht, bezeichnet k die Anzahl der Schichten, ohne Input-Layer.
 
-Sowohl Input, als auch Hidden-Layer besten aus Neuronen mit einer nicht linearen Aktivierungsfunktion, die die Eingangsdaten transformiert.
+Die Ausgabe der Eingabeneuronen entspricht den jeweiligen Elementen des Eingabevektors.
+Die Hidden-Layer besten aus Neuronen mit einer nicht linearen Aktivierungsfunktion, die die Eingangsdaten transformiert.
 
 Jeder Layer ist mit den anderen elementweise verbunden. Jede Verbindung hat ein so genanntes Gewicht $w_{ij} \in \mathbb{R}$. Daten fließen nur von links nach rechts. Netzwerke dieser Art heißen Multilayer-Perceptrons (MLP). 
 
@@ -55,32 +56,33 @@ Problematisch ist bei der Rectifier-Funktion jedoch, dass durch $x < 0$ das Neur
 \subsection{Die Kostenfunktion}
 Wir benutzen eine Kostenfunktion, die den durchschnittlichen Fehler des ANN-Ergebnis quantifiziert.
 
-Die Maximum-Likelihood-Methode wird benutzt, um die Parameter einer Wahrscheinlichkeitsverteilung zu schätzen. Diese können wir auch als Basis für eine Kostenfunktion für Neuronale Netze benutzen.
+Die Maximum-Likelihood-Methode wird benutzt, um, wenn Beobachtungen gegeben sind, die Parameter einer Wahrscheinlichkeitsverteilung zu schätzen. Dazu betrachten wir Neuronale Netze als Modell für eine Wahrscheinlichkeitsverteilung. Diese können wir auch als Basis für eine Kostenfunktion für Neuronale Netze benutzen.
 
 Dafür wird die Likelihood-Funktion $\mathcal{L}$ maximiert.
 
-Wir nehmen jetzt an, dass die Parameter $x_1, \ldots x_n$ voneinander unabhängig sind. Dann sieht die Funktion folgendermaßen aus:
+Wir nehmen jetzt an, dass die Beobachtungen $x_1, \ldots x_n$ unabhängig und identisch verteilt sind. Dann sieht die Funktion für die Parameter $\theta$folgendermaßen aus:
+
 \begin{equation}
   \mathcal{L} (\theta; x_1, \ldots, x_n) =
   f(x_1, x_2, \ldots, x_n | \theta) =
   \prod_{i = 1}^n f(x_i|\theta) .
 \end{equation}
 
-Sie beschreibt die Likelihood, das ist die Funktion eines Parameters, für ein gegebenes Resultat. %Meh.
+Sie beschreibt die Likelihood, das ist die Funktion eines Parameters, für ein gegebenes Resultat. Interessant ist, dass wir bei dieser Funktion die Beobachtungen als feste Parameter der Funktion ansehen, die eigentlichen Parameter sind dann variable. Wir optimieren also die Wahrscheinlichkeitsverteilungsfunktion.
 
 Anstatt die Maximum-Likehood-Funktion zu maximieren, minimieren wir die negative, logarithmische Maximum-Likehood-Funktion. Das funktioniert, weil $\ln$ eine monotone Funktion ist, es erleichtert uns außerdem mit großen Werten zu rechnen. Die resultierende Funktion sieht folgendermaßen aus:
 \begin{align}
  E  & = - \ln \mathcal{L} \\
   %& = -  \ln \left( \prod_{i = 1}^n f(x_i|\theta) \right) \\
-  & = - \sum_{i=1}^n \ln f(x_i|\theta) 
+  & = - \sum_{i=1}^n \ln f(x_i|\theta).
 \end{align}
 
 Aus dieser allgemeinen Fehlerfunktionen lassen sich spezielle Fehlerfunktionen ableiten, die in der Praxis benutzt werden\cite{bishop1995neural}:
 
-Wir wollen jetzt wieder den Fehler für $p(t|k)$ darstellen. Wir nehmen an, dass die Variable $t_k$ aus einer deterministischen Funktion, und normalverteiltem Rauschen (mit dem arithmetischen Mittel $0$ und Varianz $\sigma$ gebildet wird.  
+Wir wollen jetzt wieder den Fehler für $p(t|\theta)$ darstellen. Wir nehmen an, dass die Variable $t_k$ aus einer deterministischen Funktion, und normalverteiltem Rauschen (mit dem arithmetischen Mittel $0$ und Varianz $\sigma$ gebildet wird.  
 Deswegen gilt: %Umformulieren? p(t|k)? Was bedeutet das?
 \begin{equation}
-  p(t_k|x) = \frac{1}{(2 \pi \sigma^2)^{0.5}} \exp \left( -\frac{ \left[  y_k(x; w) - t_k \right]^2 }{2 \sigma^2} \right).
+  p(t_k|\theta) = \frac{1}{(2 \pi \sigma^2)^{0.5}} \exp \left( -\frac{ \left[  y_k(x; w) - t_k \right]^2 }{2 \sigma^2} \right).
 \end{equation}.
 
 Den Fehlerterm können wir jetzt einfach als Summe über alle Fehlerwahrscheinlichkeiten darstellen:
@@ -95,7 +97,7 @@ E = \sum_{k=1}^K \sum_{i=1}^N \left( y_i^k - t_i^k \right)^2,
 \end{equation}
 
 wobei $y^k$ dem Ausgabevektors des Netzwerks für den Fall $k$ und $t_k$ der gewollten Ausgabe entspricht.
-Diese Fehlerfunktion heißt  Mean-square-error(MSE)\cite{bishop1995neural}.
+Diese Fehlerfunktion heißt Mean-square-error(MSE)\cite{bishop1995neural}.
 
 Eine für Klassifizierungsprobleme oft benutze Fehlerfunktion ist die negative Kreuzentropie:
 \begin{equation}
@@ -103,7 +105,8 @@ Eine für Klassifizierungsprobleme oft benutze Fehlerfunktion ist die negative K
     E = -\sum_{n} \sum_{k=1}^c t_k^n \ln y_k^n ,
 \end{equation}
 
-wobei $t_k^n \in (0,1)$ die Wahrscheinlichkeit, dass die Eingabe $x^n$ in der Klasse $c$ ist. Die Fehlerfunktion ist genau dann $0$, wenn $y_k^n = t_k^n$ ist. 
+wobei $t_k^n \in (0,1)$ die Wahrscheinlichkeit, dass die Eingabe $x^n$ in der Klasse $c$ ist. 
+
 Sie ist für diese Problemklasse stochastisch schöner zu interpretieren und wird normalerweise mit der Softmax-Aktivierungsfunktiom \ref{eq:softmax} benutzt\cite{bishop1995neural}.
 
 \subsection{Feedforward}
