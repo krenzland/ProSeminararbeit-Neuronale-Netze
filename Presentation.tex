@@ -14,6 +14,7 @@
 \usepackage{mathtools}
 \newtheorem{theo}{Theorem}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
 
 \usepackage{multicol}
 
@@ -33,7 +34,29 @@
 \begin{frame}
 \titlepage
 \end{frame}
+ \begin{frame}{Die Magie}
+      
+  \begin{columns}[c]
+    \begin{column}[c]{.33\textwidth}
+    \includegraphics[height=3.66cm]{figures/guitar.png}
 
+    man in black shirt is playing guitar.
+    \end{column}
+    \begin{column}[c]{.33\textwidth}
+    \includegraphics[height=3.66cm]{figures/dogbar.png}
+
+    black and white dog jumps over bar.
+    \end{column}
+    \begin{column}[c]{.33\textwidth}
+
+    \includegraphics[height=3.66cm]{figures/teddy.jpeg}
+
+    a woman holding a teddy bear in front of a mirror.
+    \end{column}  
+  \end{columns}
+
+  Quelle: Deep Visual-Semantic Alignments for Generating Image Descriptions, CVPR 2015
+ \end{frame}
 
 \begin{frame}{Was sind Neuronale Netze?}
 Neuronale Netze sind ein:
@@ -146,11 +169,22 @@ Modell für maschinelles Lernen.
 \end{frame}
 \begin{frame}{Optimierung}
 
-\begin{align}
-x_{n+1} &=x_n- \eta  \nabla F(x_n) \\
-\Delta_w^t &= - \eta  \nabla_w E(w)
-\end{align}
 
+\begin{columns}[c]
+  \begin{column}[c]{.3\textwidth}
+  \begin{figure}[ht!]
+  \centering
+  \caption{Die Rosenbrock Funktion $(1-x)^2 + 100(y - x^2)^2$}
+\input{3dplot.tex}
+\end{figure}
+  \end{column}  
+  \begin{column}[c]{.7\textwidth}
+    \begin{align}
+    x_{n+1} &=x_n- \eta  \nabla F(x_n) \\
+    \Delta_w^t &= - \eta  \nabla_w E(w)
+    \end{align}
+    \end{column}
+\end{columns} 
 \end{frame}
 
 \begin{frame}{Diskussion und Ausblick}
