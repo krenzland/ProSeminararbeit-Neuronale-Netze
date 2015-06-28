@@ -152,12 +152,11 @@ Modell für maschinelles Lernen.
   \frac{\partial net_j }{\partial w_{ji}} & =  y_i
   \\
   \frac{\partial E^n}{\partial net_j} & =  \delta_j
+  \\
+  \frac{\partial E^n}{\partial w_{i,j}} &= y_i  \delta_j
 \end{align}
 
-\begin{equation}
-\label{eq:evaluate}
-  \frac{\partial E^n}{\partial w_{i,j}} = y_i  \delta_j.
-\end{equation}
+
 
 \begin{equation}
 \label{eq:backpropagation}
