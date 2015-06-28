@@ -1,6 +1,6 @@
 \section{Neuronale Netze} %TODO: Absplitten
 
-\subsection{Aufbau und Namenskonvetionen}
+\subsection{Aufbau und Namenskonventionen}
 \begin{figure}[ht!]
 \label{fig:MLP}
   \centering
@@ -24,7 +24,7 @@ In Abbildung \ref{fig:MLP} sieht man ein typisches MLP. In dieser Abbildung fehl
 
 Die Funktion, die pro Knoten die nicht-lineare Transformation durchführt, heißt Aktivierungsfunktion. 
 
-Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das heißt eine Funktion, die die Ergebnisse in ein bestimmtes Interval komprimiert und ein an ein S erinnerndes Erscheinungsbild hat. 
+Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das heißt eine Funktion, die die Ergebnisse in ein bestimmtes Intervall komprimiert und ein an ein S erinnerndes Erscheinungsbild hat. 
 
 Beispiele für Funktion diesen Typs sind die so genannte logistische Funktion
 
@@ -39,7 +39,7 @@ und der hyperbolische Tangens
 \sigma_1(2x) -1.
 \end{equation}
 
-Er hat aber einen Nachteil mit der logistischen Funtkion gemeinsam: sehr kleine oder sehr große Werte haben eine sehr kleine Ableitung zur Folge; das kann ein Absterben des Neurons beim Training des Netzwerks zur Folge haben. 
+Er hat aber einen Nachteil mit der logistischen Funktion gemeinsam: sehr kleine oder sehr große Werte haben eine sehr kleine Ableitung zur Folge; das kann ein Absterben des Neurons beim Training des Netzwerks zur Folge haben. 
 
 In \cite{lecunefficient} wird $1.7159 \tanh(\frac{2}{3} x)$ empfohlen, wenn eine Normalisierung vorgenommen wird. 
 
@@ -68,7 +68,7 @@ Wir nehmen jetzt an, dass die Beobachtungen $x_1, \ldots x_n$ unabhängig und id
 
 Sie beschreibt die Likelihood, das ist die Funktion eines Parameters, für ein gegebenes Resultat. Interessant ist, dass wir bei dieser Funktion die Beobachtungen als feste Parameter der Funktion ansehen, die eigentlichen Parameter sind dann variabel. Wir optimieren also die Wahrscheinlichkeitsverteilungsfunktion. Dafür wird die Likelihood-Funktion $\mathcal{L}$ maximiert.
 
-Anstatt die Maximum-Likehood-Funktion zu maximieren, minimieren wir die negative, logarithmische Maximum-Likehood-Funktion. Das funktioniert, weil $\ln$ eine monotone Funktion ist, es erleichtert uns außerdem, mit großen Werten zu rechnen. Die resultierende Funktion sieht folgendermaßen aus:
+Anstatt die Maximum-Likelihood-Funktion zu maximieren, minimieren wir die negative, logarithmische Maximum-Likelihood-Funktion. Das funktioniert, weil $\ln$ eine monotone Funktion ist, es erleichtert uns außerdem, mit großen Werten zu rechnen. Die resultierende Funktion sieht folgendermaßen aus:
 \begin{align}
  E  & = - \ln \mathcal{L} \\
   %& = -  \ln \left( \prod_{i = 1}^n f(x_i|\theta) \right) \\
@@ -77,7 +77,7 @@ Anstatt die Maximum-Likehood-Funktion zu maximieren, minimieren wir die negative
 
 Aus dieser allgemeinen Fehlerfunktionen lassen sich spezielle Fehlerfunktionen ableiten, die in der Praxis benutzt werden\cite{bishop1995neural}:
 
-Wir wollen jetzt wieder den Fehler für $p(t|\theta)$ darstellen. Wir nehmen an, dass die Variable $t_k$ aus einer deterministischen Funktion und normalverteiltem Rauschen (mit Erwartungswert $0$ und Varianz $\sigma$ gebildet wird.  
+Wir wollen jetzt wieder den Fehler für $p(t|\theta)$ darstellen. Wir nehmen an, dass die Variable $t_k$ aus einer deterministischen Funktion und normal-verteiltem Rauschen (mit Erwartungswert $0$ und Varianz $\sigma$ gebildet wird.  
 Deswegen gilt: %Umformulieren? p(t|k)? Was bedeutet das?
 \begin{equation}
   p(t_k|\theta) = \frac{1}{(2 \pi \sigma^2)^{0.5}} \exp \left( -\frac{ \left[  y_k - t_k \right]^2 }{2 \sigma^2} \right).
@@ -88,13 +88,13 @@ Den Fehlerterm können wir jetzt einfach als Summe über alle Fehlerwahrscheinli
   E = \frac{1}{2 \sigma^2} \sum_{n=1}^{N} \sum_{k=1}^{c} \left[ y_k - t_k^n \right]^2 + Nc \ln \sigma + \frac{N_c}{2} \ln (2 \pi)
 \end{equation}
 
-Ignorieren wir nun alle Faktoren, die nicht von den Parametern des Netztes abhängen, erhalten wir 
+Ignorieren wir nun alle Faktoren, die nicht von den Parametern des Netzes abhängen, erhalten wir 
 \begin{equation}
 \label{eq:MSE}
 E = \frac{1}{2} \sum_{n=1}^N \sum_{k=1}^c \left( y_k^n - t_k^n \right)^2,
 \end{equation}
 
-wobei $y^k$ dem Ausgabevektors des Netzwerks für den Fall $k$ und $t^k$ der gewollten Ausgabe entspricht.
+wobei $y^k$ dem Ausgabevektor des Netzwerks für den Fall $k$ und $t^k$ der gewollten Ausgabe entspricht.
 Diese Fehlerfunktion heißt Mean-square-error(MSE)\cite{bishop1995neural}.
 
 Eine für Klassifizierungsprobleme oft benutze Fehlerfunktion ist die negative Kreuzentropie:
@@ -135,7 +135,7 @@ Dazu wird als erster Schritt für einen Trainingsvektor ein Forward-Pass durchge
 
 Diese Werte werden dann benutzt, um den Fehler zu berechnen, und dann die Parameter(also die Gewichte) anzupassen.
 
-Am Ende wird das Ergebniss der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren. Dieser Algorithmus wurde zuerst in \cite{rumelhart1988learning} erfunden, wir benutzen aber eine etwas modernere Formulierung inspiriert von \cite{bishop1995neural, duda2012pattern}. 
+Am Ende wird das Ergebnis der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren. Dieser Algorithmus wurde zuerst in \cite{rumelhart1988learning} erfunden, wir benutzen aber eine etwas modernere Formulierung inspiriert von \cite{bishop1995neural, duda2012pattern}. 
 
 Alle relevanten Fehlerfunktionen haben die Form 
 \begin{equation}
@@ -151,7 +151,7 @@ Wir suchen jetzt die partielle Ableitung der Fehlerfunktion unter Berücksichtig
 \frac{\partial E^n}{\partial w_{i,j}} = \frac{\partial E^n}{\partial net_j}  \frac{\partial net_j }{\partial w_{ji}}
 \end{equation}
 
-Wir definieren jetzt die Hilfsvarabeln:
+Wir definieren jetzt die Hilfsvariablen:
 \begin{IEEEeqnarray}{rCl}
 \frac{\partial net_j }{\partial w_{ji}} & = & y_i \quad \text{und}
 \\
@@ -166,7 +166,7 @@ Mit diesen Variablen können wir die Ableitung schön beschreiben als
   \frac{\partial E^n}{\partial w_{ij}} = y_i \delta_j.
 \end{equation}
 
-Durch mehrfahres Anwenden der Kettenregel bekommen wir die so genannte Backpropagation-Formel:
+Durch mehrfaches Anwenden der Kettenregel bekommen wir die so genannte Backpropagation-Formel:
 \begin{equation}
 \label{eq:backpropagation}
 \delta_j =  \begin{cases}
@@ -186,7 +186,7 @@ Wichtig ist noch die Unterscheidung zwischen:
 	Bei der zweiten Methode werden alle Eingabevektoren des Trainingssets präsentiert und die Gewichtsänderungen summiert. Erst dann werden alle Gewichte aktualisiert.\cite{duda2012pattern}
 \end{LaTeXdescription}
 
-Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz nicht von der Größe des Trainingsset, sondern viel mehr von der Anzahl der Iterationen und der Verteilung der Trainingsdaten abhängt - für große Sets ist ein Benutzen der Batch Methode nicht mehr sinnvoll \cite{bengio2012practical}.
+Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz nicht von der Größe des Trainingssets, sondern viel mehr von der Anzahl der Iterationen und der Verteilung der Trainingsdaten abhängt - für große Sets ist ein Benutzen der Batch Methode nicht mehr sinnvoll \cite{bengio2012practical}.
 Ein weiter Vorteil ist, dass sie redundante Trainingsdaten (die bei einem Training für Mustererkennung zwangsläufig auftreten) ausnutzt. Außerdem konvergiert sie eventuell zu einem besseren Minimum als die Batch Methode \cite{lecunefficient}.
 Wir werden hier primär die stochastische Methode betrachten, da sie in der Praxis die Bessere ist \cite{lecunefficient, bengio2012practical}.
 
@@ -205,13 +205,13 @@ Die Konstante $\eta$ heißt Lernrate. Je größer sie ist, desto schneller konve
 
 Das Verfahren funktioniert, weil der negative Gradient in die Richtung zeigt, in der die Funktion am schnellsten kleiner wird. Daher kommt auch die Bezeichnung Verfahren des steilsten Abstiegs.
 
-Auf ANNs angewant, sieht die Formel dann für jeden Zeitschritt $t$ folgendermaßen aus:
+Auf ANNs angewandt, sieht die Formel dann für jeden Zeitschritt $t$ folgendermaßen aus:
 \begin{equation}
   \Delta_w^t = - \eta  \nabla_w E(w;t)
 \end{equation}
 Dabei entspricht $\nabla_w E(w;t)$ den Gradienten der Fehlerfunktion bezüglich der Gewichte ausgewertet für einen Trainingsvektor $t$.
 
-Das Gradientenverfahren hat das Problem, dass es oft in lokalen Minima steckenbleibt - das ist vor allem bei ANNs problematisch, weil die gewählte Kostenfunktion in den meisten Fällen mehrere lokale Minima besitzt. Auch wenn es nicht unbedingt notwendig, oder sogar erwünscht ist, einen globalen Extremwert zu finden (vgl. \ref{sec:overfitting}), existieren bessere numerische Verfahren. 
+Das Gradientenverfahren hat das Problem, dass es oft in lokalen Minima stecken bleibt - das ist vor allem bei ANNs problematisch, weil die gewählte Kostenfunktion in den meisten Fällen mehrere lokale Minima besitzt. Auch wenn es nicht unbedingt notwendig, oder sogar erwünscht ist, einen globalen Extremwert zu finden (vgl. \ref{sec:overfitting}), existieren bessere numerische Verfahren. 
 
 Eine Verbesserung zum gewöhnlichen Gradientenverfahren ist es, einen so genannten Momentumparameter zu benutzen, der auch vorherige Ergebnisse einbezieht, und somit das oft beobachtete oszillierende Verhalten des Gradientenverfahrens behebt:
 \begin{equation}
@@ -220,4 +220,4 @@ Eine Verbesserung zum gewöhnlichen Gradientenverfahren ist es, einen so genannt
 
 Diese Formel ist für $\gamma = 0$ äquivalent zum normalen Gradientenverfahren. Je größer $\gamma$ gewählt wird, desto stärker ist die Auswirkung vergangener Iterationen. 
 
-Bei einigen Problemen kann das Verfahren Vorteile bringen (primär bei Batch Backprop \cite{lecunefficient}), oft ist aber SGD mit einer guten Wahl der Lernrate bereits optimal\cite{bengio2012practical}.
+Bei einigen Problemen kann das Verfahren Vorteile bringen (primär bei Batch Backpropagation \cite{lecunefficient}), oft ist aber Stochastic Backpropagation mit einer guten Wahl der Lernrate bereits optimal\cite{bengio2012practical}.
