@@ -2,10 +2,10 @@
 
 \subsection{Aufbau und Namenskonventionen}
 \begin{figure}[ht!]
-\label{fig:MLP}
   \centering
     \input{graph_neural_network}
   \caption{Ein 2-schichtiges MLP.}
+  \label{fig:MLP}
 \end{figure}
 
 
@@ -17,7 +17,7 @@ Die Hidden-Layer besten aus Neuronen mit einer nicht linearen Aktivierungsfunkti
 
 Jeder Layer ist mit den anderen elementweise verbunden. Jede Verbindung hat ein so genanntes Gewicht $w_{ij} \in \mathbb{R}$. Daten fließen nur von links nach rechts. Netzwerke dieser Art heißen Multilayer-Perceptrons (MLP). 
 
-In Abbildung \ref{fig:MLP} sieht man ein typisches MLP. In dieser Abbildung fehlt aber noch ein wichtiges, spezielles Neuron mit den dazu gehörigen Gewichten: der Bias. Er dient dazu, die Eingabewerte jedes Neurons noch um einen linearen Wert zu ergänzen. Dadurch wird das Training erleichtert und die Mächtigkeit des Modells wird gestärkt. In der Praxis wird er wie ein spezielles Neuron mit Konstanter Aktivierung $+1$ behandelt, dass eine Verbindung (inklusive Gewicht) zu jedem Neuron, dass nicht im Input Layer ist, besitzt. Es wird dann quasi als nulltes Neuron jeder Schicht im Gewichtsvektor angesehen - das erleichtert uns dann Berechnungen.
+In Abbildung \ref{fig:MLP} sieht man ein typisches MLP. In dieser Abbildung fehlt aber noch ein wichtiges, spezielles Neuron mit den dazu gehörigen Gewichten: der Bias. Er dient dazu, die Eingabewerte jedes Neurons noch um einen linearen Wert zu ergänzen. Dadurch wird das Training erleichtert und die Mächtigkeit des Modells wird gestärkt. In der Praxis wird er wie ein spezielles Neuron mit konstanter Aktivierung $+1$ behandelt, das eine Verbindung (inklusive Gewicht) zu jedem Neuron, das nicht im Input Layer ist, besitzt. Es wird dann als nulltes Neuron jeder Schicht im Gewichtsvektor angesehen - das erleichtert uns dann Berechnungen.
  
 
 \subsection{Die Aktivierungsfunktion}
@@ -39,7 +39,7 @@ und der hyperbolische Tangens
 \sigma_1(2x) -1.
 \end{equation}
 
-Er hat aber einen Nachteil mit der logistischen Funktion gemeinsam: sehr kleine oder sehr große Werte haben eine sehr kleine Ableitung zur Folge; das kann ein Absterben des Neurons beim Training des Netzwerks zur Folge haben. 
+Er hat aber einen Nachteil mit der logistischen Funktion gemeinsam: sehr kleine oder sehr große Werte haben eine sehr kleine Ableitung zur Folge. Da die Ableitung der Aktivierungsfunktion beim Training (vgl.~Formel \ref{eq:backpropagation}) benutzt wird, kann das ein Absterben des Neurons zur Folge haben. 
 
 In \cite{lecunefficient} wird $1.7159 \tanh(\frac{2}{3} x)$ empfohlen, wenn eine Normalisierung vorgenommen wird. 
 
@@ -58,7 +58,7 @@ Wir benutzen eine Kostenfunktion, die den Fehler des Netzes quantifiziert.
 
 Die Maximum-Likelihood-Methode wird benutzt, um, wenn Beobachtungen gegeben sind, die Parameter einer Wahrscheinlichkeitsverteilung zu schätzen. Dazu betrachten wir Neuronale Netze als Modell für eine Wahrscheinlichkeitsverteilung.
 
-Wir nehmen jetzt an, dass die Beobachtungen $x_1, \ldots x_n$ unabhängig und identisch verteilt sind. Dann sieht die Funktion für die Parameter $\theta$ folgendermaßen aus:
+Wir nehmen jetzt an, dass die Beobachtungen $x_1, \ldots , x_n$ unabhängig und identisch verteilt sind. Dann sieht die Funktion für die Parameter $\theta$ folgendermaßen aus:
 
 \begin{equation}
   \mathcal{L} (\theta; x_1, \ldots, x_n) =
@@ -68,16 +68,16 @@ Wir nehmen jetzt an, dass die Beobachtungen $x_1, \ldots x_n$ unabhängig und id
 
 Sie beschreibt die Likelihood, das ist die Funktion eines Parameters, für ein gegebenes Resultat. Interessant ist, dass wir bei dieser Funktion die Beobachtungen als feste Parameter der Funktion ansehen, die eigentlichen Parameter sind dann variabel. Wir optimieren also die Wahrscheinlichkeitsverteilungsfunktion. Dafür wird die Likelihood-Funktion $\mathcal{L}$ maximiert.
 
-Anstatt die Maximum-Likelihood-Funktion zu maximieren, minimieren wir die negative, logarithmische Maximum-Likelihood-Funktion. Das funktioniert, weil $\ln$ eine monotone Funktion ist, es erleichtert uns außerdem, mit großen Werten zu rechnen. Die resultierende Funktion sieht folgendermaßen aus:
+Anstatt die Maximum-Likelihood-Funktion zu maximieren, minimieren wir die negative, logarithmische Maximum-Likelihood-Funktion. Das funktioniert, weil der Logarithmus eine monotone Funktion ist, es erleichtert uns außerdem, mit großen Werten zu rechnen. Die resultierende Funktion sieht folgendermaßen aus:
 \begin{align}
  E  & = - \ln \mathcal{L} \\
   %& = -  \ln \left( \prod_{i = 1}^n f(x_i|\theta) \right) \\
   & = - \sum_{i=1}^n \ln f(x_i|\theta).
 \end{align}
 
-Aus dieser allgemeinen Fehlerfunktionen lassen sich spezielle Fehlerfunktionen ableiten, die in der Praxis benutzt werden\cite{bishop1995neural}:
+Aus dieser allgemeinen Fehlerfunktion lassen sich spezielle Fehlerfunktionen ableiten, die in der Praxis benutzt werden\cite{bishop1995neural}:
 
-Wir wollen jetzt wieder den Fehler für $p(t|\theta)$ darstellen. Wir nehmen an, dass die Variable $t_k$ aus einer deterministischen Funktion und normal-verteiltem Rauschen (mit Erwartungswert $0$ und Varianz $\sigma$ gebildet wird.  
+Wir wollen jetzt wieder den Fehler für $p(t|\theta)$ darstellen. Wir nehmen an, dass die Variable $t_k$ aus einer deterministischen Funktion und normal-verteiltem Rauschen (mit Erwartungswert $0$ und Varianz $\sigma$) gebildet wird.  
 Deswegen gilt: %Umformulieren? p(t|k)? Was bedeutet das?
 \begin{equation}
   p(t_k|\theta) = \frac{1}{(2 \pi \sigma^2)^{0.5}} \exp \left( -\frac{ \left[  y_k - t_k \right]^2 }{2 \sigma^2} \right).
@@ -85,7 +85,7 @@ Deswegen gilt: %Umformulieren? p(t|k)? Was bedeutet das?
 
 Den Fehlerterm können wir jetzt einfach als Summe über alle Fehlerwahrscheinlichkeiten darstellen:
 \begin{equation}
-  E = \frac{1}{2 \sigma^2} \sum_{n=1}^{N} \sum_{k=1}^{c} \left[ y_k - t_k^n \right]^2 + Nc \ln \sigma + \frac{N_c}{2} \ln (2 \pi)
+  E = \frac{1}{2 \sigma^2} \sum_{n=1}^{N} \sum_{k=1}^{c} \left[ y_k - t_k^n \right]^2 + Nc \ln \sigma + \frac{N_c}{2} \ln (2 \pi).
 \end{equation}
 
 Ignorieren wir nun alle Faktoren, die nicht von den Parametern des Netzes abhängen, erhalten wir 
@@ -95,7 +95,7 @@ E = \frac{1}{2} \sum_{n=1}^N \sum_{k=1}^c \left( y_k^n - t_k^n \right)^2,
 \end{equation}
 
 wobei $y^k$ dem Ausgabevektor des Netzwerks für den Fall $k$ und $t^k$ der gewollten Ausgabe entspricht.
-Diese Fehlerfunktion heißt Mean-square-error(MSE)\cite{bishop1995neural}.
+Diese Fehlerfunktion heißt Mean-square-error (MSE)\cite{bishop1995neural}.
 
 Eine für Klassifizierungsprobleme oft benutze Fehlerfunktion ist die negative Kreuzentropie:
 \begin{equation}
@@ -103,18 +103,18 @@ Eine für Klassifizierungsprobleme oft benutze Fehlerfunktion ist die negative K
     E = -\sum_{n} \sum_{k=1}^c t_k^n \ln y_k^n ,
 \end{equation}
 
-wobei $t_k^n \in (0,1)$ die Wahrscheinlichkeit, dass die Eingabe $x^n$ in der Klasse $c$ ist. 
+wobei $t_k^n \in (0,1)$ der Wahrscheinlichkeit, dass die Eingabe $x^n$ in der Klasse $c$ ist, entspricht. 
 
-Sie ist für diese Problemklasse stochastisch schöner zu interpretieren und wird normalerweise mit der Softmax-Aktivierungsfunktion(\ref{eq:softmax}) benutzt\cite{bishop1995neural}.
+Sie ist für diese Problemklasse stochastisch schöner zu interpretieren und wird normalerweise mit der Softmax-Aktivierungsfunktion (\ref{eq:softmax}) benutzt\cite{bishop1995neural}.
 
 \subsection{Feedforward}
 Um ein ANN zur Vorhersage neuer Input-Vektoren zu benutzen, wird es im sogenannten Feedforward Modus betrieben. In diesem wird der Input Vektor zuerst den Neuronen des Input-Layers präsentiert. Alle anderen Neuronen des nächsten Layers bilden dann eine lineare Kombination aus den Neuronen ihrer Vorgängerschicht: 
 \begin{equation}
 \label{eq:feedforward1}
-\text{net}_j = \sum_{i} w_{ji} y_i = w_j^t x.
+\text{net}_j = \sum_{i} w_{ji} y_i = w_j^t y.
 \end{equation}
 
-Bei dieser Formel ist $w_{ji}$ das Gewicht vom Neuron $j$ zum Neuron $i$. Die Summe lässt sich auch auch als Skalarprodukt $w_j^t x$ darstellen, wobei die Spalten von $w$ den Gewichten der Layers entsprechen. %TODO: Formulierung!
+Bei dieser Formel ist $w_{ji}$ das Gewicht vom Neuron $j$ zum Neuron $i$. Die Summe lässt sich auch auch als Skalarprodukt $w_j^t y$ darstellen, wobei die Spalten von $w$ den Gewichten der Layers entsprechen. %TODO: Formulierung!
 
 Nachdem diese lineare Transformation abgeschlossen ist, wird bei allen Neuronen (außer bei denen im Output-Layer) die Aktivierungsfunktion benutzt, die dann eine nicht-lineare Transformation durchführt: 
 \begin{equation}
@@ -133,7 +133,7 @@ Es ist eine Möglichkeit den Fehler, der bei den Ausgabeneuronen auftritt, auch 
 
 Dazu wird als erster Schritt für einen Trainingsvektor ein Forward-Pass durchgeführt - damit wird die Vorhersage des Netzwerkes berechnet, und anschließend mit der vorgegeben Lösung des Trainingssets verglichen.
 
-Diese Werte werden dann benutzt, um den Fehler zu berechnen, und dann die Parameter(also die Gewichte) anzupassen.
+Diese Werte werden dann benutzt, um den Fehler zu berechnen, und dann die Parameter (also die Gewichte) anzupassen.
 
 Am Ende wird das Ergebnis der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren. Dieser Algorithmus wurde zuerst in \cite{rumelhart1988learning} erfunden, wir benutzen aber eine etwas modernere Formulierung inspiriert von \cite{bishop1995neural, duda2012pattern}. 
 
@@ -144,11 +144,11 @@ E = \sum_n E_n(y_1, \ldots, y_c),
 
 das heißt, der Gesamtfehler ist die Summe aller Einzelfehler.
 Wir nehmen weiterhin an, dass der Fehler als ableitbare Funktion der Ausgabe-Werte darstellbar ist.
-Für die folgende Herleitung benutzen wir die MSE-Kostenfunktion(\ref{eq:MSE}), für andere Fehlerfunktionen ist die Vorgehensweise analog.
+Für die folgende Herleitung benutzen wir die MSE-Kostenfunktion (\ref{eq:MSE}), für andere Fehlerfunktionen ist die Vorgehensweise analog.
 
 Wir suchen jetzt die partielle Ableitung der Fehlerfunktion unter Berücksichtigung eines bestimmten Gewichts:
 \begin{equation}
-\frac{\partial E^n}{\partial w_{i,j}} = \frac{\partial E^n}{\partial net_j}  \frac{\partial net_j }{\partial w_{ji}}
+\frac{\partial E^n}{\partial w_{i,j}} = \frac{\partial E^n}{\partial net_j}  \frac{\partial net_j }{\partial w_{ji}}.
 \end{equation}
 
 Wir definieren jetzt die Hilfsvariablen:
@@ -170,8 +170,8 @@ Durch mehrfaches Anwenden der Kettenregel bekommen wir die so genannte Backpropa
 \begin{equation}
 \label{eq:backpropagation}
 \delta_j =  \begin{cases}
-               \sigma ' (net_j) (y_j - t_j)          & \text{wenn j Ausgabeneuron ist}\\
-               \sigma ' (net_j) \sum_k w_{kj} \delta_k     & \text{wenn j verdecktes Neuron ist}
+               \sigma ' (net_j) (y_j - t_j)          & \text{wenn j $\in$ Ausgabeschicht}\\
+               \sigma ' (net_j) \sum_k w_{kj} \delta_k     & \text{wenn j $\in$ Hiddenlayer}.
            \end{cases} 
 \end{equation} 
 
@@ -181,7 +181,7 @@ Wichtig ist noch die Unterscheidung zwischen:
 
 \begin{LaTeXdescription}
 	\item[Stochastic Backpropagation]
-	Bei diesem Verfahren wird immer nur ein zufällig ausgewählter Eingabevektor pro Iteration evaluiert, dann werden sofort die Gewichte aktualisiert. 
+	Bei diesem Verfahren wird immer nur ein zufällig ausgewählter Eingabevektor pro Iteration evaluiert, dann werden sofort die Gewichte aktualisiert. Wenn er zusammen mit dem Gradientenverfahren benutzt wird, sprechen wir von Stochastic Gradient Descent (SGD).
 	\item[Batch Backpropagation] 
 	Bei der zweiten Methode werden alle Eingabevektoren des Trainingssets präsentiert und die Gewichtsänderungen summiert. Erst dann werden alle Gewichte aktualisiert.\cite{duda2012pattern}
 \end{LaTeXdescription}
@@ -195,21 +195,21 @@ Wir werden hier primär die stochastische Methode betrachten, da sie in der Prax
 
 Der Gradient wird oft mit dem Gradientenverfahren, einer Methode um Funktionen zu minimieren, benutzt \cite{bishop1995neural,bengio2012practical}.
 
-Das Gradientenverfahren lässt sich als Iterationsvorschrift darstellen:
+Das Gradientenverfahren können wir als Iterationsvorschrift darstellen:
 \begin{equation}
 x_{n+1}=x_n- \eta  \nabla F(x_n), 
 \end{equation}
 
-wobei $\nabla$ der Gradient ist; $\nabla_w$ ist der Gradient im Bezug auf die Gewichte. 
+wobei $\nabla$ der Gradient ist, $\nabla_w$ ist der Gradient im Bezug auf die Gewichte. 
 Die Konstante $\eta$ heißt Lernrate. Je größer sie ist, desto schneller konvergiert das Verfahren - bei einer zu hoch gewählten sind aber oft Oszillationen oder Stagnation zu beobachten. 
 
 Das Verfahren funktioniert, weil der negative Gradient in die Richtung zeigt, in der die Funktion am schnellsten kleiner wird. Daher kommt auch die Bezeichnung Verfahren des steilsten Abstiegs.
 
 Auf ANNs angewandt, sieht die Formel dann für jeden Zeitschritt $t$ folgendermaßen aus:
 \begin{equation}
-  \Delta_w^t = - \eta  \nabla_w E(w;t)
+  \Delta_w^t = - \eta  \nabla_w E(w;t).
 \end{equation}
-Dabei entspricht $\nabla_w E(w;t)$ den Gradienten der Fehlerfunktion bezüglich der Gewichte ausgewertet für einen Trainingsvektor $t$.
+Dabei entspricht $\nabla_w E(w;t)$ dem Gradienten der Fehlerfunktion bezüglich der Gewichte ausgewertet für einen Trainingsvektor $t$.
 
 Das Gradientenverfahren hat das Problem, dass es oft in lokalen Minima stecken bleibt - das ist vor allem bei ANNs problematisch, weil die gewählte Kostenfunktion in den meisten Fällen mehrere lokale Minima besitzt. Auch wenn es nicht unbedingt notwendig, oder sogar erwünscht ist, einen globalen Extremwert zu finden (vgl. \ref{sec:overfitting}), existieren bessere numerische Verfahren. 
 
@@ -220,4 +220,4 @@ Eine Verbesserung zum gewöhnlichen Gradientenverfahren ist es, einen so genannt
 
 Diese Formel ist für $\gamma = 0$ äquivalent zum normalen Gradientenverfahren. Je größer $\gamma$ gewählt wird, desto stärker ist die Auswirkung vergangener Iterationen. 
 
-Bei einigen Problemen kann das Verfahren Vorteile bringen (primär bei Batch Backpropagation \cite{lecunefficient}), oft ist aber Stochastic Backpropagation mit einer guten Wahl der Lernrate bereits optimal\cite{bengio2012practical}.
+Bei einigen Problemen kann das Verfahren Vorteile bringen (primär bei Batch Backpropagation \cite{lecunefficient}), oft ist aber SGD mit einer guten Wahl der Lernrate bereits optimal\cite{bengio2012practical}.

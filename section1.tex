@@ -3,7 +3,7 @@
 \subsection{Das Perceptron als additives lineares Modell}
 Eines der klassischen Modelle der Regressionsanalyse sind lineare Regression und die logistische Regression. 
 
-Es sind mathematisch simple Verfahren, die sogar analytisch lösbar sind - aber eben nicht immer ideale Ergebnisse erzielen. Es gibt Probleme, die mit den Verfahren nicht lösbar sind. 
+Es sind mathematisch simple Verfahren, die sogar analytisch lösbar sind - aber eben nicht immer ideale Ergebnisse erzielen.
 
 Eine Weiterentwicklung ist das so genannte Perceptron.
 Eine gängige Definition ist die, die auch in \cite{bishop1995neural} verwendet wird: 
@@ -21,10 +21,10 @@ In dieser Formel entspricht $wx$ dem Skalarprodukt.
 \subsection{Das Perceptron als einfaches ANN}
 %%
 \begin{figure}[ht!]
-  \label{fig:SLP}
   \centering
     \input{graph_perceptron.tex}
   \caption{Ein 1-schichtiges Perceptron, dargestellt als graphisches Modell.}
+    \label{fig:SLP}
 \end{figure}
 
 Wie wir später sehen werden, kann das Perceptron auch als eine einfache Variante eines Feed-Forward neuronalen Netzes mit nur einem Ausgabeneuronen mit der Heaviside-Funktion
@@ -45,7 +45,7 @@ Auf den benutzen Trainingsalgorithmus werden wir nicht eingehen, da der später 
 Es gibt viele Probleme, die von einem Perceptron nicht gelöst werden können. Es können nur linear separierbare Funktionen von linearen Modellen approximiert werden. Da das Perceptron als Verknüpfung von linearen Funktionen auch linear ist, kann auch es diese Klasse von Funktionen nicht lösen
 
 \subsection{Die Lösung: Neuronale Netze}
-Neuronale Netze sind eine Weiterentwicklung von Perceptrons. Sie besitzen noch eine(oder mehrere) weitere Schicht(en) Neuronen, die jedoch nicht nur lineare Transformationen durchführen, sondern zusätzlich noch eine nicht lineare.
+Neuronale Netze sind eine Weiterentwicklung von Perceptrons. Sie besitzen noch eine (oder mehrere) weitere Schicht(en) Neuronen, die jedoch nicht nur lineare Transformationen durchführen, sondern zusätzlich noch eine nicht lineare.
 
 Diese Nicht-Linearität ermöglicht es, auch nicht linear separierbare Probleme zu lösen - in \cite{cybenko1989approximation} wurde sogar bewiesen, dass mit ausreichend großen Netzwerken alle Funktionen approximiert werden können!
 
