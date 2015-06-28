@@ -10,14 +10,14 @@
 
 
 Ein Neuronales Netz (zur Abgrenzungen zu biologischen Netzen in der Fachliteratur als Artificial Neural Network (ANN) bezeichnet) besteht aus mehreren Schichten Neuronen: einem Input Layer, einem (oder mehreren) Hidden Layer, und einem Output Layer. 
-Wenn man von einem k-schichtigen ANN spricht, bezeichnet k die Anzahl der Schichten, ohne Input-Layer.
+Wenn wir von einem k-schichtigen ANN sprechen, bezeichnet k die Anzahl der Schichten, ohne Input-Layer.
 
 Die Ausgabe der Eingabeneuronen entspricht den jeweiligen Elementen des Eingabevektors.
 Die Hidden-Layer besten aus Neuronen mit einer nicht linearen Aktivierungsfunktion, die die Eingangsdaten transformiert.
 
 Jeder Layer ist mit den anderen elementweise verbunden. Jede Verbindung hat ein so genanntes Gewicht $w_{ij} \in \mathbb{R}$. Daten fließen nur von links nach rechts. Netzwerke dieser Art heißen Multilayer-Perceptrons (MLP). 
 
-In Abbildung \ref{fig:MLP} sieht man ein typisches MLP. In dieser Abbildung fehlt aber noch ein wichtiges, spezielles Neuron mit den dazu gehörigen Gewichten: der Bias. Er dient dazu, die Eingabewerte jedes Neurons noch um einen linearen Wert zu ergänzen. Dadurch wird das Training erleichtert und die Mächtigkeit des Modells wird gestärkt. In der Praxis wird er wie ein spezielles Neuron mit konstanter Aktivierung $+1$ behandelt, das eine Verbindung (inklusive Gewicht) zu jedem Neuron, das nicht im Input Layer ist, besitzt. Es wird dann als nulltes Neuron jeder Schicht im Gewichtsvektor angesehen - das erleichtert uns dann Berechnungen.
+Abbildung \ref{fig:MLP} zeigt ein typisches MLP. In dieser Abbildung fehlt aber noch ein wichtiges, spezielles Neuron mit den dazu gehörigen Gewichten: der Bias. Er dient dazu, die Eingabewerte jedes Neurons noch um einen linearen Wert zu ergänzen. Dadurch wird das Training erleichtert und die Mächtigkeit des Modells wird gestärkt. In der Praxis wird er wie ein spezielles Neuron mit konstanter Aktivierung $+1$ behandelt, das eine Verbindung (inklusive Gewicht) zu jedem Neuron, das nicht im Input Layer ist, besitzt. Es wird dann als nulltes Neuron jeder Schicht im Gewichtsvektor angesehen - das erleichtert uns dann Berechnungen.
  
 
 \subsection{Die Aktivierungsfunktion}
@@ -26,7 +26,7 @@ Die Funktion, die pro Knoten die nicht-lineare Transformation durchführt, heiß
 
 Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das heißt eine Funktion, die die Ergebnisse in ein bestimmtes Intervall komprimiert und ein an ein S erinnerndes Erscheinungsbild hat. 
 
-Beispiele für Funktion diesen Typs sind die so genannte logistische Funktion
+Beispiele für Funktion dieses Typs sind die so genannte logistische Funktion
 
 \begin{equation}
 \sigma_1(x) = \frac{1}{1+e^{-x}}.
@@ -81,7 +81,7 @@ Wir wollen jetzt wieder den Fehler für $p(t|\theta)$ darstellen. Wir nehmen an,
 Deswegen gilt: %Umformulieren? p(t|k)? Was bedeutet das?
 \begin{equation}
   p(t_k|\theta) = \frac{1}{(2 \pi \sigma^2)^{0.5}} \exp \left( -\frac{ \left[  y_k - t_k \right]^2 }{2 \sigma^2} \right).
-\end{equation}.
+\end{equation}
 
 Den Fehlerterm können wir jetzt einfach als Summe über alle Fehlerwahrscheinlichkeiten darstellen:
 \begin{equation}
@@ -135,7 +135,7 @@ Dazu wird als erster Schritt für einen Trainingsvektor ein Forward-Pass durchge
 
 Diese Werte werden dann benutzt, um den Fehler zu berechnen, und dann die Parameter (also die Gewichte) anzupassen.
 
-Am Ende wird das Ergebnis der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren. Dieser Algorithmus wurde zuerst in \cite{rumelhart1988learning} erfunden, wir benutzen aber eine etwas modernere Formulierung inspiriert von \cite{bishop1995neural, duda2012pattern}. 
+Am Ende wird das Ergebnis der Optimierungsmethode benutzt, um die Gewichte zu aktualisieren. Dieser Algorithmus wurde zuerst in \cite{rumelhart1988learning} vorgestellt, wir benutzen aber eine etwas modernere Formulierung inspiriert von \cite{bishop1995neural, duda2012pattern}. 
 
 Alle relevanten Fehlerfunktionen haben die Form 
 \begin{equation}
@@ -160,7 +160,7 @@ Wir definieren jetzt die Hilfsvariablen:
 
 wobei $y_i$ durch den Feedforward-Pass (also mit den Formeln \ref{eq:feedforward1} und \ref{eq:feedforward2}) berechnet wird. 
 
-Mit diesen Variablen können wir die Ableitung schön beschreiben als
+Mit diesen Variablen können wir die Ableitung beschreiben als
 \begin{equation}
 \label{eq:evaluate}
   \frac{\partial E^n}{\partial w_{ij}} = y_i \delta_j.
@@ -181,9 +181,9 @@ Wichtig ist noch die Unterscheidung zwischen:
 
 \begin{LaTeXdescription}
 	\item[Stochastic Backpropagation]
-	Bei diesem Verfahren wird immer nur ein zufällig ausgewählter Eingabevektor pro Iteration evaluiert, dann werden sofort die Gewichte aktualisiert. Wenn er zusammen mit dem Gradientenverfahren benutzt wird, sprechen wir von Stochastic Gradient Descent (SGD).
-	\item[Batch Backpropagation] 
-	Bei der zweiten Methode werden alle Eingabevektoren des Trainingssets präsentiert und die Gewichtsänderungen summiert. Erst dann werden alle Gewichte aktualisiert.\cite{duda2012pattern}
+  Bei diesem Verfahren wird immer nur ein zufällig ausgewählter Eingabevektor pro Iteration evaluiert, dann werden sofort die Gewichte aktualisiert. Wenn er zusammen mit dem Gradientenverfahren benutzt wird, sprechen wir von Stochastic Gradient Descent (SGD).
+	\item[Batch Backpropagation]
+  Die andere Möglichkeit ist es, alle Eingabevektoren des Trainingssets zu präsentieren und die Gewichtsänderungen zusummiert. Erst dann werden alle Gewichte aktualisiert.\cite{duda2012pattern}
 \end{LaTeXdescription}
 
 Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz nicht von der Größe des Trainingssets, sondern viel mehr von der Anzahl der Iterationen und der Verteilung der Trainingsdaten abhängt - für große Sets ist ein Benutzen der Batch Methode nicht mehr sinnvoll \cite{bengio2012practical}.
@@ -191,7 +191,7 @@ Ein weiter Vorteil ist, dass sie redundante Trainingsdaten (die bei einem Traini
 Wir werden hier primär die stochastische Methode betrachten, da sie in der Praxis die Bessere ist \cite{lecunefficient, bengio2012practical}.
 
 
-\subsection{Die numerische Methode - Gradient Descent und verwandte}
+\subsection{Die numerische Methode - Gradient Descent}
 
 Der Gradient wird oft mit dem Gradientenverfahren, einer Methode um Funktionen zu minimieren, benutzt \cite{bishop1995neural,bengio2012practical}.
 
@@ -209,7 +209,7 @@ Auf ANNs angewandt, sieht die Formel dann für jeden Zeitschritt $t$ folgenderma
 \begin{equation}
   \Delta_w^t = - \eta  \nabla_w E(w;t).
 \end{equation}
-Dabei entspricht $\nabla_w E(w;t)$ dem Gradienten der Fehlerfunktion bezüglich der Gewichte ausgewertet für einen Trainingsvektor $t$.
+Dabei entspricht $\nabla_w E(w;t)$ dem Gradienten der Fehlerfunktion bezüglich der Gewichte, ausgewertet für einen Trainingsvektor $t$.
 
 Das Gradientenverfahren hat das Problem, dass es oft in lokalen Minima stecken bleibt - das ist vor allem bei ANNs problematisch, weil die gewählte Kostenfunktion in den meisten Fällen mehrere lokale Minima besitzt. Auch wenn es nicht unbedingt notwendig, oder sogar erwünscht ist, einen globalen Extremwert zu finden (vgl. \ref{sec:overfitting}), existieren bessere numerische Verfahren. 
 

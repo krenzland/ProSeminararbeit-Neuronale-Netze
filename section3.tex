@@ -12,24 +12,24 @@ Um SGD zu verbessern wird außerdem vorgeschlagen, bei einer Datenmenge, bei der
 Das Gradientenverfahren weist in der Praxis einige Fallstricke auf. In \cite{bengio2012practical} werden Optimierungen für das Verfahren in der Praxis vorgestellt. 
 Beim Gradientenverfahren ist es wichtig, eine sinnvolle Schrittweite zu verwenden. Ist sie kleiner, als die optimale, ist die benötigte Rechenzeit höher. Ist sie größer, kann das Verfahren stagnieren oder sogar divergieren. Eine gute Heuristik für die Wahl des Parameters ist es, mit einem großen Wert zu starten, und es bei Divergenz mit einer dreimal kleineren Schrittweite erneut zu probieren.
 In dem Artikel wird als Anfangsschrittweite $\epsilon_0 = 0.01$ empfohlen, als Wert, der für die meisten - aber nicht alle - Netzwerke funktioniert.
-Des weiteren sollte eine nicht konstante Lernrate 
+Des Weiteren sollte eine nicht konstante Lernrate 
 \begin{equation}
 	\epsilon_t = \frac{\epsilon_0 c}{\max(t, c)}
 \end{equation}
 
-benutzt werden. Dabei ist $c$ eine Konstante, und $t$ die Iterationsanzahl. Die Schrittweite bleibt also bei den ersten $c$ Schritten konstant, und wird dann erst verringert. Eine einfache Wahl für $c$ ist es, $\epsilon_t$ konstant zu lassen, bis das Trainingskriterium aufhört, bei der Iteration sich signifikant zu verändern.
+benutzt werden. Dabei ist $c$ eine Konstante, und $t$ die Iterationsanzahl. Die Schrittweite bleibt also bei den ersten $c$ Schritten konstant, und wird dann erst verringert. Eine einfache Wahl für $c$ ist es, $\epsilon_t$ konstant zu lassen, bis das Trainingskriterium aufhört, sich bei der Iteration signifikant zu verändern.
 
 Eine andere gute Optimierung ist, weder Batch noch Stochastic Backpropagation zu nutzen, sondern eine Mini-Batch-Variante, bei der mehrere, aber nicht alle, Eingabevektoren vor jedem Gewichtsupdate evaluiert werden. 
 
 Die Kostenfunktion hat oft mehrere lokale Minima - das Gradientenverfahren kann dann in einem solchen stecken bleiben, das heißt, es konvergiert unter Umständen nicht zum gesuchten globalen Minimum. Auch wenn das globale Minimum nicht immer erwünscht ist (vgl. \ref{sec:overfitting}), ergeben andere Minima oft ein besseres Ergebnis.
 
-Wenn man beim SGD in einem Minimum stecken bleibt, bietet es sich an, einfach mit neu initialisierten Gewichtsparametern neuzustarten. 
+Wenn das Gradientenverfahren in einem Minimum stecken bleibt (das heißt, es konvergiert zu einem lokalen Minimum), bietet es sich an, einfach mit neu initialisierten Gewichtsparametern neuzustarten. 
 
-Alternativen zu SGD sind meistens langsamer und schwerer zu implementieren. Eine Alternative zum Gradientenverfahren ist konjugierte Gradienten. Dieses Verfahren funktioniert jedoch nur bei Batch Backpropagation, es ist also SGD bei großen Trainingssets unterlegen. Es ist aber eine durchaus sinnvolle Optimierungsmethode, für Probleme, die genaue realwertige Ausgabewerte benötigen\cite{lecunefficient}.
+Alternativen zu SGD sind meistens langsamer und schwerer zu implementieren. Eine Alternative zum Gradientenverfahren ist konjugierte Gradienten. Dieses Verfahren funktioniert jedoch nur bei Batch Backpropagation, es ist also SGD bei großen Trainingssets unterlegen. Es ist aber eine durchaus sinnvolle Optimierungsmethode, für Probleme, die genaue reellwertige Ausgabewerte benötigen\cite{lecunefficient}.
 Verschiedene Optimierungsmethoden, primär im Bezug auf Deep Learning, werden in \cite{ngiam2011optimization} diskutiert.
 
 \subsection{Anzahl Neuronen}
-Die Anzahl der Neuronen ist schwer zu bestimmen, ein Netzwerk mit mehr Neuronen ist aber jedoch logischerweise mächtiger, als eines mit weniger. In \cite{bengio2012practical} wird empfohlen, dass die erste verdeckte Schicht größer als die Eingabeschicht sein sollte, und dass alle Layer die gleiche Anzahl Neuronen haben sollte.
+Die Anzahl der Neuronen ist schwer zu bestimmen, ein Netzwerk mit mehr Neuronen ist aber jedoch logischerweise mächtiger, als eines mit weniger. In \cite{bengio2012practical} wird empfohlen, dass die erste verdeckte Schicht größer als die Eingabeschicht sein sollte, und dass alle Layer die gleiche Anzahl Neuronen haben sollten.
 
 \subsection{Initialisierung der Gewichte}
 Die Initialisierung der Gewichte ist ein schwieriges Problem. Eine oft benutzte Heuristik ist 
@@ -37,7 +37,7 @@ Die Initialisierung der Gewichte ist ein schwieriges Problem. Eine oft benutzte 
 	W_{ij} \sim U [ -\frac{1}{\sqrt{N}} , \frac{1}{\sqrt{N}} ],
 \end{equation}
 
-wobei $U[-a, a]$ gleichverteilten Werten zwischen $-a$ und $a$ entspricht, und $n$ der Anzahl der Neuronen in der vorherigen Schicht\cite{glorot2010understanding}. 
+wobei $U[-a, a]$ gleichverteilten Werten zwischen $-a$ und $a$ entspricht, und $N$ der Anzahl der Neuronen in der vorherigen Schicht\cite{glorot2010understanding}. 
 
 In \cite{glorot2010understanding} wird, als bessere Heuristik, vorgeschlagen, die normalisierte Initialisierung
 \begin{equation}
@@ -59,11 +59,11 @@ E_{\text{L1}} & = & E + \lambda \sum_i \left| w_i \right|
 E_{\text{L2}} & = & E + \lambda \sum_i w_i^2
 \end{IEEEeqnarray}
 
-Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft. Der Name Weigth-Decay kommt daher, dass die Gewichte gegen null gehen\cite{bishop1995neural}.
+Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft. Diese Art der Regularisierung heißt Weigth-Decay, weil die Gewichte gegen null gehen\cite{bishop1995neural}.
 
 Aus der Perspektive der bayesianischen Statistik betrachtet, ist eine L2-Regulierung gleichbedeutend damit, dass wir eine A-priori-Normalverteilung auf die Gewichte annehmen mit Erwartungswert $0$ und Varianz $\sigma^2 = (2 \lambda) ^{-1}$\cite{bengio2012practical}.
 
-Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit der Backpropagation aufhört, wenn ein (lokales) Minimum gefunden wurde, sondern dann, wenn die Performance des Modells bei dem Validierungsset optimal ist. Die Iteration kann wird dann oft beendet, wenn bei der Fehlerfunktion gar kein Minimum vorliegt\cite{bishop1995neural}.  
+Eine weitere Lösung ist das so genannte early stopping, bei dem man nicht mit der Backpropagation aufhört, wenn ein (lokales) Minimum gefunden wurde, sondern dann, wenn die Performance des Modells bei dem Validierungsset optimal ist. Die Iteration wird dann oft beendet, wenn bei der Fehlerfunktion gar kein Minimum vorliegt\cite{bishop1995neural}.  
 
 Dabei entspricht die L2-Regularisierung early stopping, es sollten also nicht beide Methoden gleichzeitig genutzt werden. Die L1-Regularisierung kann jedoch mit beiden Regularisierungsarten gut kombiniert werden\cite{bengio2012practical}. 
 
