@@ -15,7 +15,7 @@ Wenn wir von einem k-schichtigen ANN sprechen, bezeichnet k die Anzahl der Schic
 Die Ausgabe der Eingabeneuronen entspricht den jeweiligen Elementen des Eingabevektors.
 Die Hidden-Layer besten aus Neuronen mit einer nicht linearen Aktivierungsfunktion, die die Eingangsdaten transformiert.
 
-Jeder Layer ist mit den anderen elementweise verbunden. Jede Verbindung hat ein so genanntes Gewicht $w_{ij} \in \mathbb{R}$. Daten fließen nur von links nach rechts. Netzwerke dieser Art heißen Multilayer-Perceptrons (MLP). 
+Jeder Layer ist mit den anderen elementweise verbunden. Jede Verbindung hat ein Gewicht $w_{ij} \in \mathbb{R}$. Daten fließen nur von links nach rechts. Netzwerke dieser Art heißen Multilayer-Perceptrons (MLP). 
 
 Abbildung \ref{fig:MLP} zeigt ein typisches MLP. In dieser Abbildung fehlt aber noch ein wichtiges, spezielles Neuron mit den dazu gehörigen Gewichten: der Bias. Er dient dazu, die Eingabewerte jedes Neurons noch um einen linearen Wert zu ergänzen. Dadurch wird das Training erleichtert und die Mächtigkeit des Modells wird gestärkt. In der Praxis wird er wie ein spezielles Neuron mit konstanter Aktivierung $+1$ behandelt, das eine Verbindung (inklusive Gewicht) zu jedem Neuron, das nicht im Input Layer ist, besitzt. Es wird dann als nulltes Neuron jeder Schicht im Gewichtsvektor angesehen - das erleichtert uns dann Berechnungen.
  
@@ -24,9 +24,9 @@ Abbildung \ref{fig:MLP} zeigt ein typisches MLP. In dieser Abbildung fehlt aber 
 
 Die Funktion, die pro Knoten die nicht-lineare Transformation durchführt, heißt Aktivierungsfunktion. 
 
-Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das heißt eine Funktion, die die Ergebnisse in ein bestimmtes Intervall komprimiert und ein an ein S erinnerndes Erscheinungsbild hat. 
+Häufig wird eine Funktion mit sigmoiden Erscheinungsbild gewählt, das ist eine Funktion, die die Ergebnisse in ein bestimmtes Intervall komprimiert und ein an ein S erinnerndes Erscheinungsbild hat. 
 
-Beispiele für Funktion dieses Typs sind die so genannte logistische Funktion
+Beispiele für Funktion dieses Typs ist die so genannte logistische Funktion
 
 \begin{equation}
 \sigma_1(x) = \frac{1}{1+e^{-x}}.
@@ -49,14 +49,14 @@ Eine alternative Aktivierungsfunktion ist die Rectifier-Funktion
 \sigma_3(x) = \max(0,x).
 \end{equation} 
 
-In \cite{glorot2011deep} wird argumentiert, dass die logistische Funktion zwar biologisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biologischer Neuronen ist. Was für uns relevanter ist: sie ist effizienter zu berechnen. Sie ist also in der Praxis oft eine bessere Wahl. 
+In \cite{glorot2011deep} wird argumentiert, dass die logistische Funktion zwar biologisch plausibler ist als der hyperbolische Tangens, aber die Rectifier Funktion noch näher an der Funktionsweise biologischer Neuronen ist. Was für uns relevanter ist: Sie ist effizienter zu berechnen. Sie ist also in der Praxis oft eine bessere Wahl. 
 
-Problematisch ist bei der Rectifier-Funktion jedoch, dass durch $x < 0$ das Neuron abstirbt, weil die Ableitung gleich 0 ist: Beim Training des Modells kann ein Fehler nicht korrigiert werden. Für $x = 0$ ist die Funktion gar nicht ableitbar, für beliebig nahe Werte jedoch schon\cite{bengio2012practical}. 
+Problematisch ist bei der Rectifier-Funktion jedoch, dass bei $x < 0$ das Neuron abstirbt, weil die Ableitung gleich 0 ist: Beim Training des Modells kann ein Fehler nicht korrigiert werden. Für $x = 0$ ist die Funktion gar nicht ableitbar, für beliebig nahe Werte jedoch schon\cite{bengio2012practical}. 
 
 \subsection{Die Kostenfunktion}
 Wir benutzen eine Kostenfunktion, die den Fehler des Netzes quantifiziert.
 
-Die Maximum-Likelihood-Methode wird benutzt, um, wenn Beobachtungen gegeben sind, die Parameter einer Wahrscheinlichkeitsverteilung zu schätzen. Dazu betrachten wir Neuronale Netze als Modell für eine Wahrscheinlichkeitsverteilung.
+Die Maximum-Likelihood-Methode wird benutzt, um, wenn Beobachtungen gegeben sind, die Parameter einer Wahrscheinlichkeitsverteilung zu schätzen. Dazu betrachten wir neuronale Netze als Modell für eine Wahrscheinlichkeitsverteilung\cite{bishop1995neural}.
 
 Wir nehmen jetzt an, dass die Beobachtungen $x_1, \ldots , x_n$ unabhängig und identisch verteilt sind. Dann sieht die Funktion für die Parameter $\theta$ folgendermaßen aus:
 
@@ -66,7 +66,7 @@ Wir nehmen jetzt an, dass die Beobachtungen $x_1, \ldots , x_n$ unabhängig und 
   \prod_{i = 1}^n f(x_i|\theta) .
 \end{equation}
 
-Sie beschreibt die Likelihood, das ist die Funktion eines Parameters, für ein gegebenes Resultat. Interessant ist, dass wir bei dieser Funktion die Beobachtungen als feste Parameter der Funktion ansehen, die eigentlichen Parameter sind dann variabel. Wir optimieren also die Wahrscheinlichkeitsverteilungsfunktion. Dafür wird die Likelihood-Funktion $\mathcal{L}$ maximiert.
+Sie beschreibt die Likelihood, das ist die Funktion eines Parameters für ein gegebenes Resultat. Interessant ist, dass wir bei dieser Funktion die Beobachtungen als feste Parameter der Funktion ansehen, die eigentlichen Parameter sind dann variabel. Wir optimieren also die Wahrscheinlichkeitsverteilungsfunktion. Dafür wird die Likelihood-Funktion $\mathcal{L}$ maximiert.
 
 Anstatt die Maximum-Likelihood-Funktion zu maximieren, minimieren wir die negative, logarithmische Maximum-Likelihood-Funktion. Das funktioniert, weil der Logarithmus eine monotone Funktion ist, es erleichtert uns außerdem, mit großen Werten zu rechnen. Die resultierende Funktion sieht folgendermaßen aus:
 \begin{align}
@@ -111,15 +111,15 @@ Sie ist für diese Problemklasse stochastisch schöner zu interpretieren und wir
 Um ein ANN zur Vorhersage neuer Input-Vektoren zu benutzen, wird es im sogenannten Feedforward Modus betrieben. In diesem wird der Input Vektor zuerst den Neuronen des Input-Layers präsentiert. Alle anderen Neuronen des nächsten Layers bilden dann eine lineare Kombination aus den Neuronen ihrer Vorgängerschicht: 
 \begin{equation}
 \label{eq:feedforward1}
-\text{net}_j = \sum_{i} w_{ji} y_i = w_j^t y.
+\text{net}_j = \sum_{i} w_{ji} z_i = w_j^t z.
 \end{equation}
 
-Bei dieser Formel ist $w_{ji}$ das Gewicht vom Neuron $j$ zum Neuron $i$. Die Summe lässt sich auch auch als Skalarprodukt $w_j^t y$ darstellen, wobei die Spalten von $w$ den Gewichten der Layers entsprechen. %TODO: Formulierung!
+Bei dieser Formel ist $w_{ji}$ das Gewicht vom Neuron $j$ zum Neuron $i$. Die Summe lässt sich auch auch als Skalarprodukt $w_j^t z$ darstellen, wobei die Spalten von $w$ den Gewichten der Layers entsprechen. %TODO: Formulierung!
 
 Nachdem diese lineare Transformation abgeschlossen ist, wird bei allen Neuronen (außer bei denen im Output-Layer) die Aktivierungsfunktion benutzt, die dann eine nicht-lineare Transformation durchführt: 
 \begin{equation}
 \label{eq:feedforward2}
-y_j = \sigma (\text{net}_j).
+z_j = \sigma (\text{net}_j).
 \end{equation}
 
 Dieser Prozess wird so lange durchgeführt, bis die Daten das komplette Netz durchlaufen haben, und im Output-Layer ankommen\cite{bishop1995neural}.
@@ -148,12 +148,12 @@ Für die folgende Herleitung benutzen wir die MSE-Kostenfunktion (\ref{eq:MSE}),
 
 Wir suchen jetzt die partielle Ableitung der Fehlerfunktion unter Berücksichtigung eines bestimmten Gewichts:
 \begin{equation}
-\frac{\partial E^n}{\partial w_{i,j}} = \frac{\partial E^n}{\partial net_j}  \frac{\partial net_j }{\partial w_{ji}}.
+\frac{\partial E^n}{\partial w_{ij}} = \frac{\partial E^n}{\partial net_j}  \frac{\partial net_j }{\partial w_{ji}}.
 \end{equation}
 
 Wir definieren jetzt die Hilfsvariablen:
 \begin{IEEEeqnarray}{rCl}
-\frac{\partial net_j }{\partial w_{ji}} & = & y_i \quad \text{und}
+\frac{\partial net_j }{\partial w_{ji}} & = & z_i \quad \text{und}
 \\
 \frac{\partial E^n}{\partial net_j} & = & \delta_j,
 \end{IEEEeqnarray}
@@ -163,7 +163,7 @@ wobei $y_i$ durch den Feedforward-Pass (also mit den Formeln \ref{eq:feedforward
 Mit diesen Variablen können wir die Ableitung beschreiben als
 \begin{equation}
 \label{eq:evaluate}
-  \frac{\partial E^n}{\partial w_{ij}} = y_i \delta_j.
+  \frac{\partial E^n}{\partial w_{ij}} = z_i \delta_j.
 \end{equation}
 
 Durch mehrfaches Anwenden der Kettenregel bekommen wir die so genannte Backpropagation-Formel:
@@ -190,6 +190,33 @@ Die stochastische Methode ist die in der Praxis bevorzugte, weil die Konvergenz 
 Ein weiter Vorteil ist, dass sie redundante Trainingsdaten (die bei einem Training für Mustererkennung zwangsläufig auftreten) ausnutzt. Außerdem konvergiert sie eventuell zu einem besseren Minimum als die Batch Methode \cite{lecunefficient}.
 Wir werden hier primär die stochastische Methode betrachten, da sie in der Praxis die Bessere ist \cite{lecunefficient, bengio2012practical}.
 
+\subsection{Ein Beispiel}
+Wir betrachten ein zwei-schichtiges MLP, wie es in Abbildung \ref{fig:MLP} gezeigt wird. 
+Als Fehlerfunktion benutzen wir den MSE (vgl. Formel \ref{eq:MSE}), als Kostenfunktion der verdeckten Schicht die logistische Funktion $\sigma(x) = (1 + \exp(-x))^{-1}$. Die anderen Layer führen keine nicht-lineare Transformation durch.
+
+Ziel ist es jetzt die Ableitung der Fehlerfunktion bezüglich der einzelnen Schichten zu berechnen. Dazu wird erst ein Feed-Forward-Pass durchgeführt. Danach berechnen wir $\delta_j$ für jedes Neuron. 
+
+Wir fangen bei der Ausgabeschicht an. Da die Ableitung der Identitätsfunktion $1$ ist, ergibt sich für diese Schicht die Formel
+
+\begin{equation}
+  \delta_j = y_j - t_j.
+\end{equation}
+
+Haben wir dies ausgerechnet, fahren wir mit den Knoten der verdeckten Schicht fort. Dazu müssen wir $\sigma$ ableiten. Wir erhalten
+
+\begin{equation}
+  \sigma'(x) = \sigma(x) (1 - \sigma(x)). 
+\end{equation}
+
+Setzen wir dies nun in Formel \ref{eq:backpropagation} ein, ergibt sich %FORMULIERUNG
+
+\begin{equation}
+  \delta_j = \sigma(z_j) (1-z_j) \sum_k w_{kj} \delta_k.
+\end{equation}
+
+In dieser Formel werden durch $\sum_k w_{kj} \delta_k$ die im vorherigen Schritt berechnetet Werte aufsummiert.
+
+Um jetzt die gesuchte Ableitung zu bekommen, muss nur noch für jedes Gewicht die Formel \ref{eq:evaluate} benutzt werden. 
 
 \subsection{Die numerische Methode - Gradient Descent}
 

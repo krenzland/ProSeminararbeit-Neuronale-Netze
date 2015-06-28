@@ -39,14 +39,14 @@ Die Initialisierung der Gewichte ist ein schwieriges Problem. Eine oft benutzte 
 
 wobei $U[-a, a]$ gleichverteilten Werten zwischen $-a$ und $a$ entspricht, und $N$ der Anzahl der Neuronen in der vorherigen Schicht\cite{glorot2010understanding}. 
 
-In \cite{glorot2010understanding} wird, als bessere Heuristik, vorgeschlagen, die normalisierte Initialisierung
+In \cite{glorot2010understanding} wird als bessere Heuristik vorgeschlagen, die normalisierte Initialisierung
 \begin{equation}
 	W \sim U [ - \frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}} 
 	, 			 \frac{\sqrt{6}}{\sqrt{n_j+n_{j+1}}} ]
 \end{equation}
 
 zu verwenden. 
-In der Praxis ergeben sich durch sie bessere Ergebnisse. 
+In der Praxis ergeben sich dadurch bessere Ergebnisse. 
 
 \subsection{Vermeidung von Overfitting}
 \label{sec:overfitting}
@@ -56,7 +56,7 @@ Eine mögliche Lösung ist die L1/L2-Regularisierung. Bei ihr hängen wir an die
 \begin{IEEEeqnarray}{rCl}
 E_{\text{L1}} & = & E + \lambda \sum_i \left| w_i \right| 
 \\
-E_{\text{L2}} & = & E + \lambda \sum_i w_i^2
+E_{\text{L2}} & = & E + \lambda \sum_i w_i^2.
 \end{IEEEeqnarray}
 
 Er skaliert mit der Summe aller Gewichte, es werden also komplexe Modelle bestraft. Diese Art der Regularisierung heißt Weigth-Decay, weil die Gewichte gegen null gehen\cite{bishop1995neural}.
